@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        replaceFragment((new LogInFragment()));
         btnFragment = findViewById(R.id.btnSwitchLogInFragment);
         btnFragment.setOnClickListener(new View.OnClickListener() {
             @Override
