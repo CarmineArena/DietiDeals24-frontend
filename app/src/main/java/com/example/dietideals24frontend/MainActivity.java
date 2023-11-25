@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.dietideals24frontend.graphics.LogInFragment;
+import com.example.dietideals24frontend.graphics.SignUpFragment;
 
 public class MainActivity extends AppCompatActivity {
 

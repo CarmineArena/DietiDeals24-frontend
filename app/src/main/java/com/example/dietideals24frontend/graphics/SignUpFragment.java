@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend;
+package com.example.dietideals24frontend.graphics;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.dietideals24frontend.R;
 
 
 public class SignUpFragment extends Fragment {
