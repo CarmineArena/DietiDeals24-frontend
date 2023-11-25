@@ -35,15 +35,25 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSwitchLogInFragment"
-        android:layout_width="268dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="54dp"
-        android:layout_marginEnd="162dp"
+        android:layout_width="256dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="50dp"
+        android:background="@android:color/transparent"
         android:text="Sei un nuovo utente? Registrati"
         android:textSize="10sp"
-        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button"
+        android:layout_width="51dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="41dp"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSwitchLogInFragment" />
 </androidx.constraintlayout.widget.ConstraintLayout>
