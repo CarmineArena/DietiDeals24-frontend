@@ -1,6 +1,5 @@
 package com.example.dietideals24frontend;
 
-import android.view.View;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -16,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    private static String BASE_URL = ""; // TODO: REMEMBER TO NOT PUSH THIS
+    private static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
     public static Retrofit retrofitService;
     private Button btnFragment;
 
@@ -39,16 +38,13 @@ public class MainActivity extends AppCompatActivity {
 
         replaceFragment((new LogInFragment()));
         btnFragment = findViewById(R.id.btnSwitchLogInFragment);
-        btnFragment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btnFragment.getText().equals("Sei un nuovo utente? Registrati")) {
-                    btnFragment.setText("Hai già un account? Accedi");
-                    replaceFragment(new SignUpFragment());
-                } else {
-                    btnFragment.setText("Sei un nuovo utente? Registrati");
-                    replaceFragment(new LogInFragment());
-                }
+        btnFragment.setOnClickListener(v -> {
+            if (btnFragment.getText().equals("Sei un nuovo utente? Registrati")) {
+                btnFragment.setText("Hai già un account? Accedi");
+                replaceFragment(new SignUpFragment());
+            } else {
+                btnFragment.setText("Sei un nuovo utente? Registrati");
+                replaceFragment(new LogInFragment());
             }
         });
     }

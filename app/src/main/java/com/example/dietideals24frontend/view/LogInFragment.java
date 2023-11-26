@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.modelDTO.User;
+import com.example.dietideals24frontend.utility.EmailValidator;
 import com.example.dietideals24frontend.retrofit.LoginUserApiService;
 
 import java.util.Objects;
@@ -25,7 +26,6 @@ import retrofit2.Callback;
 import retrofit2.HttpException;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-
 
 public class LogInFragment extends Fragment {
     private Retrofit retrofitService;
@@ -46,9 +46,9 @@ public class LogInFragment extends Fragment {
             String email    = mailField.getText().toString();
             String password = passwordField.getText().toString();
 
-            if (email.isEmpty() || password.isEmpty()) {
-                // TODO: come gestire errore
-                // TODO: controllare la correttezza della mail
+            EmailValidator validator = new EmailValidator();
+            if (email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
+                // TODO: Come gestiamo l'errore in questo caso?
             } else {
                 // 1. Create User
                 User user = new User();
@@ -62,9 +62,8 @@ public class LogInFragment extends Fragment {
                     public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                         if (response.isSuccessful()) {
                             Log.d("User Login", "User is logged in!");
-                            // TODO: riportare ad una nuova schermata!
-                            // TODO: devo ottenere indietro lo User?
-                                // User loggedInUser = response.body();
+                            // TODO: Riportare l'utente ad una nuova schermata. Bisogna ottenere indietro lo User?
+                            // User loggedInUser = response.body();
                         } else {
                             Log.d("User Login Error", "Could not log in the user. Server error: " + response.code());
                         }
@@ -75,13 +74,12 @@ public class LogInFragment extends Fragment {
                         Log.d("User Login", "Could not log in the user!");
                         Log.d("User Login Error", Objects.requireNonNull(t.getMessage()));
 
-                        // TODO: cosa fare in questo caso ?
+                        // TODO: Gestire i possibili casi di errore in questo blocco di codice
 
                         if (t instanceof HttpException) {
                             int errorCode = ((HttpException) t).code();
                             if (errorCode == 404) {
                                 Log.d("User Login", "User not found for Login!");
-                                // TODO: Aggiungi la logica per gestire il caso in cui l'utente non viene trovato
                             }
                         }
                     }

@@ -21,6 +21,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 import com.example.dietideals24frontend.retrofit.RegisterUserApiService;
+import com.example.dietideals24frontend.utility.EmailValidator;
 
 import java.util.Objects;
 
@@ -46,10 +47,10 @@ public class SignUpFragment extends Fragment {
             String surname  = surnameField.getText().toString();
             String email    = mailField.getText().toString();
             String password = passwordField.getText().toString();
-
-            if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                // TODO: come gestire errore
-                // TODO: controllare la correttezza della mail
+            
+            EmailValidator validator = new EmailValidator();
+            if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
+                // TODO: Come gestiamo l'errore in questo caso?
             } else {
                 // 1. Create User
                 User user = new User();
@@ -64,14 +65,14 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                         Log.d("User Register", "User registered correctly!");
-                        // TODO: riportare ad una nuova schermata!
+                        // TODO: Riportare l'utente ad una nuova schermata.
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                         Log.d("User Register", "Could not register user!");
                         Log.d("User Register Error", Objects.requireNonNull(t.getMessage()));
-                        // TODO: cosa fare in questo caso
+                        // TODO: Cosa facciamo in questo caso?
                     }
                 });
             }
