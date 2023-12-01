@@ -2,6 +2,7 @@ package com.example.dietideals24frontend;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
     public static Retrofit retrofitService;
     private Button btnFragment;
+    private TextView TextFragment;
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -37,13 +39,19 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         replaceFragment((new LogInFragment()));
+
+
         btnFragment = findViewById(R.id.btnSwitchLogInFragment);
+        TextFragment = findViewById(R.id.TextFragment);
+
         btnFragment.setOnClickListener(v -> {
-            if (btnFragment.getText().equals("Sei un nuovo utente? Registrati")) {
-                btnFragment.setText("Hai già un account? Accedi");
+            if (btnFragment.getText().equals("Registrati")) {
+                TextFragment.setText("Hai già un account?");
+                btnFragment.setText("Accedi");
                 replaceFragment(new SignUpFragment());
             } else {
-                btnFragment.setText("Sei un nuovo utente? Registrati");
+                TextFragment.setText("Sei un nuovo utente?");
+                btnFragment.setText("Registrati");
                 replaceFragment(new LogInFragment());
             }
         });

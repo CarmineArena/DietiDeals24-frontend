@@ -4,30 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2B2B2B"
+    android:background="@drawable/wallpaper_1"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/DietiDeals24"
-        android:layout_width="356dp"
-        android:layout_height="67dp"
+        android:layout_width="405dp"
+        android:layout_height="65dp"
         android:layout_marginStart="176dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="177dp"
+        android:fontFamily="@font/poppins_medium_italic"
         android:text="DietiDeals24"
         android:textAlignment="center"
-        android:textColor="#FFD600"
-        android:textSize="60sp"
+        android:textColor="#000000"
+        android:textSize="55sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="0dp"
-        android:layout_height="390dp"
-        android:layout_marginTop="58dp"
+        android:layout_width="355dp"
+        android:layout_height="406dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="26dp"
+        android:background="@android:color/transparent"
+        android:elevation="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DietiDeals24">
 
@@ -35,25 +42,43 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSwitchLogInFragment"
-        android:layout_width="256dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="50dp"
+        android:layout_width="206dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginEnd="104dp"
         android:background="@android:color/transparent"
-        android:text="Sei un nuovo utente? Registrati"
-        android:textSize="10sp"
+        android:text="Registrati"
+        android:fontFamily="@font/poppins_light"
+        android:textColor="#2E3870"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/TextFragment" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/gitHubButton"
         android:layout_width="51dp"
         android:layout_height="45dp"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/circular_form"
         android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSwitchLogInFragment" />
+
+    <TextView
+        android:id="@+id/TextFragment"
+        android:layout_width="0dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="121dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="121dp"
+        android:text="Sei un nuovo utente?"
+        android:fontFamily="@font/poppins_light"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
