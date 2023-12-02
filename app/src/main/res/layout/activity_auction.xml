@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.Auction">
+
+    <TextView
+        android:id="@+id/ItemNameField"
+        android:layout_width="110dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="30dp"
+        android:text="Nome Oggetto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/AuctionTypeField"
+        android:layout_width="95dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="32dp"
+        android:text="Tipo Asta:"
+        app:layout_constraintStart_toEndOf="@+id/ItemNameField"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/secondopera"
+        android:layout_width="164dp"
+        android:layout_height="163dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="22dp"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ItemNameField" />
+
+    <TextView
+        android:id="@+id/DescriptionView"
+        android:layout_width="173dp"
+        android:layout_height="165dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="27dp"
+        android:text="Descrizione..."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ItemNameField" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="105dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="13dp"
+        android:text="Asta creata da: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secondopera" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/NameBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginTop="13dp"
+        android:text="Nome persona"
+        android:textAlignment="viewStart"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/DescriptionView" />
+
+    <TextView
+        android:id="@+id/LastOfferView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="134dp"
+        android:layout_marginTop="36dp"
+        android:text="Ultima offerta fatta da:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NameBtn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/OfferButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="52dp"
+        android:text="Fai un'offerta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LastOfferView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,63 @@
+package com.example.dietideals24frontend.view;
+
+import android.app.TimePickerDialog;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TimePicker;
+
+import com.example.dietideals24frontend.R;
+
+import java.util.Calendar;
+import java.util.Locale;
+
+public class EnglishAuctionCreationFragment extends Fragment {
+
+    View view;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_english_auction_creation, container, false);
+
+        Button timeButton = view.findViewById(R.id.time_button);
+
+        final TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Formatta l'orario come desideri (ad esempio, in un formato HH:mm)
+                String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+
+                // Puoi utilizzare selectedTime come necessario
+                timeButton.setText(selectedTime);
+            }
+        };
+
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int currentHour = c.get(Calendar.HOUR_OF_DAY);
+                int currentMinute = c.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        requireContext(),
+                        timeSetListener,
+                        currentHour,
+                        currentMinute,
+                        true  // Imposta true se desideri visualizzare il picker in modalità 24 ore
+                );
+
+                timePickerDialog.show();
+            }
+        });
+
+        return view;
+    }
+}
