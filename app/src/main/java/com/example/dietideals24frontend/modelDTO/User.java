@@ -1,13 +1,11 @@
 package com.example.dietideals24frontend.modelDTO;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class User {
-    // private Integer userId; // Primary Key Auto-Increment (never used client-side)
-    private String name;
-    private String surname;
-    private String email;
-    private String password;
+public class User implements Serializable {
+    private Integer userId;
+    private String name, surname, email, password;
     private Set<Item> items;
     private Set<Offer> offers;
 
@@ -16,6 +14,14 @@ public class User {
     public User() {}
 
     /* GETTERS AND SETTERS */
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public String getName() {
         return name;

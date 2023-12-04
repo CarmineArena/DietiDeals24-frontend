@@ -1,5 +1,6 @@
 package com.example.dietideals24frontend.view;
 
+import android.content.Intent;
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
@@ -65,14 +66,21 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                         Log.d("User Register", "User registered correctly!");
-                        // TODO: Riportare l'utente ad una nuova schermata.
+                        // TODO: Mostrare un messaggio di avvenuta registrazione?
+
+                        // Send User to Home
+                        User loggedInUser = response.body();
+
+                        Intent intent = new Intent(getActivity(), Home.class);
+                        intent.putExtra("loggedInUser", loggedInUser);
+                        startActivity(intent);
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                         Log.d("User Register", "Could not register user!");
                         Log.d("User Register Error", Objects.requireNonNull(t.getMessage()));
-                        // TODO: Cosa facciamo in questo caso?
+                        // TODO: Come gestiamo l'errore in questo caso?
                     }
                 });
             }

@@ -1,5 +1,6 @@
 package com.example.dietideals24frontend.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -62,8 +63,13 @@ public class LogInFragment extends Fragment {
                     public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                         if (response.isSuccessful()) {
                             Log.d("User Login", "User is logged in!");
-                            // TODO: Riportare l'utente ad una nuova schermata. Bisogna ottenere indietro lo User?
-                            // User loggedInUser = response.body();
+
+                            // Send User to the Home page
+                            User loggedInUser = response.body();
+
+                            Intent intent = new Intent(getActivity(), Home.class);
+                            intent.putExtra("loggedInUser", loggedInUser);
+                            startActivity(intent);
                         } else {
                             Log.d("User Login Error", "Could not log in the user. Server error: " + response.code());
                         }
@@ -74,7 +80,7 @@ public class LogInFragment extends Fragment {
                         Log.d("User Login", "Could not log in the user!");
                         Log.d("User Login Error", Objects.requireNonNull(t.getMessage()));
 
-                        // TODO: Gestire i possibili casi di errore in questo blocco di codice
+                        // TODO: Come gestiamo gli errori in questo caso?
 
                         if (t instanceof HttpException) {
                             int errorCode = ((HttpException) t).code();
