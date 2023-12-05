@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TimePicker;
 
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.modelDTO.User;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -25,6 +26,13 @@ public class EnglishAuctionCreationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_english_auction_creation, container, false);
+
+        Bundle bundle = getArguments();
+        User user = null;
+        if (bundle != null) {
+            user = (User) bundle.getSerializable("loggedInUser");
+        }
+
 
         Button timeButton = view.findViewById(R.id.time_button);
 

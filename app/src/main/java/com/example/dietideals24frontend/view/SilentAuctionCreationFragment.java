@@ -15,6 +15,7 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.TimePicker;
 
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.modelDTO.User;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -30,6 +31,11 @@ public class SilentAuctionCreationFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_silent_auction_creation, container, false);
 
+        Bundle bundle = getArguments();
+        User user = null;
+        if (bundle != null) {
+            user = (User) bundle.getSerializable("loggedInUser");
+        }
 
         MultiAutoCompleteTextView multiAutoCompleteTextView = view.findViewById(R.id.categoriesMultiView);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
