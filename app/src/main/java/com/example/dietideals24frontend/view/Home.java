@@ -24,8 +24,7 @@ public class Home extends AppCompatActivity {
 
         Button btnCreate = findViewById(R.id.bntCreate);
         btnCreate.setOnClickListener(v -> {
-            Intent intent1 = new Intent(Home.this, CreateAuction.class);
-            intent1.putExtra("loggedInUser", user);
+            Intent intent1 = new Intent(Home.this, CreateAuction.class).putExtra("loggedInUser", user);
             startActivity(intent1);
         });
     }

@@ -2,14 +2,16 @@ package com.example.dietideals24frontend.view;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.app.DatePickerDialog;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.content.Intent;
-import android.app.TimePickerDialog;
+import android.app.DatePickerDialog;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.view.ViewGroup;
@@ -28,14 +30,24 @@ import com.example.dietideals24frontend.modelDTO.Auction;
 import com.example.dietideals24frontend.modelDTO.Item;
 import com.example.dietideals24frontend.modelDTO.Type;
 import com.example.dietideals24frontend.modelDTO.User;
+import com.example.dietideals24frontend.retrofit.AddItemApiService;
+import com.example.dietideals24frontend.retrofit.LoginUserApiService;
 import com.example.dietideals24frontend.utility.ImageUtils;
 
 import android.net.Uri;
 
-import java.util.Locale;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.io.IOException;
+import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.HttpException;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class SilentAuctionCreationFragment extends Fragment {
@@ -89,7 +101,7 @@ public class SilentAuctionCreationFragment extends Fragment {
             EditText nameTextField  = view.findViewById(R.id.editTextTextPersonName);
             EditText basePrizeField = view.findViewById(R.id.editTextTextPersonName2);
             MultiAutoCompleteTextView categoryField = view.findViewById(R.id.categoriesMultiView);
-            String date = (String) timeButton.getText();
+            String expirationDate = (String) dataButton.getText();
 
             String itemName     = String.valueOf(nameTextField.getText());
             String itemCategory = String.valueOf(categoryField.getText());
@@ -97,13 +109,24 @@ public class SilentAuctionCreationFragment extends Fragment {
 
             // TODO: Still need to add item Description (there is no EditText for it). For now I invented It.
             // TODO: Define proper categories for items.
-            if (itemName.isEmpty() || itemCategory.isEmpty() || itemBasePrize.isEmpty() || date.isEmpty()) {
+            if (itemName.isEmpty() || itemCategory.isEmpty() || itemBasePrize.isEmpty() || expirationDate.isEmpty() || getImageContent() == null) {
                 // TODO: Cosa facciamo in questo caso?
+                // TODO: Pensare poi al controllo degli errori
             } else {
                 float itemStartPrize = 0.0f;
                 try {
                     itemStartPrize = Float.parseFloat(itemBasePrize);
                 } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd");
+
+                Date sqlDate = null;
+                try {
+                    java.util.Date parsed = inputDate.parse(expirationDate);
+                    sqlDate = new Date(parsed.getTime()); // java.sql.Date
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
@@ -121,16 +144,18 @@ public class SilentAuctionCreationFragment extends Fragment {
                 auction.setAuctionType(Type.SILENT);
                 auction.setOwnerId(user.getUserId());
                 auction.setCurrentOfferValue(itemStartPrize);
-                auction.setExpirationDate();
-                auction.setExpirationTime();
+                auction.setExpirationDate(sqlDate);
 
                 item.setAuction(auction);
                 auction.setItem(item);
 
-                // 3. Send data to the Server and save it into DB (correct order)
+                // 3. Send Item to Server
+                sendItemToServer(item);
+                Log.d("Item Send Process", "Item sent successfully!");
 
-
-                // TODO: 4. Inform the user of the success of the operation and go back home
+                // TODO: 4. Send Auction to Server
+                // TODO: 5. L'asta deve avere un nome per la ricerca?
+                // TODO: 6. Inform the user of the success of the operation and go back home
             }
         });
 
@@ -174,6 +199,28 @@ public class SilentAuctionCreationFragment extends Fragment {
         return imageContent;
     }
 
+    private void sendItemToServer(Item item) {
+        AddItemApiService api = retrofitService.create(AddItemApiService.class);
+        api.addItem(item).enqueue(new Callback<Item>() {
+            @Override
+            public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Add Item Procedure", "Item registered correctly!");
+                    // TODO: Cosa facciamo in questo caso?
+                } else {
+                    Log.d("Add Item Procedure Error", "Could not register the Item provided. Server error: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
+                Log.d("Add Item Procedure Error", Objects.requireNonNull(t.getMessage()));
+                // TODO: Cosa facciamo in questo caso?
+            }
+        });
+    }
+
+    // TODO: Trovare un utilizzo per questa funzione altrimenti cancellarla
     private void goBackToHome() {
         Intent intent = new Intent(getActivity(), Home.class);
         startActivity(intent);

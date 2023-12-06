@@ -5,8 +5,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.content.Intent;
@@ -42,6 +43,12 @@ public class CreateAuction extends AppCompatActivity {
                 if (!selectedType.equals("Scegli il tuo tipo di asta")) {
                     adapter.notifyDataSetChanged();
                     if(selectedType.equals("Asta silenziosa")) {
+                        // TODO: COntrollare che l'id dell'utente non sia null (Non dovrebbero esserci problemi)
+                        // TODO: Il problema può essere questo bundle che diamo al fragment da creare
+
+                        // TODO: SPOSTARE QUESTO CODICE A RIGA 78
+                        Log.d("SPINNER ID: ", String.valueOf(user.getUserId()));
+
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("loggedInUser", user);
 

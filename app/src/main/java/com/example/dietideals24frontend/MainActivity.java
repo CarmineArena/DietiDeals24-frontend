@@ -15,6 +15,9 @@ import com.example.dietideals24frontend.view.SignUpFragment;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+// TODO: MUST SOLVE SEND IMAGE PROBLEM
+// TODO: LINE 47 CreateAuction.java
+
 public class MainActivity extends AppCompatActivity {
     private static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
     public static Retrofit retrofitService;
