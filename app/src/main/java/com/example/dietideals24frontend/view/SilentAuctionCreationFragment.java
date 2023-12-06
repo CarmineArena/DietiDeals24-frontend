@@ -2,6 +2,7 @@ package com.example.dietideals24frontend.view;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.content.Intent;
 import android.app.TimePickerDialog;
@@ -68,22 +69,19 @@ public class SilentAuctionCreationFragment extends Fragment {
         multiAutoCompleteTextView.setAdapter(adapter);
         multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-        Button timeButton = view.findViewById(R.id.time_button);
-        final TimePickerDialog.OnTimeSetListener timeSetListener = (view, hourOfDay, minute) -> {
-            // Format the time as you wish (for example, in an HH:mm format)
-            String selectedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-            timeButton.setText(selectedTime);
-        };
+        Button dataButton = view.findViewById(R.id.data_button);
+        dataButton.setOnClickListener(v -> {
+            final Calendar c = Calendar.getInstance();
+            int mYear        = c.get(Calendar.YEAR);
+            int mMonth       = c.get(Calendar.MONTH);
+            int mDay         = c.get(Calendar.DAY_OF_MONTH);
 
-        timeButton.setOnClickListener(v -> {
-            final Calendar c  = Calendar.getInstance();
-            int currentHour   = c.get(Calendar.HOUR_OF_DAY);
-            int currentMinute = c.get(Calendar.MINUTE);
-
-            TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(), timeSetListener, currentHour, currentMinute,
-                    true  // Set to true if you want to visualize the picker 24 hours mode
-            );
-            timePickerDialog.show();
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                    (view, year, monthOfYear, dayOfMonth) -> {
+                        String selectedDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                        dataButton.setText(selectedDate);
+                    }, mYear, mMonth, mDay);
+            datePickerDialog.show();
         });
 
         Button createAuctionButton  = view.findViewById(R.id.next_button);
