@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -20,7 +21,11 @@ import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 
 import com.bumptech.glide.Glide;
+import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.modelDTO.Auction;
+import com.example.dietideals24frontend.modelDTO.Item;
+import com.example.dietideals24frontend.modelDTO.Type;
 import com.example.dietideals24frontend.modelDTO.User;
 import com.example.dietideals24frontend.utility.ImageUtils;
 
@@ -30,19 +35,27 @@ import java.util.Locale;
 import java.util.Calendar;
 import java.io.IOException;
 
+import retrofit2.Retrofit;
+
 public class SilentAuctionCreationFragment extends Fragment {
+    private Retrofit retrofitService;
     private static final int PICK_IMAGE_REQUEST = 1;
     private View view;
+    private byte[] imageContent;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_silent_auction_creation, container, false);
 
+        retrofitService = MainActivity.retrofitService;
+
         // Retrieve LoggedIn User
         Bundle bundle = getArguments();
-        User user = null;
+        User user;
         if (bundle != null) {
             user = (User) bundle.getSerializable("loggedInUser");
+        } else {
+            user = null;
         }
 
         MultiAutoCompleteTextView multiAutoCompleteTextView = view.findViewById(R.id.categoriesMultiView);
@@ -73,7 +86,53 @@ public class SilentAuctionCreationFragment extends Fragment {
             timePickerDialog.show();
         });
 
-        Button yourButton  = view.findViewById(R.id.next_button);
+        Button createAuctionButton  = view.findViewById(R.id.next_button);
+        createAuctionButton.setOnClickListener(v -> {
+            EditText nameTextField  = view.findViewById(R.id.editTextTextPersonName);
+            EditText basePrizeField = view.findViewById(R.id.editTextTextPersonName2);
+            MultiAutoCompleteTextView categoryField = view.findViewById(R.id.categoriesMultiView);
+            String date = (String) timeButton.getText();
+
+            String itemName     = String.valueOf(nameTextField.getText());
+            String itemCategory = String.valueOf(categoryField.getText());
+            String itemBasePrize = String.valueOf(basePrizeField.getText());
+
+            // TODO: Still need to add item Description (there is no EditText for it). For now I invented It.
+            // TODO: Define proper categories for items.
+            if (itemName.isEmpty() || itemCategory.isEmpty() || itemBasePrize.isEmpty() || date.isEmpty()) {
+                // TODO: Cosa facciamo in questo caso?
+            } else {
+                float itemStartPrize = 0.0f;
+                try {
+                    itemStartPrize = Float.parseFloat(itemBasePrize);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+
+                // 1. Create Item and associate the User to It.
+                Item item = new Item();
+                item.setUser(user);
+                item.setImage(getImageContent());
+                item.setName(itemName);
+                item.setCategory(itemCategory);
+                item.setBasePrize(itemStartPrize);
+                item.setDescription("Unkown");
+
+                // 2. Create Auction and associate it to the Item
+                Auction auction = new Auction();
+                auction.setAuctionType(Type.SILENT);
+                auction.setCurrentOfferValue(itemStartPrize);
+                auction.setDuration();
+
+                item.setAuction(auction);
+                auction.setItem(item);
+
+                // 3. Send data to the Server and save it into DB (correct order)
+
+
+                // TODO: 4. Inform the user of the success of the operation and go back home
+            }
+        });
 
         Button imageButton = view.findViewById(R.id.button);
         imageButton.setOnClickListener(view -> openGallery());
@@ -100,18 +159,19 @@ public class SilentAuctionCreationFragment extends Fragment {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-            // TODO: 1. CREA L'ITEM E ASSOCIA L'ITEM ALL'UTENTE
-            // item.setImage(imageBytes);
-
-            // TODO: 2. Inserire nel DB il record relativo all'item creato (mandare tramite rest Api l'oggetto Item)
-            // uploadImageToServer(imageBytes);
-
-            // TODO: 3. Creare Asta, associargli l'oggetto e l'id del proprietario, e inserire nel DB l'istanza dell'asta (mandare tramite rest Api l'oggetto Auction)
+            setImageContent(imageBytes);
 
             ImageView imageView = view.findViewById(R.id.secondopera);
             Glide.with(this) .load(imageBytes).into(imageView);
         }
+    }
+
+    private void setImageContent(byte[] content) {
+        this.imageContent = content;
+    }
+
+    private byte[] getImageContent() {
+        return imageContent;
     }
 
     private void goBackToHome() {
