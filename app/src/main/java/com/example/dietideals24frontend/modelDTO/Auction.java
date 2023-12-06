@@ -1,13 +1,16 @@
 package com.example.dietideals24frontend.modelDTO;
 
 import java.util.Set;
-import java.time.Duration;
+import java.sql.Date;
+import java.sql.Time;
 
 public class Auction {
     private Integer auctionId;
+    private int ownerId;
     private Type auctionType;
     private float currentOfferValue;
-    private Duration duration;
+    private Date expirationDate;
+    private Time expirationTime;
     private Item item;
     private Set<Offer> offers;
 
@@ -23,6 +26,14 @@ public class Auction {
 
     public void setAuctionId(Integer auctionId) {
         this.auctionId = auctionId;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 
     public Type getAuctionType() {
@@ -41,12 +52,20 @@ public class Auction {
         this.currentOfferValue = currentOfferValue;
     }
 
-    public Duration getDuration() {
-        return duration;
+    public Date getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setDuration(Duration duration) {
-        this.duration = duration;
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public Time getExpirationTime() {
+        return expirationTime;
+    }
+
+    public void setExpirationTime(Time expirationTime) {
+        this.expirationTime = expirationTime;
     }
 
     public Item getItem() {

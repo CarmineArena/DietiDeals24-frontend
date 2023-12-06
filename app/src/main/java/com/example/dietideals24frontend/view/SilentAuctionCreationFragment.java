@@ -121,8 +121,10 @@ public class SilentAuctionCreationFragment extends Fragment {
                 // 2. Create Auction and associate it to the Item
                 Auction auction = new Auction();
                 auction.setAuctionType(Type.SILENT);
+                auction.setOwnerId(user.getUserId());
                 auction.setCurrentOfferValue(itemStartPrize);
-                auction.setDuration();
+                auction.setExpirationDate();
+                auction.setExpirationTime();
 
                 item.setAuction(auction);
                 auction.setItem(item);
