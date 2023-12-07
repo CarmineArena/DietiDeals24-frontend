@@ -1,10 +1,11 @@
 package com.example.dietideals24frontend.modelDTO;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.sql.Date;
 import java.sql.Time;
 
-public class Auction {
+public class Auction implements Serializable {
     private Integer auctionId;
     private int ownerId;
     private Type auctionType;

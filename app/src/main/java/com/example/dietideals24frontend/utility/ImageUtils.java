@@ -15,7 +15,7 @@ public class ImageUtils {
 
         if (inputStream != null) {
             ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[2048];
             int bytesRead;
 
             try {

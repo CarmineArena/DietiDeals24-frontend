@@ -30,8 +30,7 @@ import com.example.dietideals24frontend.modelDTO.Auction;
 import com.example.dietideals24frontend.modelDTO.Item;
 import com.example.dietideals24frontend.modelDTO.Type;
 import com.example.dietideals24frontend.modelDTO.User;
-import com.example.dietideals24frontend.retrofit.AddItemApiService;
-import com.example.dietideals24frontend.retrofit.LoginUserApiService;
+import com.example.dietideals24frontend.retrofit.SendByteArrayApiService;
 import com.example.dietideals24frontend.utility.ImageUtils;
 
 import android.net.Uri;
@@ -42,11 +41,9 @@ import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 import java.io.IOException;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.HttpException;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -71,15 +68,15 @@ public class SilentAuctionCreationFragment extends Fragment {
             user = null;
         }
 
-        MultiAutoCompleteTextView multiAutoCompleteTextView = view.findViewById(R.id.categoriesMultiView);
+        MultiAutoCompleteTextView itemCategoryField = view.findViewById(R.id.categoriesMultiView);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.categories_array,
                 android.R.layout.simple_dropdown_item_1line
         );
 
-        multiAutoCompleteTextView.setAdapter(adapter);
-        multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        itemCategoryField.setAdapter(adapter);
+        itemCategoryField.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         Button dataButton = view.findViewById(R.id.data_button);
         dataButton.setOnClickListener(v -> {
@@ -100,11 +97,10 @@ public class SilentAuctionCreationFragment extends Fragment {
         createAuctionButton.setOnClickListener(v -> {
             EditText nameTextField  = view.findViewById(R.id.editTextTextPersonName);
             EditText basePrizeField = view.findViewById(R.id.editTextTextPersonName2);
-            MultiAutoCompleteTextView categoryField = view.findViewById(R.id.categoriesMultiView);
-            String expirationDate = (String) dataButton.getText();
+            String expirationDate   = (String) dataButton.getText();
 
-            String itemName     = String.valueOf(nameTextField.getText());
-            String itemCategory = String.valueOf(categoryField.getText());
+            String itemName      = String.valueOf(nameTextField.getText());
+            String itemCategory  = String.valueOf(itemCategoryField.getText());
             String itemBasePrize = String.valueOf(basePrizeField.getText());
 
             // TODO: Still need to add item Description (there is no EditText for it). For now I invented It.
@@ -139,7 +135,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                 item.setBasePrize(itemStartPrize);
                 item.setDescription("Unkown");
 
-                // 2. Create Auction and associate it to the Item
+                // 2. Send Item to Server, create Auction and associate it to the Item and send Auction to Server
                 Auction auction = new Auction();
                 auction.setAuctionType(Type.SILENT);
                 auction.setOwnerId(user.getUserId());
@@ -149,11 +145,31 @@ public class SilentAuctionCreationFragment extends Fragment {
                 item.setAuction(auction);
                 auction.setItem(item);
 
-                // 3. Send Item to Server
-                sendItemToServer(item);
-                Log.d("Item Send Process", "Item sent successfully!");
+                // TODO: CHOOSE A BETTER PLACE TO DO THIS OPERATION
+                // MANDIAMO PRIMA byte[] imageContent e poi Item e Auction nella speranza che la registrazione in DB vada a buon fine
+                try {
+                    SendByteArrayApiService api = retrofitService.create(SendByteArrayApiService.class);
+                    Call<Void> call = api.uploadImageContent(getImageContent());
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                            Log.d("IMMAGINE", "MANDATA CON SUCCESSO");
+                        }
 
-                // TODO: 4. Send Auction to Server
+                        @Override
+                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                            Log.d("IMMAGINE", "INVIO FALLITO");
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // TODO: 4. Send Item and Auction to the Server
+                // Sender sender = new Sender(retrofitService);
+                // sender.sendItemToServer(item);       // TODO: Check return value
+                // sender.sendAuctionToServer(auction); // TODO: Check return value
+
                 // TODO: 5. L'asta deve avere un nome per la ricerca?
                 // TODO: 6. Inform the user of the success of the operation and go back home
             }
@@ -177,8 +193,7 @@ public class SilentAuctionCreationFragment extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
 
-            // Converte l'URI in un byte array o un altro formato necessario
-            byte[] imageBytes = null;
+            byte[] imageBytes;
             try {
                 imageBytes = ImageUtils.convertUriToByteArray(getContext(), uri);
             } catch (IOException e) {
@@ -197,33 +212,5 @@ public class SilentAuctionCreationFragment extends Fragment {
 
     private byte[] getImageContent() {
         return imageContent;
-    }
-
-    private void sendItemToServer(Item item) {
-        AddItemApiService api = retrofitService.create(AddItemApiService.class);
-        api.addItem(item).enqueue(new Callback<Item>() {
-            @Override
-            public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
-                if (response.isSuccessful()) {
-                    Log.d("Add Item Procedure", "Item registered correctly!");
-                    // TODO: Cosa facciamo in questo caso?
-                } else {
-                    Log.d("Add Item Procedure Error", "Could not register the Item provided. Server error: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
-                Log.d("Add Item Procedure Error", Objects.requireNonNull(t.getMessage()));
-                // TODO: Cosa facciamo in questo caso?
-            }
-        });
-    }
-
-    // TODO: Trovare un utilizzo per questa funzione altrimenti cancellarla
-    private void goBackToHome() {
-        Intent intent = new Intent(getActivity(), Home.class);
-        startActivity(intent);
-        requireActivity().finish();
     }
 }

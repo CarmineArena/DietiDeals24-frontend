@@ -1,9 +1,10 @@
 package com.example.dietideals24frontend.modelDTO;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Offer {
+public class Offer implements Serializable {
     private Long offerId;
     private User user;
     private Auction auction;

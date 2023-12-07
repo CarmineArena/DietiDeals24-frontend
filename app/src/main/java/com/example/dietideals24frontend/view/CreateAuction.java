@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
 import android.widget.Button;
@@ -43,27 +42,9 @@ public class CreateAuction extends AppCompatActivity {
                 if (!selectedType.equals("Scegli il tuo tipo di asta")) {
                     adapter.notifyDataSetChanged();
                     if(selectedType.equals("Asta silenziosa")) {
-                        // TODO: COntrollare che l'id dell'utente non sia null (Non dovrebbero esserci problemi)
-                        // TODO: Il problema può essere questo bundle che diamo al fragment da creare
-
-                        // TODO: SPOSTARE QUESTO CODICE A RIGA 78
-                        Log.d("SPINNER ID: ", String.valueOf(user.getUserId()));
-
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("loggedInUser", user);
-
-                        SilentAuctionCreationFragment fragment = new SilentAuctionCreationFragment();
-                        fragment.setArguments(bundle);
-
-                        replaceFragment(fragment);
+                        // TODO: Cosa facciamo in questo caso?
                     } else if(selectedType.equals("Asta all'inglese")) {
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("loggedInUser", user);
-
-                        EnglishAuctionCreationFragment fragment = new EnglishAuctionCreationFragment();
-                        fragment.setArguments(bundle);
-
-                        replaceFragment(fragment);
+                        // TODO: Cosa facciamo in questo caso?
                     }
                 }
             }
@@ -75,18 +56,24 @@ public class CreateAuction extends AppCompatActivity {
             }
         });
 
-        btnActiveFragment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(new SilentAuctionCreationFragment());
-            }
+        btnActiveFragment.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("loggedInUser", user);
+
+            SilentAuctionCreationFragment fragment = new SilentAuctionCreationFragment();
+            fragment.setArguments(bundle);
+
+            replaceFragment(fragment);
         });
 
-        englishbtnDaLevare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(new EnglishAuctionCreationFragment());
-            }
+        englishbtnDaLevare.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("loggedInUser", user);
+
+            EnglishAuctionCreationFragment fragment = new EnglishAuctionCreationFragment();
+            fragment.setArguments(bundle);
+
+            replaceFragment(fragment);
         });
     }
 

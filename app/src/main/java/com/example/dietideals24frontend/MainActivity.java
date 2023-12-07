@@ -1,5 +1,6 @@
 package com.example.dietideals24frontend;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,8 +16,9 @@ import com.example.dietideals24frontend.view.SignUpFragment;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// TODO: MUST SOLVE SEND IMAGE PROBLEM
-// TODO: LINE 47 CreateAuction.java
+// TODO: RISOLVERE IL PROBLEMA DELL'INVIO DELL'IMMAGINE AL DB (LO STAI FACENDO IN DUE PROCESSI DIFFERENTI (VEDI FRAGMENT DI CREAZIONE ASTA SILENZIOSA))
+// TODO: IL LOGIN UTENTE DOVREBBE ESSERE UNA RICHIESTA GET
+// TODO: ASSOCIA LA REGISTRAZIONE E LOGIN UTENTE ALLA CLASSE SENDER
 
 public class MainActivity extends AppCompatActivity {
     private static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

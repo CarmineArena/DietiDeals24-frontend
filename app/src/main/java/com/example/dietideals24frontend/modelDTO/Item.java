@@ -1,6 +1,8 @@
 package com.example.dietideals24frontend.modelDTO;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
     private Integer itemId;
     private String name, description, category;
     private float basePrize;
