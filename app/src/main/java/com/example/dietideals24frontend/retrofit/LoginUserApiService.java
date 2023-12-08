@@ -6,7 +6,6 @@ import retrofit2.Call;
 import retrofit2.http.POST;
 import retrofit2.http.Body;
 
-// TODO: MAYBE THIS SHOULD BE A GET REQUEST
 public interface LoginUserApiService {
     @POST("/userLogin")
     Call<User> login(@Body User user);

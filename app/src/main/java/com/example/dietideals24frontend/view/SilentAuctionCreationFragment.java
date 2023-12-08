@@ -32,6 +32,7 @@ import com.example.dietideals24frontend.modelDTO.Type;
 import com.example.dietideals24frontend.modelDTO.User;
 import com.example.dietideals24frontend.retrofit.SendByteArrayApiService;
 import com.example.dietideals24frontend.utility.ImageUtils;
+import com.example.dietideals24frontend.utility.PostMethodSender;
 
 import android.net.Uri;
 
@@ -129,7 +130,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                 // 1. Create Item and associate the User to It.
                 Item item = new Item();
                 item.setUser(user);
-                item.setImage(getImageContent());
+                // item.setImage(getImageContent());
                 item.setName(itemName);
                 item.setCategory(itemCategory);
                 item.setBasePrize(itemStartPrize);
@@ -145,28 +146,8 @@ public class SilentAuctionCreationFragment extends Fragment {
                 item.setAuction(auction);
                 auction.setItem(item);
 
-                // TODO: CHOOSE A BETTER PLACE TO DO THIS OPERATION
-                // MANDIAMO PRIMA byte[] imageContent e poi Item e Auction nella speranza che la registrazione in DB vada a buon fine
-                try {
-                    SendByteArrayApiService api = retrofitService.create(SendByteArrayApiService.class);
-                    Call<Void> call = api.uploadImageContent(getImageContent());
-                    call.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                            Log.d("IMMAGINE", "MANDATA CON SUCCESSO");
-                        }
-
-                        @Override
-                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                            Log.d("IMMAGINE", "INVIO FALLITO");
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                // TODO: 4. Send Item and Auction to the Server
-                // Sender sender = new Sender(retrofitService);
+                PostMethodSender sender = new PostMethodSender(retrofitService);
+                sender.sendByteArrayImageContentToServer(getImageContent()); // TODO: Check return value
                 // sender.sendItemToServer(item);       // TODO: Check return value
                 // sender.sendAuctionToServer(auction); // TODO: Check return value
 
