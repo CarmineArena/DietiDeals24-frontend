@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.app.DatePickerDialog;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.view.ViewGroup;
@@ -30,7 +28,6 @@ import com.example.dietideals24frontend.modelDTO.Auction;
 import com.example.dietideals24frontend.modelDTO.Item;
 import com.example.dietideals24frontend.modelDTO.Type;
 import com.example.dietideals24frontend.modelDTO.User;
-import com.example.dietideals24frontend.retrofit.SendByteArrayApiService;
 import com.example.dietideals24frontend.utility.ImageUtils;
 import com.example.dietideals24frontend.utility.PostMethodSender;
 
@@ -43,9 +40,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.io.IOException;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class SilentAuctionCreationFragment extends Fragment {
@@ -127,16 +121,14 @@ public class SilentAuctionCreationFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                // 1. Create Item and associate the User to It.
                 Item item = new Item();
                 item.setUser(user);
-                // item.setImage(getImageContent());
+                item.setImage(getImageContent());
                 item.setName(itemName);
                 item.setCategory(itemCategory);
                 item.setBasePrize(itemStartPrize);
                 item.setDescription("Unkown");
 
-                // 2. Send Item to Server, create Auction and associate it to the Item and send Auction to Server
                 Auction auction = new Auction();
                 auction.setAuctionType(Type.SILENT);
                 auction.setOwnerId(user.getUserId());
@@ -147,8 +139,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                 auction.setItem(item);
 
                 PostMethodSender sender = new PostMethodSender(retrofitService);
-                sender.sendByteArrayImageContentToServer(getImageContent()); // TODO: Check return value
-                // sender.sendItemToServer(item);       // TODO: Check return value
+                sender.sendItemToServer(item);       // TODO: Check return value
                 // sender.sendAuctionToServer(auction); // TODO: Check return value
 
                 // TODO: 5. L'asta deve avere un nome per la ricerca?

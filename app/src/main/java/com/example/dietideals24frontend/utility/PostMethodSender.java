@@ -10,7 +10,6 @@ import com.example.dietideals24frontend.retrofit.AddItemApiService;
 import com.example.dietideals24frontend.retrofit.AddAuctionApiService;
 import com.example.dietideals24frontend.retrofit.LoginUserApiService;
 import com.example.dietideals24frontend.retrofit.RegisterUserApiService;
-import com.example.dietideals24frontend.retrofit.SendByteArrayApiService;
 import com.example.dietideals24frontend.utility.callback.UserLoginCallback;
 import com.example.dietideals24frontend.utility.callback.UserRegistrationCallback;
 
@@ -118,33 +117,27 @@ public class PostMethodSender implements Sender {
 
 
 
-
-    public boolean sendItemToServer(Item item) {
-        try {
-            AddItemApiService api = retrofitService.create(AddItemApiService.class);
-            api.registerItem(item).enqueue(new Callback<Item>() {
-                @Override
-                public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
-                    if (response.isSuccessful()) {
-                        Log.d("Add Item Procedure", "Item registered correctly!");
-                        // TODO: Cosa facciamo in questo caso?
-                    } else {
-                        Log.d("Add Item Procedure Error", "Could not register the Item provided. Server error: " + response.code());
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
-                    Log.d("Add Item Procedure Error", Objects.requireNonNull(t.getMessage()));
+    // TODO: FARE REFACTOR COME PER LOGIN E REGISTRAZIONE
+    public void sendItemToServer(Item item) {
+        AddItemApiService api = retrofitService.create(AddItemApiService.class);
+        Call<Void> call = api.registerItem(item);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Add Item Procedure", "Item registered correctly!");
                     // TODO: Cosa facciamo in questo caso?
+                } else {
+                    Log.d("Add Item Procedure Error", "Could not register the Item provided. Server error: " + response.code());
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("Add Item Procedure Error", "Exception during API call: " + e.getMessage());
-            return false;
-        }
-        return true;
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.d("Add Item Procedure Error", Objects.requireNonNull(t.getMessage()));
+                // TODO: Cosa facciamo in questo caso?
+            }
+        });
     }
 
     public boolean sendAuctionToServer(Auction auction) {
@@ -170,29 +163,6 @@ public class PostMethodSender implements Sender {
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("Add Auction Procedure Error", "Exception during API call: " + e.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    public boolean sendByteArrayImageContentToServer(byte[] imageContent) {
-        // MANDIAMO PRIMA byte[] imageContent e poi Item e Auction nella speranza che la registrazione in DB vada a buon fine
-        try {
-            SendByteArrayApiService api = retrofitService.create(SendByteArrayApiService.class);
-            Call<Void> call = api.uploadImageContent(imageContent);
-            call.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                    Log.d("IMMAGINE", "MANDATA CON SUCCESSO");
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                    Log.d("IMMAGINE", "INVIO FALLITO");
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
         return true;

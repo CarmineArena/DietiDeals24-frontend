@@ -8,5 +8,5 @@ import retrofit2.http.Body;
 
 public interface AddItemApiService {
     @POST("/addItem")
-    Call<Item> registerItem(@Body Item item);
+    Call<Void> registerItem(@Body Item item);
 }

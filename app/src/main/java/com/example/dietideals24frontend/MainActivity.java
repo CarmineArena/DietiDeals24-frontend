@@ -17,6 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 // TODO: RISOLVERE IL PROBLEMA DELL'INVIO DELL'IMMAGINE AL DB (LO STAI FACENDO IN DUE PROCESSI DIFFERENTI (VEDI FRAGMENT DI CREAZIONE ASTA SILENZIOSA))
+// TODO: POST_METHOD_SENDER
 
 public class MainActivity extends AppCompatActivity {
     private static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
