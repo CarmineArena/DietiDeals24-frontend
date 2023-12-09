@@ -4,10 +4,8 @@ import android.util.Log;
 import java.util.Objects;
 import androidx.annotation.NonNull;
 import com.example.dietideals24frontend.modelDTO.Item;
-import com.example.dietideals24frontend.modelDTO.Auction;
 import com.example.dietideals24frontend.modelDTO.User;
 import com.example.dietideals24frontend.retrofit.AddItemApiService;
-import com.example.dietideals24frontend.retrofit.AddAuctionApiService;
 import com.example.dietideals24frontend.retrofit.LoginUserApiService;
 import com.example.dietideals24frontend.retrofit.RegisterUserApiService;
 import com.example.dietideals24frontend.utility.callback.UserLoginCallback;
@@ -18,10 +16,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PostMethodSender implements Sender {
+import android.util.Base64;
+
+public class PostRequestSender implements Sender {
     private final Retrofit retrofitService;
 
-    public PostMethodSender(Retrofit retrofitService) {
+    public PostRequestSender(Retrofit retrofitService) {
         this.retrofitService = retrofitService;
     }
 
@@ -89,82 +89,49 @@ public class PostMethodSender implements Sender {
         });
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**********************************************************************************************************************************/
 
     // TODO: FARE REFACTOR COME PER LOGIN E REGISTRAZIONE
-    public void sendItemToServer(Item item) {
+    public void sendItemImageContent(byte[] itemImageContent) {
         AddItemApiService api = retrofitService.create(AddItemApiService.class);
-        Call<Void> call = api.registerItem(item);
+        Call<Void> call = api.sendItemImageContent(itemImageContent);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.d("Add Item Procedure", "Item registered correctly!");
-                    // TODO: Cosa facciamo in questo caso?
+                    Log.d("Send Item Image Content", "Item Image content sent correctly!");
                 } else {
-                    Log.d("Add Item Procedure Error", "Could not register the Item provided. Server error: " + response.code());
+                    Log.e("Send Item Image Content Error", "Could not send byte[] content. Server error: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Log.d("Add Item Procedure Error", Objects.requireNonNull(t.getMessage()));
-                // TODO: Cosa facciamo in questo caso?
+                Log.e("Send Item Image Content Error", "Could not send byte[] content. Server error: " + Objects.requireNonNull(t.getMessage()));
             }
         });
     }
 
-    public boolean sendAuctionToServer(Auction auction) {
-        try {
-            AddAuctionApiService api = retrofitService.create(AddAuctionApiService.class);
-            api.registerAuction(auction).enqueue(new Callback<Auction>() {
-                @Override
-                public void onResponse(@NonNull Call<Auction> call, @NonNull Response<Auction> response) {
-                    if (response.isSuccessful()) {
-                        Log.d("Add Auction Procedure", "Auction registered correctly!");
-                        // TODO: Cosa facciamo in questo caso?
-                    } else {
-                        Log.d("Add Auction Procedure Error", "Could not register the Auction provided. Server error: " + response.code());
-                    }
-                }
+    // TODO: FARE REFACTOR COME PER LOGIN E REGISTRAZIONE
+    public void sendRegisterItemRequest(RequestedItem requestedItem) {
+        AddItemApiService api = retrofitService.create(AddItemApiService.class);
 
-                @Override
-                public void onFailure(@NonNull Call<Auction> call, @NonNull Throwable t) {
-                    Log.d("Add Auction Procedure Error", Objects.requireNonNull(t.getMessage()));
-                    // TODO: Cosa facciamo in questo caso?
+        Call<Void> call = api.registerItem(requestedItem);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Add RequestedItem Procedure", "Item registered correctly!");
+                } else {
+                    Log.d("Add RequestedItem Procedure Error", "Could not register the Item provided. Server error: " + response.code());
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("Add Auction Procedure Error", "Exception during API call: " + e.getMessage());
-            return false;
-        }
-        return true;
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.e("Add RequestedItem Procedure Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
     }
 }

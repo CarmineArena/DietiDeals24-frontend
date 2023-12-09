@@ -16,11 +16,11 @@ import com.example.dietideals24frontend.view.SignUpFragment;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// TODO: RISOLVERE IL PROBLEMA DELL'INVIO DELL'IMMAGINE AL DB (LO STAI FACENDO IN DUE PROCESSI DIFFERENTI (VEDI FRAGMENT DI CREAZIONE ASTA SILENZIOSA))
-// TODO: POST_METHOD_SENDER
+// TODO: RISOLVERE TODO IN POST_REQUEST_SENDER
+// TODO: MANDARE AL SERVER ANCHE LE ASTE COSI' DA POTERLE REGISTRARE
 
 public class MainActivity extends AppCompatActivity {
-    private static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
+    public static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
     public static Retrofit retrofitService;
     private Button btnFragment;
     private TextView TextFragment;

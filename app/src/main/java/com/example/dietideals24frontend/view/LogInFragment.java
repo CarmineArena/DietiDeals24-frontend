@@ -17,7 +17,7 @@ import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.modelDTO.User;
 import com.example.dietideals24frontend.utility.EmailValidator;
-import com.example.dietideals24frontend.utility.PostMethodSender;
+import com.example.dietideals24frontend.utility.PostRequestSender;
 import com.example.dietideals24frontend.utility.callback.UserLoginCallback;
 
 import retrofit2.Retrofit;
@@ -49,7 +49,7 @@ public class LogInFragment extends Fragment {
                 user.setEmail(email);
                 user.setPassword(password);
 
-                PostMethodSender sender = new PostMethodSender(retrofitService);
+                PostRequestSender sender = new PostRequestSender(retrofitService);
                 sender.sendUserLoginRequest(user, new UserLoginCallback() {
                     @Override
                     public boolean onLoginSuccess(User loggedInUser) {

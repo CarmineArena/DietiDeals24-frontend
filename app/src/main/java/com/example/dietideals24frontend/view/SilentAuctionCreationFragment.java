@@ -29,7 +29,8 @@ import com.example.dietideals24frontend.modelDTO.Item;
 import com.example.dietideals24frontend.modelDTO.Type;
 import com.example.dietideals24frontend.modelDTO.User;
 import com.example.dietideals24frontend.utility.ImageUtils;
-import com.example.dietideals24frontend.utility.PostMethodSender;
+import com.example.dietideals24frontend.utility.PostRequestSender;
+import com.example.dietideals24frontend.utility.RequestedItem;
 
 import android.net.Uri;
 
@@ -52,6 +53,7 @@ public class SilentAuctionCreationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_silent_auction_creation, container, false);
 
+        // Retrieve Retrofit instance
         retrofitService = MainActivity.retrofitService;
 
         // Retrieve LoggedIn User
@@ -116,33 +118,42 @@ public class SilentAuctionCreationFragment extends Fragment {
                 Date sqlDate = null;
                 try {
                     java.util.Date parsed = inputDate.parse(expirationDate);
-                    sqlDate = new Date(parsed.getTime()); // java.sql.Date
+                    sqlDate = new Date(parsed.getTime()); // This is java.sql.Date now
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
+                PostRequestSender sender = new PostRequestSender(retrofitService);
+                sender.sendItemImageContent(getImageContent());
+
+                RequestedItem requestedItem = new RequestedItem();
+                requestedItem.setName(itemName);
+                requestedItem.setCategory(itemCategory);
+                requestedItem.setDescription("Unknown");
+                requestedItem.setBasePrize(itemStartPrize);
+                requestedItem.setUser(user);
+
+                sender.sendRegisterItemRequest(requestedItem);
+
+                /*
                 Item item = new Item();
                 item.setUser(user);
                 item.setImage(getImageContent());
                 item.setName(itemName);
                 item.setCategory(itemCategory);
                 item.setBasePrize(itemStartPrize);
-                item.setDescription("Unkown");
+                item.setDescription("Unkown"); */
 
-                Auction auction = new Auction();
+                /* Auction auction = new Auction();
                 auction.setAuctionType(Type.SILENT);
                 auction.setOwnerId(user.getUserId());
                 auction.setCurrentOfferValue(itemStartPrize);
                 auction.setExpirationDate(sqlDate);
 
                 item.setAuction(auction);
-                auction.setItem(item);
+                auction.setItem(item); */
 
-                PostMethodSender sender = new PostMethodSender(retrofitService);
-                sender.sendItemToServer(item);       // TODO: Check return value
-                // sender.sendAuctionToServer(auction); // TODO: Check return value
-
-                // TODO: 5. L'asta deve avere un nome per la ricerca?
+                // TODO: 5. Mandare anche Auction al server. L'asta deve avere un nome per la ricerca?
                 // TODO: 6. Inform the user of the success of the operation and go back home
             }
         });

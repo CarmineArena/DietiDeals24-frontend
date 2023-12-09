@@ -1,12 +1,15 @@
 package com.example.dietideals24frontend.retrofit;
 
-import com.example.dietideals24frontend.modelDTO.Item;
+import com.example.dietideals24frontend.utility.RequestedItem;
 
 import retrofit2.Call;
-import retrofit2.http.POST;
 import retrofit2.http.Body;
+import retrofit2.http.POST;
 
 public interface AddItemApiService {
-    @POST("/addItem")
-    Call<Void> registerItem(@Body Item item);
+    @POST("/item/saveItemImage")
+    Call<Void> sendItemImageContent(@Body byte[] itemImageContent);
+
+    @POST("/item/addItem")
+    Call<Void> registerItem(@Body RequestedItem requestedItem);
 }
