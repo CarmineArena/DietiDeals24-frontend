@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.view;
+package com.example.dietideals24frontend.View;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.widget.TextView;
 import com.example.dietideals24frontend.R;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.dietideals24frontend.modelDTO.User;
+import com.example.dietideals24frontend.Model.UserDTO;
 
 public class Home extends AppCompatActivity {
     @Override
@@ -17,7 +17,7 @@ public class Home extends AppCompatActivity {
         // TODO: Quali sono i tasti per aggiornare Bio e/o link al sito web?
 
         Intent intent = getIntent();
-        User user = (User) intent.getSerializableExtra("loggedInUser");
+        UserDTO user = (UserDTO) intent.getSerializableExtra("loggedInUser");
 
         TextView welcomeView = findViewById(R.id.WelcomeField);
         welcomeView.setText(String.format("Benvenuto, %s %s", user.getName(), user.getSurname()));

@@ -1,17 +1,17 @@
-package com.example.dietideals24frontend.modelDTO;
+package com.example.dietideals24frontend.Model;
 
 import java.io.Serializable;
 import java.util.Set;
 
-public class User implements Serializable {
+public class UserDTO implements Serializable {
     private Integer userId;
     private String name, surname, email, password;
-    private Set<Item> items;
-    private Set<Offer> offers;
+    private Set<ItemDTO> items;
+    private Set<OfferDTO> offers;
 
     /* CONSTRUCTOR */
 
-    public User() {}
+    public UserDTO() {}
 
     /* GETTERS AND SETTERS */
 
@@ -55,19 +55,19 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Set<Item> getItems() {
+    public Set<ItemDTO> getItems() {
         return items;
     }
 
-    public void setItems(Set<Item> items) {
+    public void setItems(Set<ItemDTO> items) {
         this.items = items;
     }
 
-    public Set<Offer> getOffers() {
+    public Set<OfferDTO> getOffers() {
         return offers;
     }
 
-    public void setOffers(Set<Offer> offers) {
+    public void setOffers(Set<OfferDTO> offers) {
         this.offers = offers;
     }
 }

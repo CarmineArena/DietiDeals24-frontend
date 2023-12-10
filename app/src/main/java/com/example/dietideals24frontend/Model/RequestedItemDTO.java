@@ -1,15 +1,13 @@
-package com.example.dietideals24frontend.utility;
-
-import com.example.dietideals24frontend.modelDTO.User;
+package com.example.dietideals24frontend.Model;
 
 import java.io.Serializable;
 
-public class RequestedItem implements Serializable {
+public class RequestedItemDTO implements Serializable {
     private String name, description, category;
     private float basePrize;
-    private User user;
+    private UserDTO user;
 
-    public RequestedItem() {}
+    public RequestedItemDTO() {}
 
     public String getName() {
         return name;
@@ -43,11 +41,11 @@ public class RequestedItem implements Serializable {
         this.basePrize = basePrize;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 }

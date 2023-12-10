@@ -1,20 +1,20 @@
-package com.example.dietideals24frontend.modelDTO;
+package com.example.dietideals24frontend.Model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Offer implements Serializable {
+public class OfferDTO implements Serializable {
     private Long offerId;
-    private User user;
-    private Auction auction;
+    private UserDTO user;
+    private AuctionDTO auction;
     private float offer;
     private LocalDate offerDate;
     private LocalTime offerTime;
 
     /* CONSTRUCTOR */
 
-    public Offer() {
+    public OfferDTO() {
         this.offerDate = LocalDate.now();
         this.offerTime = LocalTime.now();
     }
@@ -29,19 +29,19 @@ public class Offer implements Serializable {
         this.offerId = offerId;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
-    public Auction getAuction() {
+    public AuctionDTO getAuction() {
         return auction;
     }
 
-    public void setAuction(Auction auction) {
+    public void setAuction(AuctionDTO auction) {
         this.auction = auction;
     }
 

@@ -1,18 +1,18 @@
-package com.example.dietideals24frontend.modelDTO;
+package com.example.dietideals24frontend.Model;
 
 import java.io.Serializable;
 
-public class Item implements Serializable {
+public class ItemDTO implements Serializable {
     private Integer itemId;
     private String name, description, category;
     private float basePrize;
     private byte[] image;
-    private User user;
-    private Auction auction;
+    private UserDTO user;
+    private AuctionDTO auction;
 
     /* CONSTRUCTOR */
 
-    public Item() {}
+    public ItemDTO() {}
 
     /* GETTERS AND SETTERS */
 
@@ -64,19 +64,19 @@ public class Item implements Serializable {
         this.image = image;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
-    public Auction getAuction() {
+    public AuctionDTO getAuction() {
         return auction;
     }
 
-    public void setAuction(Auction auction) {
+    public void setAuction(AuctionDTO auction) {
         this.auction = auction;
     }
 }

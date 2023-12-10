@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.view;
+package com.example.dietideals24frontend.View;
 
 import android.content.Intent;
 import android.util.Log;
@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.MainActivity;
-import com.example.dietideals24frontend.modelDTO.User;
+import com.example.dietideals24frontend.Model.UserDTO;
 
 import retrofit2.Retrofit;
 
 import com.example.dietideals24frontend.utility.EmailValidator;
-import com.example.dietideals24frontend.utility.PostRequestSender;
-import com.example.dietideals24frontend.utility.callback.UserRegistrationCallback;
+import com.example.dietideals24frontend.Retrofit.Service.PostRequestSender;
+import com.example.dietideals24frontend.Retrofit.Callback.UserRegistrationCallback;
 
 public class SignUpFragment extends Fragment {
     private Retrofit retrofitService;
@@ -47,7 +47,7 @@ public class SignUpFragment extends Fragment {
             if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
                 // TODO: Come gestiamo l'errore in questo caso?
             } else {
-                User user = new User();
+                UserDTO user = new UserDTO();
                 user.setName(name);
                 user.setSurname(surname);
                 user.setEmail(email);
@@ -56,7 +56,7 @@ public class SignUpFragment extends Fragment {
                 PostRequestSender sender = new PostRequestSender(retrofitService);
                 sender.sendUserRegistrationRequest(user, new UserRegistrationCallback() {
                     @Override
-                    public boolean onRegistrationSuccess(User loggedInUser) {
+                    public boolean onRegistrationSuccess(UserDTO loggedInUser) {
                         Intent intent = new Intent(getActivity(), Home.class);
                         intent.putExtra("loggedInUser", loggedInUser);
                         startActivity(intent);

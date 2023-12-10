@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.view;
+package com.example.dietideals24frontend.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 

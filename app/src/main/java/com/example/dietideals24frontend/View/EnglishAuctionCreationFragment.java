@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.view;
+package com.example.dietideals24frontend.View;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TimePicker;
 
 import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.modelDTO.User;
+import com.example.dietideals24frontend.Model.UserDTO;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -28,9 +28,9 @@ public class EnglishAuctionCreationFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_english_auction_creation, container, false);
 
         Bundle bundle = getArguments();
-        User user = null;
+        UserDTO user = null;
         if (bundle != null) {
-            user = (User) bundle.getSerializable("loggedInUser");
+            user = (UserDTO) bundle.getSerializable("loggedInUser");
         }
 
 

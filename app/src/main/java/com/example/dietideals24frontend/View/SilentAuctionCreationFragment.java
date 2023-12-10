@@ -1,11 +1,11 @@
-package com.example.dietideals24frontend.view;
+package com.example.dietideals24frontend.View;
 
 import static android.app.Activity.RESULT_OK;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.content.Intent;
 import android.app.DatePickerDialog;
+import android.annotation.SuppressLint;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,15 +22,13 @@ import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 
 import com.bumptech.glide.Glide;
-import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.modelDTO.Auction;
-import com.example.dietideals24frontend.modelDTO.Item;
-import com.example.dietideals24frontend.modelDTO.Type;
-import com.example.dietideals24frontend.modelDTO.User;
+import com.example.dietideals24frontend.Model.UserDTO;
 import com.example.dietideals24frontend.utility.ImageUtils;
-import com.example.dietideals24frontend.utility.PostRequestSender;
-import com.example.dietideals24frontend.utility.RequestedItem;
+import com.example.dietideals24frontend.Model.RequestedItemDTO;
+import com.example.dietideals24frontend.Retrofit.Service.PostRequestSender;
+import com.example.dietideals24frontend.Retrofit.Callback.ItemRegistrationCallback;
+import com.example.dietideals24frontend.Retrofit.Callback.ImageContentRegistrationCallback;
 
 import android.net.Uri;
 
@@ -42,6 +40,7 @@ import java.util.Calendar;
 import java.io.IOException;
 
 import retrofit2.Retrofit;
+import com.example.dietideals24frontend.MainActivity;
 
 public class SilentAuctionCreationFragment extends Fragment {
     private Retrofit retrofitService;
@@ -58,9 +57,9 @@ public class SilentAuctionCreationFragment extends Fragment {
 
         // Retrieve LoggedIn User
         Bundle bundle = getArguments();
-        User user;
+        UserDTO user;
         if (bundle != null) {
-            user = (User) bundle.getSerializable("loggedInUser");
+            user = (UserDTO) bundle.getSerializable("loggedInUser");
         } else {
             user = null;
         }
@@ -124,17 +123,28 @@ public class SilentAuctionCreationFragment extends Fragment {
                 }
 
                 PostRequestSender sender = new PostRequestSender(retrofitService);
-                sender.sendItemImageContent(getImageContent());
+                sender.sendItemImageContent(getImageContent(), new ImageContentRegistrationCallback() {
+                    @Override
+                    public boolean onReceptionSuccess(byte[] itemImageContent) { return true; }
+                    @Override
+                    public boolean onReceptionFailure(String errorMessage) { return false; }
+                });
 
-                RequestedItem requestedItem = new RequestedItem();
+                RequestedItemDTO requestedItem = new RequestedItemDTO();
                 requestedItem.setName(itemName);
                 requestedItem.setCategory(itemCategory);
                 requestedItem.setDescription("Unknown");
                 requestedItem.setBasePrize(itemStartPrize);
                 requestedItem.setUser(user);
 
-                sender.sendRegisterItemRequest(requestedItem);
+                sender.sendRegisterItemRequest(requestedItem, new ItemRegistrationCallback() {
+                    @Override
+                    public boolean onItemRegistrationSuccess(RequestedItemDTO requestedItem) { return true; }
+                    @Override
+                    public boolean onItemRegistrationFailure(String errorMessage) { return false; }
+                });
 
+                // TODO: 4. Mandare anche Auction al server. L'asta deve avere un nome per la ricerca?
                 /*
                 Item item = new Item();
                 item.setUser(user);
@@ -152,9 +162,7 @@ public class SilentAuctionCreationFragment extends Fragment {
 
                 item.setAuction(auction);
                 auction.setItem(item); */
-
-                // TODO: 5. Mandare anche Auction al server. L'asta deve avere un nome per la ricerca?
-                // TODO: 6. Inform the user of the success of the operation and go back home
+                // TODO: 5. Inform the user of the success of the operation and go back home
             }
         });
 

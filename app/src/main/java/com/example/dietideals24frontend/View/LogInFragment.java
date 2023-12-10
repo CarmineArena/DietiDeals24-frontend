@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.view;
+package com.example.dietideals24frontend.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,10 +15,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.modelDTO.User;
+import com.example.dietideals24frontend.Model.UserDTO;
 import com.example.dietideals24frontend.utility.EmailValidator;
-import com.example.dietideals24frontend.utility.PostRequestSender;
-import com.example.dietideals24frontend.utility.callback.UserLoginCallback;
+import com.example.dietideals24frontend.Retrofit.Service.PostRequestSender;
+import com.example.dietideals24frontend.Retrofit.Callback.UserLoginCallback;
 
 import retrofit2.Retrofit;
 
@@ -45,14 +45,14 @@ public class LogInFragment extends Fragment {
             if (email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
                 // TODO: Come gestiamo l'errore in questo caso?
             } else {
-                User user = new User();
+                UserDTO user = new UserDTO();
                 user.setEmail(email);
                 user.setPassword(password);
 
                 PostRequestSender sender = new PostRequestSender(retrofitService);
                 sender.sendUserLoginRequest(user, new UserLoginCallback() {
                     @Override
-                    public boolean onLoginSuccess(User loggedInUser) {
+                    public boolean onLoginSuccess(UserDTO loggedInUser) {
                         Intent intent = new Intent(getActivity(), Home.class);
                         intent.putExtra("loggedInUser", loggedInUser);
                         startActivity(intent);

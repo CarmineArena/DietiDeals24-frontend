@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.view;
+package com.example.dietideals24frontend.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.modelDTO.User;
+import com.example.dietideals24frontend.Model.UserDTO;
 
 public class CreateAuction extends AppCompatActivity {
     String[] type = { "Scegli il tuo tipo di asta", "Asta Silenziosa", "Asta all'inglese" };
@@ -25,7 +25,7 @@ public class CreateAuction extends AppCompatActivity {
         setContentView(R.layout.activity_create_auction);
 
         Intent intent = getIntent();
-        User user = (User) intent.getSerializableExtra("loggedInUser");
+        UserDTO user = (UserDTO) intent.getSerializableExtra("loggedInUser");
 
         Button btnActiveFragment  = findViewById(R.id.fragment_button);
         Button englishbtnDaLevare = findViewById(R.id.button3);

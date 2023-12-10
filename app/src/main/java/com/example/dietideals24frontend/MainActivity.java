@@ -1,23 +1,24 @@
 package com.example.dietideals24frontend;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.annotation.SuppressLint;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.dietideals24frontend.view.LogInFragment;
-import com.example.dietideals24frontend.view.SignUpFragment;
+import com.example.dietideals24frontend.View.LogInFragment;
+import com.example.dietideals24frontend.View.SignUpFragment;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// TODO: RISOLVERE TODO IN POST_REQUEST_SENDER
-// TODO: MANDARE AL SERVER ANCHE LE ASTE COSI' DA POTERLE REGISTRARE
+// TODO: 1. SILENT_AUCTION_CREATION_FRAGMENT
+// TODO: 2. ADD "PRESENTER" PACKAGE, IN WHICH WE CREATE OBJECT DESIGNED TO INSTANTIATE FRAGMENTS
+// TODO: 3. DIVIDE "VIEW" PACKAGE IN SUB-PACKAGES (FOR ACTIVITIES, FRAGMENTS AND SO ON)
 
 public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS

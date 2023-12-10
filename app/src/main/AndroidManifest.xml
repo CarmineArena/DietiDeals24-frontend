@@ -18,21 +18,21 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
         <activity
-            android:name=".view.Home"
+            android:name=".View.Home"
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.Auction"
+            android:name=".View.Auction"
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".view.CreateAuction"
+            android:name=".View.CreateAuction"
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
