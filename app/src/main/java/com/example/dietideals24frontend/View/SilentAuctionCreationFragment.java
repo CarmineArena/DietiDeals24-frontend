@@ -2,6 +2,7 @@ package com.example.dietideals24frontend.View;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.util.Log;
 import android.os.Bundle;
 import android.content.Intent;
 import android.app.DatePickerDialog;
@@ -23,12 +24,10 @@ import android.widget.MultiAutoCompleteTextView;
 
 import com.bumptech.glide.Glide;
 import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Model.*;
+import com.example.dietideals24frontend.Retrofit.Callback.*;
 import com.example.dietideals24frontend.utility.ImageUtils;
-import com.example.dietideals24frontend.Model.RequestedItemDTO;
-import com.example.dietideals24frontend.Retrofit.Service.PostRequestSender;
-import com.example.dietideals24frontend.Retrofit.Callback.ItemRegistrationCallback;
-import com.example.dietideals24frontend.Retrofit.Callback.ImageContentRegistrationCallback;
+import com.example.dietideals24frontend.Retrofit.Service.PostRequest;
 
 import android.net.Uri;
 
@@ -122,8 +121,8 @@ public class SilentAuctionCreationFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                PostRequestSender sender = new PostRequestSender(retrofitService);
-                sender.sendItemImageContent(getImageContent(), new ImageContentRegistrationCallback() {
+                PostRequest request = new PostRequest(retrofitService);
+                request.sendItemImageContent(getImageContent(), new ImageContentRegistrationCallback() {
                     @Override
                     public boolean onReceptionSuccess(byte[] itemImageContent) { return true; }
                     @Override
@@ -137,31 +136,23 @@ public class SilentAuctionCreationFragment extends Fragment {
                 requestedItem.setBasePrize(itemStartPrize);
                 requestedItem.setUser(user);
 
-                sender.sendRegisterItemRequest(requestedItem, new ItemRegistrationCallback() {
+                final Integer[] savedItemId = new Integer[1];
+                Date finalSqlDate = sqlDate;
+                float finalItemStartPrize = itemStartPrize;
+                request.sendRegisterItemRequest(requestedItem, new ItemRegistrationCallback() {
                     @Override
-                    public boolean onItemRegistrationSuccess(RequestedItemDTO requestedItem) { return true; }
+                    public boolean onItemRegistrationSuccess(Integer itemId) {
+                        // Log.i("Item Registration", "Item registered with ID: " + itemId);
+                        savedItemId[0] = itemId;
+
+                        registerAuction(savedItemId[0], user, finalSqlDate, finalItemStartPrize);
+                        return true;
+                    }
                     @Override
                     public boolean onItemRegistrationFailure(String errorMessage) { return false; }
                 });
 
-                // TODO: 4. Mandare anche Auction al server. L'asta deve avere un nome per la ricerca?
-                /*
-                Item item = new Item();
-                item.setUser(user);
-                item.setImage(getImageContent());
-                item.setName(itemName);
-                item.setCategory(itemCategory);
-                item.setBasePrize(itemStartPrize);
-                item.setDescription("Unkown"); */
-
-                /* Auction auction = new Auction();
-                auction.setAuctionType(Type.SILENT);
-                auction.setOwnerId(user.getUserId());
-                auction.setCurrentOfferValue(itemStartPrize);
-                auction.setExpirationDate(sqlDate);
-
-                item.setAuction(auction);
-                auction.setItem(item); */
+                // TODO: L'asta deve avere un nome per la ricerca?
                 // TODO: 5. Inform the user of the success of the operation and go back home
             }
         });
@@ -203,5 +194,22 @@ public class SilentAuctionCreationFragment extends Fragment {
 
     private byte[] getImageContent() {
         return imageContent;
+    }
+
+    private void registerAuction(Integer itemId, UserDTO user, java.sql.Date sqlDate, float itemStartPrize) {
+        RequestedItemDTO requestedItemDTO = new RequestedItemDTO();
+        RequestedAuctionDTO auction       = new RequestedAuctionDTO(); // Classe farlocca
+
+        auction.setAuctionType(Type.SILENT);
+        auction.setOwnerId(user.getUserId());
+        auction.setExpirationDate(sqlDate);
+        auction.setCurrentOfferValue(itemStartPrize);
+
+        Log.i("Item Regis2", String.valueOf(itemId));
+
+        // requestedItemDTO.setItemId(itemId);
+        auction.setRequestedItemDTO(requestedItemDTO);
+
+        // TODO: CREA ASTA
     }
 }

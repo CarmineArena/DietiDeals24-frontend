@@ -11,5 +11,5 @@ public interface AddItemApiService {
     Call<Void> sendItemImageContent(@Body byte[] itemImageContent);
 
     @POST("/item/addItem")
-    Call<Void> registerItem(@Body RequestedItemDTO requestedItem);
+    Call<Integer> registerItem(@Body RequestedItemDTO requestedItem);
 }

@@ -14,10 +14,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PostRequestSender implements Sender {
+public class PostRequest implements Sender {
     private final Retrofit retrofitService;
 
-    public PostRequestSender(Retrofit retrofitService) {
+    public PostRequest(Retrofit retrofitService) {
         this.retrofitService = retrofitService;
     }
 
@@ -118,13 +118,14 @@ public class PostRequestSender implements Sender {
     public void sendRegisterItemRequest(RequestedItemDTO requestedItem, final ItemRegistrationCallback callback) {
         AddItemApiService api = retrofitService.create(AddItemApiService.class);
 
-        Call<Void> call = api.registerItem(requestedItem);
-        call.enqueue(new Callback<Void>() {
+        Call<Integer> call = api.registerItem(requestedItem);
+        call.enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+            public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
                 boolean returnValue;
                 if(response.isSuccessful()) {
-                    returnValue = callback.onItemRegistrationSuccess(requestedItem);
+                    Integer itemId = response.body();
+                    returnValue = callback.onItemRegistrationSuccess(itemId);
                 } else {
                     returnValue = callback.onItemRegistrationFailure(response.message());
                 }
@@ -137,7 +138,7 @@ public class PostRequestSender implements Sender {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Integer> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onItemRegistrationFailure(t.getMessage());
                 Log.e("Add RequestedItem Procedure Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();

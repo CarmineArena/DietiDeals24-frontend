@@ -18,7 +18,7 @@ import com.example.dietideals24frontend.Model.UserDTO;
 import retrofit2.Retrofit;
 
 import com.example.dietideals24frontend.utility.EmailValidator;
-import com.example.dietideals24frontend.Retrofit.Service.PostRequestSender;
+import com.example.dietideals24frontend.Retrofit.Service.PostRequest;
 import com.example.dietideals24frontend.Retrofit.Callback.UserRegistrationCallback;
 
 public class SignUpFragment extends Fragment {
@@ -53,7 +53,7 @@ public class SignUpFragment extends Fragment {
                 user.setEmail(email);
                 user.setPassword(password);
 
-                PostRequestSender sender = new PostRequestSender(retrofitService);
+                PostRequest sender = new PostRequest(retrofitService);
                 sender.sendUserRegistrationRequest(user, new UserRegistrationCallback() {
                     @Override
                     public boolean onRegistrationSuccess(UserDTO loggedInUser) {

@@ -16,7 +16,7 @@ import com.example.dietideals24frontend.View.SignUpFragment;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// TODO: 1. SILENT_AUCTION_CREATION_FRAGMENT
+// TODO: 1. SILENT_AUCTION_CREATION_FRAGMENT, registerAuction
 // TODO: 2. ADD "PRESENTER" PACKAGE, IN WHICH WE CREATE OBJECT DESIGNED TO INSTANTIATE FRAGMENTS
 // TODO: 3. DIVIDE "VIEW" PACKAGE IN SUB-PACKAGES (FOR ACTIVITIES, FRAGMENTS AND SO ON)
 
@@ -46,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         replaceFragment((new LogInFragment()));
 
-
-        btnFragment = findViewById(R.id.btnSwitchLogInFragment);
+        btnFragment  = findViewById(R.id.btnSwitchLogInFragment);
         TextFragment = findViewById(R.id.TextFragment);
 
         btnFragment.setOnClickListener(v -> {

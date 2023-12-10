@@ -3,11 +3,20 @@ package com.example.dietideals24frontend.Model;
 import java.io.Serializable;
 
 public class RequestedItemDTO implements Serializable {
+    private Integer itemId;
     private String name, description, category;
     private float basePrize;
     private UserDTO user;
 
     public RequestedItemDTO() {}
+
+    public Integer getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
+    }
 
     public String getName() {
         return name;
