@@ -16,7 +16,7 @@ import com.example.dietideals24frontend.View.SignUpFragment;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// TODO: 1. SILENT_AUCTION_CREATION_FRAGMENT, registerAuction
+// TODO: 1. LOGIN SHOULD BE A GET REQUEST (CHANGE REQUEST TYPE)
 // TODO: 2. ADD "PRESENTER" PACKAGE, IN WHICH WE CREATE OBJECT DESIGNED TO INSTANTIATE FRAGMENTS
 // TODO: 3. DIVIDE "VIEW" PACKAGE IN SUB-PACKAGES (FOR ACTIVITIES, FRAGMENTS AND SO ON)
 

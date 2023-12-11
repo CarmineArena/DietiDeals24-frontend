@@ -1,19 +1,20 @@
 package com.example.dietideals24frontend.Model;
 
-import java.io.Serializable;
 import java.util.Set;
 import java.sql.Date;
 import java.sql.Time;
+import java.io.Serializable;
 
 public class AuctionDTO implements Serializable {
     private Integer auctionId;
     private int ownerId;
+    private ItemDTO item;
+    private boolean active;
     private Type auctionType;
-    private float currentOfferValue;
+    private Set<OfferDTO> offers;
     private Date expirationDate;
     private Time expirationTime;
-    private ItemDTO item;
-    private Set<OfferDTO> offers;
+    private float currentOfferValue;
 
     /* CONSTRUCTOR */
 
@@ -75,6 +76,14 @@ public class AuctionDTO implements Serializable {
 
     public void setItem(ItemDTO item) {
         this.item = item;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Set<OfferDTO> getOffers() {

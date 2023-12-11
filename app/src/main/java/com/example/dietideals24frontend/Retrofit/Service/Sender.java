@@ -10,6 +10,7 @@ public interface Sender {
     void sendUserLoginRequest(UserDTO user, final UserLoginCallback callback);
     void sendItemImageContent(byte[] itemImageContent, final ImageContentRegistrationCallback callback);
     void sendRegisterItemRequest(RequestedItemDTO requestedItem, final ItemRegistrationCallback callback);
+    void sendRegisterAuctionRequest(RequestedAuctionDTO requestedAuctionDTO, final AuctionRegistrationCallback callback);
 
     /* GET REQUESTS */
 }

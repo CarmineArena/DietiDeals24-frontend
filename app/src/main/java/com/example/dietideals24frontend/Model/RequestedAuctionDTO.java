@@ -1,16 +1,21 @@
 package com.example.dietideals24frontend.Model;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.io.Serializable;
 
-public class RequestedAuctionDTO {
-    private Integer auctionId;
+/* [CLASS DESCRIPTION]
+    - This object is used to make a post request to the server asking to save/register an Auction inside the database.
+**/
+
+public class RequestedAuctionDTO implements Serializable {
     private int ownerId;
+    private boolean active;
     private Type auctionType;
-    private float currentOfferValue;
-    private Date expirationDate;
     private Time expirationTime;
+    private String expirationDate; // This corresponds to the java.sql.Data attribute stored inside the Db (The String makes easier data transfer)
+    private float currentOfferValue;
     private RequestedItemDTO requestedItemDTO;
+    private Integer auctionId, requestedItemId;
 
     public RequestedAuctionDTO() {}
 
@@ -20,6 +25,14 @@ public class RequestedAuctionDTO {
 
     public void setAuctionId(Integer auctionId) {
         this.auctionId = auctionId;
+    }
+
+    public Integer getRequestedItemId() {
+        return requestedItemId;
+    }
+
+    public void setRequestedItemId(Integer requestedItemId) {
+        this.requestedItemId = requestedItemId;
     }
 
     public int getOwnerId() {
@@ -46,11 +59,19 @@ public class RequestedAuctionDTO {
         this.currentOfferValue = currentOfferValue;
     }
 
-    public Date getExpirationDate() {
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
 

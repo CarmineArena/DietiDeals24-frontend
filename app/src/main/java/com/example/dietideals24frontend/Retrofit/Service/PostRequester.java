@@ -14,10 +14,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PostRequest implements Sender {
+public class PostRequester implements Sender {
     private final Retrofit retrofitService;
 
-    public PostRequest(Retrofit retrofitService) {
+    public PostRequester(Retrofit retrofitService) {
         this.retrofitService = retrofitService;
     }
 
@@ -141,6 +141,37 @@ public class PostRequest implements Sender {
             public void onFailure(@NonNull Call<Integer> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onItemRegistrationFailure(t.getMessage());
                 Log.e("Add RequestedItem Procedure Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendRegisterAuctionRequest(RequestedAuctionDTO requestedAuctionDTO, final AuctionRegistrationCallback callback) {
+        AddAuctionApiService api = retrofitService.create(AddAuctionApiService.class);
+
+        Call<Void> call = api.registerAuction(requestedAuctionDTO);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                boolean returnValue;
+                if(response.isSuccessful()) {
+                    returnValue = callback.onAuctionRegistrationSuccess(requestedAuctionDTO);
+                } else {
+                    returnValue = callback.onAuctionRegistrationFailure(response.message());
+                }
+
+                if (returnValue) {
+                    Log.i("Add RequestedAuction Procedure", "Auction registered correctly!");
+                } else {
+                    Log.e("Add RequestedAuction Procedure Error", "Could not register the Auction provided. Server error: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onAuctionRegistrationFailure(t.getMessage());
+                Log.e("Add RequestedAuction Procedure Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();
             }
         });
