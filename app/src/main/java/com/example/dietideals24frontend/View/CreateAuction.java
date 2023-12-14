@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.UserDTO;
 
+import com.example.dietideals24frontend.Presenter.FragmentFactory;
+
 public class CreateAuction extends AppCompatActivity {
     String[] type = { "Scegli il tuo tipo di asta", "Asta Silenziosa", "Asta all'inglese" };
 
@@ -41,9 +43,9 @@ public class CreateAuction extends AppCompatActivity {
                 String selectedType = type[position];
                 if (!selectedType.equals("Scegli il tuo tipo di asta")) {
                     adapter.notifyDataSetChanged();
-                    if(selectedType.equals("Asta silenziosa")) {
+                    if (selectedType.equals("Asta silenziosa")) {
                         // TODO: Cosa facciamo in questo caso?
-                    } else if(selectedType.equals("Asta all'inglese")) {
+                    } else if (selectedType.equals("Asta all'inglese")) {
                         // TODO: Cosa facciamo in questo caso?
                     }
                 }
@@ -57,22 +59,14 @@ public class CreateAuction extends AppCompatActivity {
         });
 
         btnActiveFragment.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("loggedInUser", user);
-
-            SilentAuctionCreationFragment fragment = new SilentAuctionCreationFragment();
-            fragment.setArguments(bundle);
-
+            FragmentFactory fragmentFactory = new FragmentFactory();
+            SilentAuctionCreationFragment fragment = fragmentFactory.createSilentAuctionFragment(user);
             replaceFragment(fragment);
         });
 
         englishbtnDaLevare.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("loggedInUser", user);
-
-            EnglishAuctionCreationFragment fragment = new EnglishAuctionCreationFragment();
-            fragment.setArguments(bundle);
-
+            FragmentFactory fragmentFactory = new FragmentFactory();
+            EnglishAuctionCreationFragment fragment = fragmentFactory.createEnglishAuctionFragment(user);
             replaceFragment(fragment);
         });
     }

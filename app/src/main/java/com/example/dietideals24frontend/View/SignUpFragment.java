@@ -1,19 +1,22 @@
 package com.example.dietideals24frontend.View;
 
 import android.content.Intent;
+
 import android.util.Log;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
-import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Presenter.ActivityFactory;
 
 import retrofit2.Retrofit;
 
@@ -57,8 +60,8 @@ public class SignUpFragment extends Fragment {
                 sender.sendUserRegistrationRequest(user, new UserRegistrationCallback() {
                     @Override
                     public boolean onRegistrationSuccess(UserDTO loggedInUser) {
-                        Intent intent = new Intent(getActivity(), Home.class);
-                        intent.putExtra("loggedInUser", loggedInUser);
+                        ActivityFactory activityFactory = new ActivityFactory();
+                        Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
                         startActivity(intent);
                         return true;
                     }

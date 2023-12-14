@@ -5,10 +5,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.*;
+import androidx.appcompat.app.*;
 
 import com.example.dietideals24frontend.View.LogInFragment;
 import com.example.dietideals24frontend.View.SignUpFragment;
@@ -16,9 +14,10 @@ import com.example.dietideals24frontend.View.SignUpFragment;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import com.example.dietideals24frontend.Presenter.FragmentFactory;
+
 // TODO: 1. LOGIN SHOULD BE A GET REQUEST (CHANGE REQUEST TYPE)
-// TODO: 2. ADD "PRESENTER" PACKAGE, IN WHICH WE CREATE OBJECT DESIGNED TO INSTANTIATE FRAGMENTS
-// TODO: 3. DIVIDE "VIEW" PACKAGE IN SUB-PACKAGES (FOR ACTIVITIES, FRAGMENTS AND SO ON)
+// TODO: 2. DIVIDE "VIEW" PACKAGE IN SUB-PACKAGES (FOR ACTIVITIES, FRAGMENTS AND SO ON)
 
 public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
@@ -44,7 +43,11 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        replaceFragment((new LogInFragment()));
+        FragmentFactory fragmentFactory = new FragmentFactory();
+
+        LogInFragment logInFragment   = fragmentFactory.createLoginFragment();
+        SignUpFragment signUpFragment = fragmentFactory.createSignUpFragment();
+        replaceFragment(logInFragment);
 
         btnFragment  = findViewById(R.id.btnSwitchLogInFragment);
         TextFragment = findViewById(R.id.TextFragment);
@@ -53,11 +56,11 @@ public class MainActivity extends AppCompatActivity {
             if (btnFragment.getText().equals("Registrati")) {
                 TextFragment.setText("Hai già un account?");
                 btnFragment.setText("Accedi");
-                replaceFragment(new SignUpFragment());
+                replaceFragment(signUpFragment);
             } else {
                 TextFragment.setText("Sei un nuovo utente?");
                 btnFragment.setText("Registrati");
-                replaceFragment(new LogInFragment());
+                replaceFragment(logInFragment);
             }
         });
     }

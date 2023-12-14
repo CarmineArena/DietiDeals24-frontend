@@ -1,26 +1,26 @@
 package com.example.dietideals24frontend.View;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.content.Intent;
 
 import android.util.Log;
 import android.widget.Button;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.LayoutInflater;
+import android.view.*;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.UserDTO;
 import com.example.dietideals24frontend.utility.EmailValidator;
 import com.example.dietideals24frontend.Retrofit.Service.PostRequester;
 import com.example.dietideals24frontend.Retrofit.Callback.UserLoginCallback;
 
 import retrofit2.Retrofit;
+
+import com.example.dietideals24frontend.Presenter.ActivityFactory;
 
 public class LogInFragment extends Fragment {
     private Retrofit retrofitService;
@@ -53,8 +53,8 @@ public class LogInFragment extends Fragment {
                 sender.sendUserLoginRequest(user, new UserLoginCallback() {
                     @Override
                     public boolean onLoginSuccess(UserDTO loggedInUser) {
-                        Intent intent = new Intent(getActivity(), Home.class);
-                        intent.putExtra("loggedInUser", loggedInUser);
+                        ActivityFactory activityFactory = new ActivityFactory();
+                        Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
                         startActivity(intent);
                         return true;
                     }

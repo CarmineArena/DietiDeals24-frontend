@@ -16,9 +16,9 @@ import android.widget.Button;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
+import android.provider.MediaStore;
 
 import android.widget.MultiAutoCompleteTextView;
 
@@ -223,12 +223,14 @@ public class SilentAuctionCreationFragment extends Fragment {
             @Override
             public boolean onAuctionRegistrationSuccess(RequestedAuctionDTO requestedAuctionDTO) {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
+                // TODO: Riportare l'utente alla HOME (Ovviamente mantenendo salvata l'istanza dell'utente loggato)?
                 return true;
             }
 
             @Override
             public boolean onAuctionRegistrationFailure(String errorMessage) {
                 Log.i("AUCTION REGISTRATION REQUEST", "FAILED TO SEND");
+                // TODO: Cosa facciamo in questo caso?
                 return false;
             }
         });

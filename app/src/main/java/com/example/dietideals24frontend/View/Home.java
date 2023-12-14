@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.TextView;
+
+import com.example.dietideals24frontend.Presenter.ActivityFactory;
 import com.example.dietideals24frontend.R;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.dietideals24frontend.Model.UserDTO;
@@ -24,7 +26,8 @@ public class Home extends AppCompatActivity {
 
         Button btnCreate = findViewById(R.id.bntCreate);
         btnCreate.setOnClickListener(v -> {
-            Intent intent1 = new Intent(Home.this, CreateAuction.class).putExtra("loggedInUser", user);
+            ActivityFactory activityFactory = new ActivityFactory();
+            Intent intent1 = activityFactory.createIntentForCreateAuction(Home.this, user);
             startActivity(intent1);
         });
     }
