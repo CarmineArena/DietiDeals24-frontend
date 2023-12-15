@@ -56,7 +56,10 @@ public class PostRequester implements Sender {
     @Override
     public void sendUserLoginRequest(UserDTO user, final UserLoginCallback callback) {
         LoginUserApiService api = retrofitService.create(LoginUserApiService.class);
-        api.login(user).enqueue(new Callback<UserDTO>() {
+
+        String email = user.getEmail();
+        String passw = user.getPassword();
+        api.login(email, passw).enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(@NonNull Call<UserDTO> call, @NonNull Response<UserDTO> response) {
                 boolean returnValue;

@@ -10,14 +10,12 @@ import androidx.appcompat.app.*;
 
 import com.example.dietideals24frontend.View.LogInFragment;
 import com.example.dietideals24frontend.View.SignUpFragment;
+import com.example.dietideals24frontend.Presenter.FragmentFactory;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import com.example.dietideals24frontend.Presenter.FragmentFactory;
-
-// TODO: 1. LOGIN SHOULD BE A GET REQUEST (CHANGE REQUEST TYPE)
-// TODO: 2. DIVIDE "VIEW" PACKAGE IN SUB-PACKAGES (FOR ACTIVITIES, FRAGMENTS AND SO ON)
+// TODO: 1. DIVIDE "VIEW" PACKAGE IN SUB-PACKAGES (FOR ACTIVITIES, FRAGMENTS AND SO ON)
 
 public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
