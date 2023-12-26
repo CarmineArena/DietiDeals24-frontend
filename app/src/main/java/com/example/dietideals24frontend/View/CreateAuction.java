@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
 import android.widget.Button;
@@ -37,16 +38,15 @@ public class CreateAuction extends AppCompatActivity {
 
         spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Rimuovi l'opzione "Scegli il tuo tipo di asta" se è stata selezionata un'altra opzione
                 String selectedType = type[position];
-                if (!selectedType.equals("Scegli il tuo tipo di asta")) {
-                    adapter.notifyDataSetChanged();
-                    if (selectedType.equals("Asta silenziosa")) {
-                        // TODO: Selezionare come scelta l'asta silenziosa
-                    } else if (selectedType.equals("Asta all'inglese")) {
-                        // TODO: Selezionare come scelta l'asta all'inglese
-                    }
+                if (selectedType.equals("Asta Silenziosa")) {
+                    replaceFragment(new SilentAuctionCreationFragment());
+                } else if (selectedType.equals("Asta all'Inglese")) {
+                    replaceFragment(new EnglishAuctionCreationFragment());
                 }
+
             }
 
             @Override
