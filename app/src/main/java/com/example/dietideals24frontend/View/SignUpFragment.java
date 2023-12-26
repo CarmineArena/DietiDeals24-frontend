@@ -19,7 +19,7 @@ import com.example.dietideals24frontend.Model.UserDTO;
 import com.example.dietideals24frontend.Presenter.ActivityFactory;
 
 import retrofit2.Retrofit;
-
+import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.utility.EmailValidator;
 import com.example.dietideals24frontend.Retrofit.Service.PostRequester;
 import com.example.dietideals24frontend.Retrofit.Callback.UserRegistrationCallback;
@@ -32,6 +32,7 @@ public class SignUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
+        Dialog dialog = new Dialog(getContext());
         retrofitService = MainActivity.retrofitService;
 
         Button button = view.findViewById(R.id.btnSignUp);
@@ -48,7 +49,7 @@ public class SignUpFragment extends Fragment {
             
             EmailValidator validator = new EmailValidator();
             if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
-                // TODO: Come gestiamo l'errore in questo caso?
+                dialog.showAlertDialog("FORM ERROR", "Controllare la correttezza delle credenziali e non lasciare campi vuoti.");
             } else {
                 UserDTO user = new UserDTO();
                 user.setName(name);
@@ -69,6 +70,7 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public boolean onRegistrationFailure(String errorMessage) {
                         Log.d("onRegistrationFailure", errorMessage);
+                        dialog.showAlertDialog("REGISTER ERROR", "Non è stato possibile effettuare la registrazione.");
                         return false;
                     }
                 });

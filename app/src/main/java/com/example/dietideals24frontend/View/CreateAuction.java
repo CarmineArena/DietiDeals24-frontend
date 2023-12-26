@@ -12,10 +12,8 @@ import android.widget.Spinner;
 import android.content.Intent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.UserDTO;
-
 import com.example.dietideals24frontend.Presenter.FragmentFactory;
 
 public class CreateAuction extends AppCompatActivity {
@@ -44,18 +42,15 @@ public class CreateAuction extends AppCompatActivity {
                 if (!selectedType.equals("Scegli il tuo tipo di asta")) {
                     adapter.notifyDataSetChanged();
                     if (selectedType.equals("Asta silenziosa")) {
-                        // TODO: Cosa facciamo in questo caso?
+                        // TODO: Selezionare come scelta l'asta silenziosa
                     } else if (selectedType.equals("Asta all'inglese")) {
-                        // TODO: Cosa facciamo in questo caso?
+                        // TODO: Selezionare come scelta l'asta all'inglese
                     }
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Chiamato quando non è stata selezionata alcuna opzione
-                // TODO: Cosa facciamo in questo caso?
-            }
+            public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
         btnActiveFragment.setOnClickListener(v -> {

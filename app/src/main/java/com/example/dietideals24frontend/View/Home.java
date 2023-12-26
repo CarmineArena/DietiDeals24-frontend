@@ -4,11 +4,10 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.TextView;
-
-import com.example.dietideals24frontend.Presenter.ActivityFactory;
 import com.example.dietideals24frontend.R;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Presenter.ActivityFactory;
 
 public class Home extends AppCompatActivity {
     @Override
@@ -16,7 +15,7 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // TODO: Quali sono i tasti per aggiornare Bio e/o link al sito web?
+        // TODO: Mancano i bottoni per aggiornare Bio e/o link al sito web dell'utente.
 
         Intent intent = getIntent();
         UserDTO user = (UserDTO) intent.getSerializableExtra("loggedInUser");

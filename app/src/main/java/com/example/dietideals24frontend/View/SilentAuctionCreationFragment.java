@@ -2,6 +2,9 @@ package com.example.dietideals24frontend.View;
 
 import static android.app.Activity.RESULT_OK;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import android.util.Log;
 import android.os.Bundle;
 import android.content.Intent;
@@ -23,10 +26,13 @@ import android.provider.MediaStore;
 import android.widget.MultiAutoCompleteTextView;
 
 import com.bumptech.glide.Glide;
+import com.example.dietideals24frontend.Presenter.ActivityFactory;
+
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.*;
 import com.example.dietideals24frontend.Retrofit.Callback.*;
 import com.example.dietideals24frontend.utility.ImageUtils;
+import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Retrofit.Service.PostRequester;
 
 import android.net.Uri;
@@ -43,6 +49,7 @@ import com.example.dietideals24frontend.MainActivity;
 
 public class SilentAuctionCreationFragment extends Fragment {
     private PostRequester sender;
+    private UserDTO user;
     private static final int PICK_IMAGE_REQUEST = 1;
     private View view;
     private byte[] imageContent;
@@ -51,13 +58,14 @@ public class SilentAuctionCreationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_silent_auction_creation, container, false);
 
+        Dialog dialog = new Dialog(getContext());
+
         // Retrieve Retrofit instance
         Retrofit retrofitService = MainActivity.retrofitService;
         sender = new PostRequester(retrofitService);
 
         // Retrieve LoggedIn User
         Bundle bundle = getArguments();
-        UserDTO user;
         if (bundle != null) {
             user = (UserDTO) bundle.getSerializable("loggedInUser");
         } else {
@@ -81,10 +89,19 @@ public class SilentAuctionCreationFragment extends Fragment {
             int mMonth       = c.get(Calendar.MONTH);
             int mDay         = c.get(Calendar.DAY_OF_MONTH);
 
+            // ExpirationDate error checking: It cannot be a day <= current day.
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                     (view, year, monthOfYear, dayOfMonth) -> {
                         String selectedDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-                        dataButton.setText(selectedDate);
+
+                        LocalDate currentDate = LocalDate.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        String currentDateString = currentDate.format(formatter);
+
+                        // TODO: A questo vogliamo aggiungere un tetto massimo relativo all'anno?
+                        if (currentDateString.compareTo(selectedDate) < 0) {
+                            dataButton.setText(selectedDate);
+                        }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
         });
@@ -99,11 +116,16 @@ public class SilentAuctionCreationFragment extends Fragment {
             String itemCategory  = String.valueOf(itemCategoryField.getText());
             String itemBasePrize = String.valueOf(basePrizeField.getText());
 
-            // TODO: Still need to add item Description (there is no EditText for it). For now I invented It.
-            // TODO: Define proper categories for items.
+            // TODO: Bisogna aggiungere il campo "Description" per l'Item. Per il momento è messo "Unknown"
+            // TODO: Assicurarsi che itemCategory sia stata scelta dalle categorie previste (l'utente non deve scrivere a mano la categoria)
+
             if (itemName.isEmpty() || itemCategory.isEmpty() || itemBasePrize.isEmpty() || expirationDate.isEmpty() || getImageContent() == null) {
-                // TODO: Cosa facciamo in questo caso?
-                // TODO: Pensare poi al controllo degli errori
+                String title, message;
+                title = "FORM ERROR";
+                message = "Assicurarsi di aver eseguito correttamente la procedura di creazione dell'asta!";
+
+                if (getImageContent() == null) message += " Non è presente immagine del prodotto.";
+                dialog.showAlertDialog(title, message);
             } else {
                 float itemStartPrize = 0.0f;
                 try {
@@ -155,9 +177,6 @@ public class SilentAuctionCreationFragment extends Fragment {
                     @Override
                     public boolean onItemRegistrationFailure(String errorMessage) { return false; }
                 });
-
-                // TODO: L'asta deve avere un nome per la ricerca?
-                // TODO: Afther all of this, we should inform the user of the success of the operation and go back home
             }
         });
 
@@ -223,14 +242,19 @@ public class SilentAuctionCreationFragment extends Fragment {
             @Override
             public boolean onAuctionRegistrationSuccess(RequestedAuctionDTO requestedAuctionDTO) {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
-                // TODO: Riportare l'utente alla HOME (Ovviamente mantenendo salvata l'istanza dell'utente loggato)?
+
+                // TODO: Devo mostrare il Dialog di successo nella registrazione dell'asta?
+
+                ActivityFactory factory = new ActivityFactory();
+                Intent intent = factory.createIntentForHome(getContext(), user); // Return Home with loggedIn user's informations
+                startActivity(intent);
                 return true;
             }
 
             @Override
             public boolean onAuctionRegistrationFailure(String errorMessage) {
                 Log.i("AUCTION REGISTRATION REQUEST", "FAILED TO SEND");
-                // TODO: Cosa facciamo in questo caso?
+                // TODO: Devo mostrare il Dialog di fallimento nella registrazione dell'asta?
                 return false;
             }
         });

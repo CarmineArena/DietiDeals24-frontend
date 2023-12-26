@@ -19,7 +19,7 @@ import com.example.dietideals24frontend.Retrofit.Service.PostRequester;
 import com.example.dietideals24frontend.Retrofit.Callback.UserLoginCallback;
 
 import retrofit2.Retrofit;
-
+import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Presenter.ActivityFactory;
 
 public class LogInFragment extends Fragment {
@@ -31,6 +31,7 @@ public class LogInFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_log_in, container, false);
 
+        Dialog dialog = new Dialog(getContext());
         retrofitService = MainActivity.retrofitService;
 
         Button button = view.findViewById(R.id.btnLogIn);
@@ -43,7 +44,7 @@ public class LogInFragment extends Fragment {
 
             EmailValidator validator = new EmailValidator();
             if (email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
-                // TODO: Come gestiamo l'errore in questo caso?
+                dialog.showAlertDialog("FORM ERROR", "Controllare la correttezza delle credenziali e non lasciare campi vuoti.");
             } else {
                 UserDTO user = new UserDTO();
                 user.setEmail(email);
@@ -62,6 +63,7 @@ public class LogInFragment extends Fragment {
                     @Override
                     public boolean onLoginFailure(String errorMessage) {
                         Log.d("onLoginFailure", errorMessage);
+                        dialog.showAlertDialog("LOGIN ERROR", "Non hai ancora creato un Account.");
                         return false;
                     }
                 });

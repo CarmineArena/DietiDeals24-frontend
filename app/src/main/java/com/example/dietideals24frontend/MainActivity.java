@@ -16,6 +16,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 // TODO: 1. DIVIDE "VIEW" PACKAGE IN SUB-PACKAGES (FOR ACTIVITIES, FRAGMENTS AND SO ON)
+// TODO: 2. WHAT IF THE CLIENT (AT STARTUP) CANNOT CONNECT TO THE SERVER?
+// TODO: 3. Define OnRestart(), OnDestroy(), OnPause() ...
 
 public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
