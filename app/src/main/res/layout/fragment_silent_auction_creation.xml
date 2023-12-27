@@ -12,7 +12,7 @@
         android:layout_height="91dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="32dp"
-        android:text="Imagine"
+        android:text="Immagine"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 

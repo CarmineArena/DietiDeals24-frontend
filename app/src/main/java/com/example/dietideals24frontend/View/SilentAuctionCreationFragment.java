@@ -24,8 +24,6 @@ import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.provider.MediaStore;
 
-import android.widget.MultiAutoCompleteTextView;
-
 import com.bumptech.glide.Glide;
 import com.example.dietideals24frontend.Presenter.ActivityFactory;
 
@@ -55,6 +53,7 @@ public class SilentAuctionCreationFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private View view;
     private byte[] imageContent;
+    private String categoryChoice = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,38 +73,25 @@ public class SilentAuctionCreationFragment extends Fragment {
             user = null;
         }
 
-        Spinner spinner = view.findViewById(R.id.spinner);
+        Spinner categorySpinner = view.findViewById(R.id.spinner);
 
-        // Recupera l'array di stringhe da strings.xml
+        // Retrieve from strings.xml (list of options)
         String[] arrayItems = getResources().getStringArray(R.array.categories_array);
-
-        // Crea un ArrayAdapter utilizzando l'array di stringhe e specifica il layout del prompt
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, arrayItems);
-
-        // Specifica il layout da utilizzare quando la lista degli elementi è aperta
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(adapter);
 
-        // Associa l'ArrayAdapter allo Spinner
-        spinner.setAdapter(adapter);
-
-
-
-// Aggiungi un listener per gli eventi di selezione dello Spinner
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedChoice = "";
-                // Ottieni il testo selezionato dallo Spinner
+                String selectedChoice;
                 selectedChoice = parentView.getItemAtPosition(position).toString();
-
-                // Ora puoi utilizzare selectedChoice come desideri
-                // Ad esempio, puoi stamparlo a console
-                //System.out.println("Scelta selezionata: " + selectedChoice);
+                setCategoryChoice(selectedChoice);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // Gestisci l'evento quando nulla è selezionato (opzionale)
+                setCategoryChoice(null);
             }
         });
 
@@ -140,18 +126,21 @@ public class SilentAuctionCreationFragment extends Fragment {
             String expirationDate   = (String) dataButton.getText();
 
             String itemName      = String.valueOf(nameTextField.getText());
-            //String itemCategory  = String.valueOf(itemCategoryField.getText());
+            String itemCategory  = getCategoryChoice();
             String itemBasePrize = String.valueOf(basePrizeField.getText());
 
             // TODO: Bisogna aggiungere il campo "Description" per l'Item. Per il momento è messo "Unknown"
-            // TODO: Assicurarsi che itemCategory sia stata scelta dalle categorie previste (l'utente non deve scrivere a mano la categoria)
 
-            if (itemName.isEmpty() || itemCategory.isEmpty() || itemBasePrize.isEmpty() || expirationDate.isEmpty() || getImageContent() == null) {
+            if (itemName.isEmpty() || itemCategory.isEmpty() || itemCategory.equals("Scegli una categoria") || itemBasePrize.isEmpty()
+                    || expirationDate.isEmpty() || getImageContent() == null) {
                 String title, message;
                 title = "FORM ERROR";
                 message = "Assicurarsi di aver eseguito correttamente la procedura di creazione dell'asta!";
 
                 if (getImageContent() == null) message += " Non è presente immagine del prodotto.";
+
+                if (itemCategory.equals("Scegli una categoria") || itemCategory.isEmpty()) message += " Devi definire la categoria dell'oggetto!";
+
                 dialog.showAlertDialog(title, message);
             } else {
                 float itemStartPrize = 0.0f;
@@ -239,8 +228,8 @@ public class SilentAuctionCreationFragment extends Fragment {
             }
             setImageContent(imageBytes);
 
-            ImageView imageView = view.findViewById(R.id.secondopera);
-            Glide.with(this) .load(imageBytes).into(imageView);
+            ImageView imageView = view.findViewById(R.id.itemImage);
+            Glide.with(this).load(imageBytes).into(imageView);
         }
     }
 
@@ -285,5 +274,13 @@ public class SilentAuctionCreationFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    private void setCategoryChoice(String categoryChoice) {
+        this.categoryChoice = categoryChoice;
+    }
+
+    private String getCategoryChoice() {
+        return categoryChoice;
     }
 }

@@ -5,10 +5,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.content.Intent;
 import android.widget.AdapterView;
@@ -18,7 +16,7 @@ import com.example.dietideals24frontend.Model.UserDTO;
 import com.example.dietideals24frontend.Presenter.FragmentFactory;
 
 public class CreateAuction extends AppCompatActivity {
-    String[] type = {"Asta Silenziosa", "Asta all'Inglese" };
+    String[] type = { "Asta Silenziosa", "Asta all'Inglese" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +30,7 @@ public class CreateAuction extends AppCompatActivity {
         SilentAuctionCreationFragment silentFragment = fragmentFactory.createSilentAuctionFragment(user);
         EnglishAuctionCreationFragment englishFragment = fragmentFactory.createEnglishAuctionFragment(user);
 
-        Spinner spinnerType       = findViewById(R.id.spinnerTypeAuction);
-
+        Spinner spinnerType = findViewById(R.id.spinnerTypeAuction);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, type);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerType.setAdapter(adapter);
@@ -47,7 +44,6 @@ public class CreateAuction extends AppCompatActivity {
                 } else if (selectedType.equals("Asta all'Inglese")) {
                     replaceFragment(englishFragment);
                 }
-
             }
 
             @Override
