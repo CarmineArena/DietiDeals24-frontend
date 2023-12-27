@@ -7,7 +7,7 @@
     tools:context=".View.SearchAuctionActivity">
 
     <EditText
-        android:id="@+id/search_button"
+        android:id="@+id/search_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -25,7 +25,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="39dp"
         android:text="filtra"
-        app:layout_constraintStart_toEndOf="@+id/search_button"
+        app:layout_constraintStart_toEndOf="@+id/search_field"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,7 +36,7 @@
         android:layout_marginTop="3dp"
         android:text="Filtra per:"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_button" />
+        app:layout_constraintTop_toBottomOf="@+id/search_field" />
 
     <ScrollView
         android:layout_width="377dp"

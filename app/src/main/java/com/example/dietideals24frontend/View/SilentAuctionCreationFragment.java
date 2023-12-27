@@ -123,16 +123,18 @@ public class SilentAuctionCreationFragment extends Fragment {
         createAuctionButton.setOnClickListener(v -> {
             EditText nameTextField  = view.findViewById(R.id.editTextTextPersonName);
             EditText basePrizeField = view.findViewById(R.id.editTextTextPersonName2);
+            EditText descriptionField = view.findViewById(R.id.description_field);
             String expirationDate   = (String) dataButton.getText();
 
-            String itemName      = String.valueOf(nameTextField.getText());
-            String itemCategory  = getCategoryChoice();
-            String itemBasePrize = String.valueOf(basePrizeField.getText());
+            String itemName        = String.valueOf(nameTextField.getText());
+            String itemCategory    = getCategoryChoice();
+            String itemBasePrize   = String.valueOf(basePrizeField.getText());
+            String itemDescription = String.valueOf(descriptionField.getText());
 
             // TODO: Bisogna aggiungere il campo "Description" per l'Item. Per il momento è messo "Unknown"
 
             if (itemName.isEmpty() || itemCategory.isEmpty() || itemCategory.equals("Scegli una categoria") || itemBasePrize.isEmpty()
-                    || expirationDate.isEmpty() || getImageContent() == null) {
+                    || expirationDate.isEmpty() || getImageContent() == null || itemDescription.isEmpty()) {
                 String title, message;
                 title = "FORM ERROR";
                 message = "Assicurarsi di aver eseguito correttamente la procedura di creazione dell'asta!";
@@ -173,7 +175,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                 requestedItem.setUser(user);
                 requestedItem.setName(itemName);
                 requestedItem.setCategory(itemCategory);
-                requestedItem.setDescription("Unknown");
+                requestedItem.setDescription(itemDescription);
                 requestedItem.setBasePrize(itemStartPrize);
 
                 final Date finalSqlDate = sqlDate;
