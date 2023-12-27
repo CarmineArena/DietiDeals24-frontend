@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Retrofit.Service.PostRequester;
 
 import android.net.Uri;
+import android.widget.Spinner;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -72,15 +74,40 @@ public class SilentAuctionCreationFragment extends Fragment {
             user = null;
         }
 
-        MultiAutoCompleteTextView itemCategoryField = view.findViewById(R.id.categoriesMultiView);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.categories_array,
-                android.R.layout.simple_dropdown_item_1line
-        );
+        Spinner spinner = view.findViewById(R.id.spinner);
 
-        itemCategoryField.setAdapter(adapter);
-        itemCategoryField.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        // Recupera l'array di stringhe da strings.xml
+        String[] arrayItems = getResources().getStringArray(R.array.categories_array);
+
+        // Crea un ArrayAdapter utilizzando l'array di stringhe e specifica il layout del prompt
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, arrayItems);
+
+        // Specifica il layout da utilizzare quando la lista degli elementi è aperta
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Associa l'ArrayAdapter allo Spinner
+        spinner.setAdapter(adapter);
+
+
+
+// Aggiungi un listener per gli eventi di selezione dello Spinner
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String selectedChoice = "";
+                // Ottieni il testo selezionato dallo Spinner
+                selectedChoice = parentView.getItemAtPosition(position).toString();
+
+                // Ora puoi utilizzare selectedChoice come desideri
+                // Ad esempio, puoi stamparlo a console
+                //System.out.println("Scelta selezionata: " + selectedChoice);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Gestisci l'evento quando nulla è selezionato (opzionale)
+            }
+        });
 
         Button dataButton = view.findViewById(R.id.data_button);
         dataButton.setOnClickListener(v -> {
@@ -113,7 +140,7 @@ public class SilentAuctionCreationFragment extends Fragment {
             String expirationDate   = (String) dataButton.getText();
 
             String itemName      = String.valueOf(nameTextField.getText());
-            String itemCategory  = String.valueOf(itemCategoryField.getText());
+            //String itemCategory  = String.valueOf(itemCategoryField.getText());
             String itemBasePrize = String.valueOf(basePrizeField.getText());
 
             // TODO: Bisogna aggiungere il campo "Description" per l'Item. Per il momento è messo "Unknown"

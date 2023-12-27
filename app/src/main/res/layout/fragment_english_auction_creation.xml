@@ -28,17 +28,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <MultiAutoCompleteTextView
-        android:id="@+id/categoriesMultiView"
-        android:layout_width="222dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="26dp"
-        android:hint="Seleziona le categorie"
-        android:inputType="textMultiLine"
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="248dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="35dp"
         app:layout_constraintStart_toEndOf="@+id/button"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/time_button"
         android:layout_width="wrap_content"
@@ -47,7 +44,7 @@
         android:layout_marginTop="25dp"
         android:text="SetTime"
         app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/categoriesMultiView" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <TextView
         android:id="@+id/textView2"

@@ -18,7 +18,7 @@ import com.example.dietideals24frontend.Model.UserDTO;
 import com.example.dietideals24frontend.Presenter.FragmentFactory;
 
 public class CreateAuction extends AppCompatActivity {
-    String[] type = { "Scegli il tuo tipo di asta", "Asta Silenziosa", "Asta all'inglese" };
+    String[] type = {"Asta Silenziosa", "Asta all'Inglese" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +28,10 @@ public class CreateAuction extends AppCompatActivity {
         Intent intent = getIntent();
         UserDTO user = (UserDTO) intent.getSerializableExtra("loggedInUser");
 
-        Button btnActiveFragment  = findViewById(R.id.fragment_button);
-        Button englishbtnDaLevare = findViewById(R.id.button3);
+        FragmentFactory fragmentFactory = new FragmentFactory();
+        SilentAuctionCreationFragment silentFragment = fragmentFactory.createSilentAuctionFragment(user);
+        EnglishAuctionCreationFragment englishFragment = fragmentFactory.createEnglishAuctionFragment(user);
+
         Spinner spinnerType       = findViewById(R.id.spinnerTypeAuction);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, type);
@@ -39,30 +41,17 @@ public class CreateAuction extends AppCompatActivity {
         spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Rimuovi l'opzione "Scegli il tuo tipo di asta" se è stata selezionata un'altra opzione
                 String selectedType = type[position];
                 if (selectedType.equals("Asta Silenziosa")) {
-                    replaceFragment(new SilentAuctionCreationFragment());
+                    replaceFragment(silentFragment);
                 } else if (selectedType.equals("Asta all'Inglese")) {
-                    replaceFragment(new EnglishAuctionCreationFragment());
+                    replaceFragment(englishFragment);
                 }
 
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
-        });
-
-        btnActiveFragment.setOnClickListener(v -> {
-            FragmentFactory fragmentFactory = new FragmentFactory();
-            SilentAuctionCreationFragment fragment = fragmentFactory.createSilentAuctionFragment(user);
-            replaceFragment(fragment);
-        });
-
-        englishbtnDaLevare.setOnClickListener(v -> {
-            FragmentFactory fragmentFactory = new FragmentFactory();
-            EnglishAuctionCreationFragment fragment = fragmentFactory.createEnglishAuctionFragment(user);
-            replaceFragment(fragment);
         });
     }
 
