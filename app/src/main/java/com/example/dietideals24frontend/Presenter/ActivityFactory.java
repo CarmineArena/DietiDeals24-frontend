@@ -19,4 +19,11 @@ public class ActivityFactory implements FactoryActivityInterface {
         intent.putExtra("loggedInUser", loggedInUser);
         return intent;
     }
+
+    @Override
+    public Intent createIntentForSearchAuction(Context context, UserDTO loggedInUser) {
+        Intent intent = new Intent(context, SearchAuctionActivity.class);
+        intent.putExtra("loggedInUser", loggedInUser);
+        return intent;
+    }
 }

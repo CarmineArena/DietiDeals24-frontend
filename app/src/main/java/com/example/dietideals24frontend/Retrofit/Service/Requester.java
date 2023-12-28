@@ -1,6 +1,9 @@
 package com.example.dietideals24frontend.Retrofit.Service;
 
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import androidx.annotation.NonNull;
 
@@ -14,10 +17,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class PostRequester implements Sender {
+public class Requester implements Sender {
     private final Retrofit retrofitService;
 
-    public PostRequester(Retrofit retrofitService) {
+    public Requester(Retrofit retrofitService) {
         this.retrofitService = retrofitService;
     }
 
@@ -175,6 +178,37 @@ public class PostRequester implements Sender {
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onAuctionRegistrationFailure(t.getMessage());
                 Log.e("Add RequestedAuction Procedure Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendItemsUpForAuctionRequest(String searchTerm, List<String> categories, final SearchItemsCallback callback) {
+        SearchItemUpForAuctionService api = retrofitService.create(SearchItemUpForAuctionService.class);
+
+        Call<List<ItemDTO>> call = api.searchItemsUpForAuction(searchTerm, categories);
+        call.enqueue(new Callback<List<ItemDTO>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
+                boolean returnValue;
+                if(response.isSuccessful()) {
+                    returnValue = callback.onSearchItemsUpForAuctionSuccess(response.body());
+                } else {
+                    returnValue = callback.onSearchItemsUpForAuctionFailure(response.message());
+                }
+
+                if (returnValue) {
+                    Log.i("Search ItemsUpForAuction Procedure", "Auction registered correctly!");
+                } else {
+                    Log.e("Search ItemsUpForAuction Procedure Error", "Could not find the items requested. Error code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onSearchItemsUpForAuctionFailure(t.getMessage());
+                Log.e("Search ItemsUpForAuction Procedure Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();
             }
         });

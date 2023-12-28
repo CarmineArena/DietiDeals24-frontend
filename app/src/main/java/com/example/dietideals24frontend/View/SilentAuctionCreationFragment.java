@@ -32,7 +32,7 @@ import com.example.dietideals24frontend.Model.*;
 import com.example.dietideals24frontend.Retrofit.Callback.*;
 import com.example.dietideals24frontend.utility.ImageUtils;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
-import com.example.dietideals24frontend.Retrofit.Service.PostRequester;
+import com.example.dietideals24frontend.Retrofit.Service.Requester;
 
 import android.net.Uri;
 import android.widget.Spinner;
@@ -48,7 +48,7 @@ import retrofit2.Retrofit;
 import com.example.dietideals24frontend.MainActivity;
 
 public class SilentAuctionCreationFragment extends Fragment {
-    private PostRequester sender;
+    private Requester sender;
     private UserDTO user;
     private static final int PICK_IMAGE_REQUEST = 1;
     private View view;
@@ -63,7 +63,7 @@ public class SilentAuctionCreationFragment extends Fragment {
 
         // Retrieve Retrofit instance
         Retrofit retrofitService = MainActivity.retrofitService;
-        sender = new PostRequester(retrofitService);
+        sender = new Requester(retrofitService);
 
         // Retrieve LoggedIn User
         Bundle bundle = getArguments();

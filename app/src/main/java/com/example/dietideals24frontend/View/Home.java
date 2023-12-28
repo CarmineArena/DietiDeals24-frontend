@@ -23,10 +23,17 @@ public class Home extends AppCompatActivity {
         TextView welcomeView = findViewById(R.id.WelcomeField);
         welcomeView.setText(String.format("Benvenuto, %s %s", user.getName(), user.getSurname()));
 
+        ActivityFactory activityFactory = new ActivityFactory();
+
         Button btnCreate = findViewById(R.id.bntCreate);
         btnCreate.setOnClickListener(v -> {
-            ActivityFactory activityFactory = new ActivityFactory();
             Intent intent1 = activityFactory.createIntentForCreateAuction(Home.this, user);
+            startActivity(intent1);
+        });
+
+        Button btnSearch = findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(v -> {
+            Intent intent1 = activityFactory.createIntentForSearchAuction(Home.this, user);
             startActivity(intent1);
         });
     }
