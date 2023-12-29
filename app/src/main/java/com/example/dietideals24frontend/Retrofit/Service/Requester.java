@@ -2,7 +2,6 @@ package com.example.dietideals24frontend.Retrofit.Service;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import androidx.annotation.NonNull;
@@ -17,7 +16,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class Requester implements Sender {
+public class Requester implements CommunicationInterface {
     private final Retrofit retrofitService;
 
     public Requester(Retrofit retrofitService) {
@@ -184,13 +183,44 @@ public class Requester implements Sender {
     }
 
     @Override
-    public void sendItemsUpForAuctionRequest(String searchTerm, List<String> categories, final SearchItemsCallback callback) {
+    public void sendSearchItemImageContentRequest(String searchTerm, List<String> selectedCategories, final ByteArrayCallback callback) {
+        RequestImageContentService api = retrofitService.create(RequestImageContentService.class);
+
+        Call<byte[]> call = api.getItemImageConent(searchTerm, selectedCategories);
+        call.enqueue(new Callback<byte[]>() {
+            @Override
+            public void onResponse(@NonNull Call<byte[]> call, @NonNull Response<byte[]> response) {
+                boolean returnValue;
+                if (response.isSuccessful()) {
+                    returnValue = callback.onImageContentRetrievedSuccess(response.body());
+                } else {
+                    returnValue = callback.onImageContentRetrievedFailure(response.message());
+                }
+
+                if (returnValue) {
+                    Log.i("ByteArray ImageContent Procedure", "byte[] retrieved correctly!");
+                } else {
+                    Log.e("ByteArray ImageContent Procedure Error", "Could not retrieve byte[]. Error code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<byte[]> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onImageContentRetrievedFailure(t.getMessage());
+                Log.e("ByteArray ImageContent Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendItemsUpForAuctionRequest(String searchTerm, List<String> categories, final RetrieveItemsDataCallback callback) {
         SearchItemUpForAuctionService api = retrofitService.create(SearchItemUpForAuctionService.class);
 
-        Call<List<ItemDTO>> call = api.searchItemsUpForAuction(searchTerm, categories);
-        call.enqueue(new Callback<List<ItemDTO>>() {
+        Call<List<RequestedItemDTO>> call = api.searchItemsUpForAuction(searchTerm, categories);
+        call.enqueue(new Callback<List<RequestedItemDTO>>() {
             @Override
-            public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
+            public void onResponse(@NonNull Call<List<RequestedItemDTO>> call, @NonNull Response<List<RequestedItemDTO>> response) {
                 boolean returnValue;
                 if(response.isSuccessful()) {
                     returnValue = callback.onSearchItemsUpForAuctionSuccess(response.body());
@@ -199,14 +229,14 @@ public class Requester implements Sender {
                 }
 
                 if (returnValue) {
-                    Log.i("Search ItemsUpForAuction Procedure", "Auction registered correctly!");
+                    Log.i("Search ItemsUpForAuction Procedure", "List<Items> retrieved correctly!");
                 } else {
                     Log.e("Search ItemsUpForAuction Procedure Error", "Could not find the items requested. Error code: " + response.code());
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<RequestedItemDTO>> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onSearchItemsUpForAuctionFailure(t.getMessage());
                 Log.e("Search ItemsUpForAuction Procedure Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();

@@ -1,7 +1,9 @@
 package com.example.dietideals24frontend.View;
 
-import com.example.dietideals24frontend.Model.ItemDTO;
+import com.example.dietideals24frontend.Model.RequestedItemDTO;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
+import com.example.dietideals24frontend.Retrofit.Callback.ByteArrayCallback;
+import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsDataCallback;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +20,6 @@ import com.example.dietideals24frontend.Model.UserDTO;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.MainActivity;
 
-import com.example.dietideals24frontend.Retrofit.Callback.SearchItemsCallback;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 
 import retrofit2.Retrofit;
@@ -121,18 +122,37 @@ public class SearchAuctionActivity extends AppCompatActivity {
         } else {
             // Send request to server
             Requester sender = new Requester(retrofitService);
-            sender.sendItemsUpForAuctionRequest(searchTerm, selectedCategories, new SearchItemsCallback() {
+
+            sender.sendSearchItemImageContentRequest(searchTerm, selectedCategories, new ByteArrayCallback() {
                 @Override
-                public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> items) {
-                    Log.d("onSearchItemsUpForAuctionSuccess", "List<Item> retrieved successfully! Size: " + items.size());
-                    // TODO: COSA FARE? MOSTRARE NELLA SCROLL VIEW?
+                public boolean onImageContentRetrievedSuccess(byte[] imageContent) {
+                    Log.i("ByteArray request Success", "imageContent retrieved with success.");
+
+                    sender.sendItemsUpForAuctionRequest(searchTerm, selectedCategories, new RetrieveItemsDataCallback() {
+                        @Override
+                        public boolean onSearchItemsUpForAuctionSuccess(List<RequestedItemDTO> items) {
+                            Log.i("onSearchItemsUpForAuctionSuccess", "List<Item> retrieved successfully! Size: " + items.size());
+
+                            // TODO: COSA FARE? MOSTRARE NELLA SCROLL VIEW? COME?
+                            // TODO: CONVERTIRE IL BYTE[] IN URI?
+                            // TODO: PER IL MOMENTO NON RECUPERO L'UTENTE CHE HA MESSO ALL'ASTA L'OGGETTO (OGGETTO NELLA LISTA OBV)
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
+                            Log.e("onSearchItemsUpForAuctionFailure", errorMessage);
+                            // TODO: MOSTRARE NEL CAMPO DI TESTO "NON CI SONO ASTE PER LA RICHIESTA"
+                            return false;
+                        }
+                    });
                     return true;
                 }
 
                 @Override
-                public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
-                    Log.d("onSearchItemsUpForAuctionFailure", errorMessage);
-                    // TODO: MOSTRARE NEL CAMPO DI TESTO "NON CI SONO ASTE PER LA RICHIESTA"
+                public boolean onImageContentRetrievedFailure(String errorMessage) {
+                    Log.e("ByteArray request Failure", errorMessage);
+                    // TODO: Cosa fare in questo caso?
                     return false;
                 }
             });

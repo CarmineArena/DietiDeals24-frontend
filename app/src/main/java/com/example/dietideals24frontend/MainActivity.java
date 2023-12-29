@@ -12,6 +12,9 @@ import com.example.dietideals24frontend.View.LogInFragment;
 import com.example.dietideals24frontend.View.SignUpFragment;
 import com.example.dietideals24frontend.Presenter.FragmentFactory;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -38,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // CREATE RETROFIT INSTANCE
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         retrofitService = new Retrofit.Builder().baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         FragmentFactory fragmentFactory = new FragmentFactory();

@@ -1,11 +1,17 @@
 package com.example.dietideals24frontend.Model;
 
 import java.io.Serializable;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.example.dietideals24frontend.utility.ByteArrayAdapter;
 
 public class ItemDTO implements Serializable {
     private Integer itemId;
     private String name, description, category;
     private float basePrize;
+
+    @SerializedName("image")
+    @JsonAdapter(ByteArrayAdapter.class)
     private byte[] image;
     private UserDTO user;
     private AuctionDTO auction;
