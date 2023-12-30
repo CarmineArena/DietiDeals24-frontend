@@ -1,15 +1,13 @@
 package com.example.dietideals24frontend.Retrofit.Service;
 
-import android.util.Log;
-
 import java.util.List;
+import android.util.Log;
 import java.util.Objects;
 import androidx.annotation.NonNull;
 
 import com.example.dietideals24frontend.Model.*;
 import com.example.dietideals24frontend.Retrofit.*;
 import com.example.dietideals24frontend.Retrofit.Callback.*;
-import com.example.dietideals24frontend.Model.RequestedItemDTO;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -183,41 +181,10 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendSearchItemImageContentRequest(String searchTerm, List<String> selectedCategories, final ByteArrayCallback callback) {
-        RequestImageContentService api = retrofitService.create(RequestImageContentService.class);
-
-        Call<byte[]> call = api.getItemImageConent(searchTerm, selectedCategories);
-        call.enqueue(new Callback<byte[]>() {
-            @Override
-            public void onResponse(@NonNull Call<byte[]> call, @NonNull Response<byte[]> response) {
-                boolean returnValue;
-                if (response.isSuccessful()) {
-                    returnValue = callback.onImageContentRetrievedSuccess(response.body());
-                } else {
-                    returnValue = callback.onImageContentRetrievedFailure(response.message());
-                }
-
-                if (returnValue) {
-                    Log.i("ByteArray ImageContent Procedure", "byte[] retrieved correctly!");
-                } else {
-                    Log.e("ByteArray ImageContent Procedure Error", "Could not retrieve byte[]. Error code: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<byte[]> call, @NonNull Throwable t) {
-                boolean returnValue = callback.onImageContentRetrievedFailure(t.getMessage());
-                Log.e("ByteArray ImageContent Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
-                t.printStackTrace();
-            }
-        });
-    }
-
-    @Override
-    public void sendItemsUpForAuctionRequest(String searchTerm, List<String> categories, final RetrieveItemsDataCallback callback) {
+    public void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> categories, UserDTO user, final RetrieveItemsCallback callback) {
         SearchItemUpForAuctionService api = retrofitService.create(SearchItemUpForAuctionService.class);
 
-        Call<List<RequestedItemDTO>> call = api.searchItemsUpForAuction(searchTerm, categories);
+        Call<List<RequestedItemDTO>> call = api.searchFeaturedItems(searchTerm, categories, user.getUserId());
         call.enqueue(new Callback<List<RequestedItemDTO>>() {
             @Override
             public void onResponse(@NonNull Call<List<RequestedItemDTO>> call, @NonNull Response<List<RequestedItemDTO>> response) {
@@ -229,16 +196,47 @@ public class Requester implements CommunicationInterface {
                 }
 
                 if (returnValue) {
-                    Log.i("Search ItemsUpForAuction Procedure", "List<Items> retrieved correctly!");
+                    Log.i("Search Featured Items", "List<Items> retrieved correctly!");
                 } else {
-                    Log.e("Search ItemsUpForAuction Procedure Error", "Could not find the items requested. Error code: " + response.code());
+                    Log.e("Search Featured Items Error", "Could not find the items requested. Error code: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<RequestedItemDTO>> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onSearchItemsUpForAuctionFailure(t.getMessage());
-                Log.e("Search ItemsUpForAuction Procedure Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                Log.e("Search Featured Items Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendFindItemImageRequest(Integer itemId, String name, final ImageContentRequestCallback callback) {
+        RequestItemImageService api = retrofitService.create(RequestItemImageService.class);
+
+        Call<byte[]> call = api.fetchItemImage(itemId, name);
+        call.enqueue(new Callback<byte[]>() {
+            @Override
+            public void onResponse(@NonNull Call<byte[]> call, @NonNull Response<byte[]> response) {
+                boolean returnValue;
+                if(response.isSuccessful()) {
+                    returnValue = callback.onFetchSuccess(response.body());
+                } else {
+                    returnValue = callback.onFetchFailure(response.message());
+                }
+
+                if (returnValue) {
+                    Log.i("Search Item Image", "Image retrieved correctly!");
+                } else {
+                    Log.e("Search Item Image Error", "Could not find the image requested. Error code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<byte[]> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onFetchFailure(t.getMessage());
+                Log.e("Search Item Image Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();
             }
         });

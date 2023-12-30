@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 
+// TODO: ADD A WAY TO CONVERT BYTEARRAY TO URI
+
 public class ImageUtils {
     public static byte[] convertUriToByteArray(Context context, Uri uri) throws IOException {
         ContentResolver contentResolver = context.getContentResolver();

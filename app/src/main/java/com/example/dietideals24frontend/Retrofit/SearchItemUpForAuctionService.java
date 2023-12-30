@@ -8,8 +8,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface SearchItemUpForAuctionService {
-    @GET("/item/findItemsUpForAuction")
-    Call<List<RequestedItemDTO>> searchItemsUpForAuction(
+    @GET("/item/findItemsUpForFeaturedAuction")
+    Call<List<RequestedItemDTO>> searchFeaturedItems(
             @Query("searchTerm") String searchTerm,
-            @Query("categories") List<String> categories);
+            @Query("categories") List<String> categories,
+            @Query("userId") Integer userId);
 }

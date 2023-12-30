@@ -1,9 +1,10 @@
 package com.example.dietideals24frontend.View;
 
+import com.example.dietideals24frontend.Model.ItemDTO;
 import com.example.dietideals24frontend.Model.RequestedItemDTO;
+import com.example.dietideals24frontend.Retrofit.Callback.ImageContentRequestCallback;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
-import com.example.dietideals24frontend.Retrofit.Callback.ByteArrayCallback;
-import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsDataCallback;
+import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsCallback;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,8 +17,8 @@ import android.app.AlertDialog;
 import android.annotation.SuppressLint;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dietideals24frontend.Model.UserDTO;
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.Model.UserDTO;
 import com.example.dietideals24frontend.MainActivity;
 
 import com.example.dietideals24frontend.View.Dialog.Dialog;
@@ -36,6 +37,7 @@ public class SearchAuctionActivity extends AppCompatActivity {
     private TextView selectedCategoryTextView;
     private boolean[] checkedCategories;
     private List<String> selectedCategories;
+    private UserDTO loggedInUser;
     private Dialog dialog;
 
     @Override
@@ -46,7 +48,7 @@ public class SearchAuctionActivity extends AppCompatActivity {
         Retrofit retrofitService = MainActivity.retrofitService;
 
         Intent intent = getIntent();
-        UserDTO user = (UserDTO) intent.getSerializableExtra("loggedInUser");
+        loggedInUser = (UserDTO) intent.getSerializableExtra("loggedInUser");
 
         selectedCategoryTextView = findViewById(R.id.selected_category_view);
 
@@ -121,37 +123,60 @@ public class SearchAuctionActivity extends AppCompatActivity {
             dialog.showAlertDialog("FORM ERROR", "Devi digitare ciò che vuoi cercare!");
         } else {
             // Send request to server
-            Requester sender = new Requester(retrofitService);
-
-            sender.sendSearchItemImageContentRequest(searchTerm, selectedCategories, new ByteArrayCallback() {
+            Requester requester = new Requester(retrofitService);
+            requester.sendFeaturedItemsUpForAuctionRequest(searchTerm, selectedCategories, loggedInUser, new RetrieveItemsCallback() {
                 @Override
-                public boolean onImageContentRetrievedSuccess(byte[] imageContent) {
-                    Log.i("ByteArray request Success", "imageContent retrieved with success.");
+                public boolean onSearchItemsUpForAuctionSuccess(List<RequestedItemDTO> itemsRetrieved) {
+                    if (itemsRetrieved.isEmpty()) {
+                        Log.i("SEARCH SUCCESS BUT FOUND NONE", "LIST SIZE: " + itemsRetrieved.size());
+                        // TODO: Cosa fare in questo caso?
+                    } else {
+                        List<ItemDTO> items = new ArrayList<>();
+                        for (RequestedItemDTO itemDTO : itemsRetrieved) {
+                            ItemDTO item = new ItemDTO();
+                            item.setItemId(itemDTO.getItemId());
+                            item.setName(itemDTO.getName());
+                            item.setDescription(itemDTO.getDescription());
+                            item.setCategory(itemDTO.getCategory());
+                            item.setBasePrize(itemDTO.getBasePrize());
+                            item.setUser(itemDTO.getUser()); // This is the User who bind to Auction the Item
 
-                    sender.sendItemsUpForAuctionRequest(searchTerm, selectedCategories, new RetrieveItemsDataCallback() {
-                        @Override
-                        public boolean onSearchItemsUpForAuctionSuccess(List<RequestedItemDTO> items) {
-                            Log.i("onSearchItemsUpForAuctionSuccess", "List<Item> retrieved successfully! Size: " + items.size());
-
-                            // TODO: COSA FARE? MOSTRARE NELLA SCROLL VIEW? COME?
-                            // TODO: CONVERTIRE IL BYTE[] IN URI?
-                            // TODO: PER IL MOMENTO NON RECUPERO L'UTENTE CHE HA MESSO ALL'ASTA L'OGGETTO (OGGETTO NELLA LISTA OBV)
-                            return true;
+                            items.add(item);
                         }
 
-                        @Override
-                        public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
-                            Log.e("onSearchItemsUpForAuctionFailure", errorMessage);
-                            // TODO: MOSTRARE NEL CAMPO DI TESTO "NON CI SONO ASTE PER LA RICHIESTA"
-                            return false;
+                        // Now retrieve the images: # of requests = # of items inside the list
+                        for (int i = 0; i < items.size(); i++) {
+                            int itemId = items.get(i).getItemId();
+                            String name = items.get(i).getName();
+
+                            int finalI = i;
+                            requester.sendFindItemImageRequest(itemId, name, new ImageContentRequestCallback() {
+                                @Override
+                                public boolean onFetchSuccess(byte[] itemImageContent) {
+                                    items.get(finalI).setImage(itemImageContent);
+                                    return true;
+                                }
+
+                                @Override
+                                public boolean onFetchFailure(String errorMessage) {
+                                    Log.e("Fetch Item Image Failure", errorMessage);
+                                    // TODO: Cosa fare in questo caso?
+                                    return false;
+                                }
+                            });
                         }
-                    });
+                        Log.i("Fetch Items", "DONE, LIST SIZE: " + items.size());
+                    }
+
+                    // TODO: CONVERTIRE BYTE[] IN URI?
+                    // TODO: COSA MOSTRO NELL'INTERFACCIA?
+                    // TODO: UNA VOLTA PREMUTO "ENTER" PER CERCARE, LE CATEGORIE DI FILTRAGGIO SI DEVONO RESETTARE (LISTA VUOTA)
                     return true;
                 }
 
                 @Override
-                public boolean onImageContentRetrievedFailure(String errorMessage) {
-                    Log.e("ByteArray request Failure", errorMessage);
+                public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
+                    Log.e("Search List<Items> Failure", errorMessage);
                     // TODO: Cosa fare in questo caso?
                     return false;
                 }

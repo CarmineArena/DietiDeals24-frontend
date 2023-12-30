@@ -3,7 +3,6 @@ package com.example.dietideals24frontend.Retrofit.Service;
 import java.util.List;
 import com.example.dietideals24frontend.Model.*;
 import com.example.dietideals24frontend.Retrofit.Callback.*;
-import com.example.dietideals24frontend.Model.RequestedItemDTO;
 
 public interface CommunicationInterface {
     /* POST REQUESTS */
@@ -14,6 +13,6 @@ public interface CommunicationInterface {
 
     /* GET REQUESTS */
     void sendUserLoginRequest(UserDTO user, final UserLoginCallback callback);
-    void sendSearchItemImageContentRequest(String searchTerm, List<String> selectedCategories, final ByteArrayCallback callback);
-    void sendItemsUpForAuctionRequest(String searchTerm, List<String> selectedCategories, final RetrieveItemsDataCallback callback);
+    void sendFindItemImageRequest(Integer itemId, String name, final ImageContentRequestCallback callback);
+    void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> selectedCategories, UserDTO user, final RetrieveItemsCallback callback);
 }
