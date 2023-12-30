@@ -6,6 +6,8 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 
 import com.example.dietideals24frontend.Model.*;
+import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
+import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.Retrofit.*;
 import com.example.dietideals24frontend.Retrofit.Callback.*;
 
@@ -22,14 +24,14 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendUserRegistrationRequest(UserDTO user, final UserRegistrationCallback callback) {
+    public void sendUserRegistrationRequest(User user, final UserRegistrationCallback callback) {
         RegisterUserApiService api = retrofitService.create(RegisterUserApiService.class);
-        api.save(user).enqueue(new Callback<UserDTO>() {
+        api.save(user).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(@NonNull Call<UserDTO> call, @NonNull Response<UserDTO> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 boolean returnValue;
                 if (response.isSuccessful()) {
-                    UserDTO loggedInUser = response.body();
+                    User loggedInUser = response.body();
                     returnValue = callback.onRegistrationSuccess(loggedInUser);
                 } else {
                     returnValue = callback.onRegistrationFailure(response.message());
@@ -42,7 +44,7 @@ public class Requester implements CommunicationInterface {
             }
 
             @Override
-            public void onFailure(@NonNull Call<UserDTO> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onRegistrationFailure(t.getMessage());
 
                 if (!returnValue) {
@@ -54,17 +56,17 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendUserLoginRequest(UserDTO user, final UserLoginCallback callback) {
+    public void sendUserLoginRequest(User user, final UserLoginCallback callback) {
         LoginUserApiService api = retrofitService.create(LoginUserApiService.class);
 
         String email = user.getEmail();
         String passw = user.getPassword();
-        api.login(email, passw).enqueue(new Callback<UserDTO>() {
+        api.login(email, passw).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(@NonNull Call<UserDTO> call, @NonNull Response<UserDTO> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 boolean returnValue;
                 if (response.isSuccessful()) {
-                    UserDTO loggedInUser = response.body();
+                    User loggedInUser = response.body();
                     returnValue = callback.onLoginSuccess(loggedInUser);
                 } else {
                     returnValue = callback.onLoginFailure(response.message());
@@ -77,7 +79,7 @@ public class Requester implements CommunicationInterface {
             }
 
             @Override
-            public void onFailure(@NonNull Call<UserDTO> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onLoginFailure(t.getMessage());
 
                 if (!returnValue) {
@@ -118,7 +120,7 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendRegisterItemRequest(RequestedItemDTO requestedItem, final ItemRegistrationCallback callback) {
+    public void sendRegisterItemRequest(ItemDTO requestedItem, final ItemRegistrationCallback callback) {
         AddItemApiService api = retrofitService.create(AddItemApiService.class);
 
         Call<Integer> call = api.registerItem(requestedItem);
@@ -150,16 +152,16 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendRegisterAuctionRequest(RequestedAuctionDTO requestedAuctionDTO, final AuctionRegistrationCallback callback) {
+    public void sendRegisterAuctionRequest(AuctionDTO auctionDTO, final AuctionRegistrationCallback callback) {
         AddAuctionApiService api = retrofitService.create(AddAuctionApiService.class);
 
-        Call<Void> call = api.registerAuction(requestedAuctionDTO);
+        Call<Void> call = api.registerAuction(auctionDTO);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 boolean returnValue;
                 if(response.isSuccessful()) {
-                    returnValue = callback.onAuctionRegistrationSuccess(requestedAuctionDTO);
+                    returnValue = callback.onAuctionRegistrationSuccess(auctionDTO);
                 } else {
                     returnValue = callback.onAuctionRegistrationFailure(response.message());
                 }
@@ -181,13 +183,13 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> categories, UserDTO user, final RetrieveItemsCallback callback) {
+    public void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> categories, User user, final RetrieveItemsCallback callback) {
         SearchItemUpForAuctionService api = retrofitService.create(SearchItemUpForAuctionService.class);
 
-        Call<List<RequestedItemDTO>> call = api.searchFeaturedItems(searchTerm, categories, user.getUserId());
-        call.enqueue(new Callback<List<RequestedItemDTO>>() {
+        Call<List<ItemDTO>> call = api.searchFeaturedItems(searchTerm, categories, user.getUserId());
+        call.enqueue(new Callback<List<ItemDTO>>() {
             @Override
-            public void onResponse(@NonNull Call<List<RequestedItemDTO>> call, @NonNull Response<List<RequestedItemDTO>> response) {
+            public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
                 boolean returnValue;
                 if(response.isSuccessful()) {
                     returnValue = callback.onSearchItemsUpForAuctionSuccess(response.body());
@@ -203,7 +205,7 @@ public class Requester implements CommunicationInterface {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<RequestedItemDTO>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onSearchItemsUpForAuctionFailure(t.getMessage());
                 Log.e("Search Featured Items Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();

@@ -5,7 +5,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.example.dietideals24frontend.utility.ByteArrayAdapter;
 
-public class ItemDTO implements Serializable {
+public class Item implements Serializable {
     private Integer itemId;
     private String name, description, category;
     private float basePrize;
@@ -13,12 +13,12 @@ public class ItemDTO implements Serializable {
     @SerializedName("image")
     @JsonAdapter(ByteArrayAdapter.class)
     private byte[] image;
-    private UserDTO user;
-    private AuctionDTO auction;
+    private User user;
+    private Auction auction;
 
     /* CONSTRUCTOR */
 
-    public ItemDTO() {}
+    public Item() {}
 
     /* GETTERS AND SETTERS */
 
@@ -70,19 +70,19 @@ public class ItemDTO implements Serializable {
         this.image = image;
     }
 
-    public UserDTO getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public AuctionDTO getAuction() {
+    public Auction getAuction() {
         return auction;
     }
 
-    public void setAuction(AuctionDTO auction) {
+    public void setAuction(Auction auction) {
         this.auction = auction;
     }
 }

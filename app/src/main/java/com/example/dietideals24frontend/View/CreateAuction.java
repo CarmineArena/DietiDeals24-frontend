@@ -12,7 +12,7 @@ import android.content.Intent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Presenter.FragmentFactory;
 
 public class CreateAuction extends AppCompatActivity {
@@ -24,7 +24,7 @@ public class CreateAuction extends AppCompatActivity {
         setContentView(R.layout.activity_create_auction);
 
         Intent intent = getIntent();
-        UserDTO user = (UserDTO) intent.getSerializableExtra("loggedInUser");
+        User user = (User) intent.getSerializableExtra("loggedInUser");
 
         FragmentFactory fragmentFactory = new FragmentFactory();
         SilentAuctionCreationFragment silentFragment = fragmentFactory.createSilentAuctionFragment(user);

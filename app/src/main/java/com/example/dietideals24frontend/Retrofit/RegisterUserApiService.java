@@ -4,9 +4,9 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Model.User;
 
 public interface RegisterUserApiService {
     @POST("/userSignUp")
-    Call<UserDTO> save(@Body UserDTO newUser);
+    Call<User> save(@Body User newUser);
 }

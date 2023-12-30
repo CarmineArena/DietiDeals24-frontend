@@ -5,20 +5,20 @@ import java.sql.Date;
 import java.sql.Time;
 import java.io.Serializable;
 
-public class AuctionDTO implements Serializable {
+public class Auction implements Serializable {
     private Integer auctionId;
     private int ownerId;
-    private ItemDTO item;
+    private Item item;
     private boolean active;
     private Type auctionType;
-    private Set<OfferDTO> offers;
+    private Set<Offer> offers;
     private Date expirationDate;
     private Time expirationTime;
     private float currentOfferValue;
 
     /* CONSTRUCTOR */
 
-    public AuctionDTO() {}
+    public Auction() {}
 
     /* GETTERS AND SETTERS */
 
@@ -70,11 +70,11 @@ public class AuctionDTO implements Serializable {
         this.expirationTime = expirationTime;
     }
 
-    public ItemDTO getItem() {
+    public Item getItem() {
         return item;
     }
 
-    public void setItem(ItemDTO item) {
+    public void setItem(Item item) {
         this.item = item;
     }
 
@@ -86,11 +86,11 @@ public class AuctionDTO implements Serializable {
         this.active = active;
     }
 
-    public Set<OfferDTO> getOffers() {
+    public Set<Offer> getOffers() {
         return offers;
     }
 
-    public void setOffers(Set<OfferDTO> offers) {
+    public void setOffers(Set<Offer> offers) {
         this.offers = offers;
     }
 }

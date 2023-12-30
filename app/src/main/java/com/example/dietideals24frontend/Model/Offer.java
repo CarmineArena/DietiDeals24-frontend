@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class OfferDTO implements Serializable {
+public class Offer implements Serializable {
     private Long offerId;
-    private UserDTO user;
-    private AuctionDTO auction;
+    private User user;
+    private Auction auction;
     private float offer;
     private LocalDate offerDate;
     private LocalTime offerTime;
 
     /* CONSTRUCTOR */
 
-    public OfferDTO() {
+    public Offer() {
         this.offerDate = LocalDate.now();
         this.offerTime = LocalTime.now();
     }
@@ -29,19 +29,19 @@ public class OfferDTO implements Serializable {
         this.offerId = offerId;
     }
 
-    public UserDTO getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public AuctionDTO getAuction() {
+    public Auction getAuction() {
         return auction;
     }
 
-    public void setAuction(AuctionDTO auction) {
+    public void setAuction(Auction auction) {
         this.auction = auction;
     }
 

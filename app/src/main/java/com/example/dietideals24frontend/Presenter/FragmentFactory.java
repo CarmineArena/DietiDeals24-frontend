@@ -1,7 +1,7 @@
 package com.example.dietideals24frontend.Presenter;
 
 import android.os.Bundle;
-import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.View.EnglishAuctionCreationFragment;
 import com.example.dietideals24frontend.View.LogInFragment;
 import com.example.dietideals24frontend.View.SignUpFragment;
@@ -19,7 +19,7 @@ public class FragmentFactory implements FactoryFragmentInterface {
     }
 
     @Override
-    public SilentAuctionCreationFragment createSilentAuctionFragment(UserDTO user) {
+    public SilentAuctionCreationFragment createSilentAuctionFragment(User user) {
         Bundle bundle = createBundleWithLoggedInUser(user);
         SilentAuctionCreationFragment fragment = new SilentAuctionCreationFragment();
         fragment.setArguments(bundle);
@@ -27,14 +27,14 @@ public class FragmentFactory implements FactoryFragmentInterface {
     }
 
     @Override
-    public EnglishAuctionCreationFragment createEnglishAuctionFragment(UserDTO user) {
+    public EnglishAuctionCreationFragment createEnglishAuctionFragment(User user) {
         Bundle bundle = createBundleWithLoggedInUser(user);
         EnglishAuctionCreationFragment fragment = new EnglishAuctionCreationFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    private Bundle createBundleWithLoggedInUser(UserDTO user) {
+    private Bundle createBundleWithLoggedInUser(User user) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("loggedInUser", user);
         return bundle;

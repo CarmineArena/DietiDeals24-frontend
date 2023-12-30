@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.MainActivity;
-import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.utility.EmailValidator;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
 import com.example.dietideals24frontend.Retrofit.Callback.UserLoginCallback;
@@ -46,14 +46,14 @@ public class LogInFragment extends Fragment {
             if (email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
                 dialog.showAlertDialog("FORM ERROR", "Controllare la correttezza delle credenziali e non lasciare campi vuoti.");
             } else {
-                UserDTO user = new UserDTO();
+                User user = new User();
                 user.setEmail(email);
                 user.setPassword(password);
 
                 Requester sender = new Requester(retrofitService);
                 sender.sendUserLoginRequest(user, new UserLoginCallback() {
                     @Override
-                    public boolean onLoginSuccess(UserDTO loggedInUser) {
+                    public boolean onLoginSuccess(User loggedInUser) {
                         ActivityFactory activityFactory = new ActivityFactory();
                         Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
                         startActivity(intent);

@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.MainActivity;
-import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Presenter.ActivityFactory;
 
 import retrofit2.Retrofit;
@@ -51,7 +51,7 @@ public class SignUpFragment extends Fragment {
             if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
                 dialog.showAlertDialog("FORM ERROR", "Controllare la correttezza delle credenziali e non lasciare campi vuoti.");
             } else {
-                UserDTO user = new UserDTO();
+                User user = new User();
                 user.setName(name);
                 user.setSurname(surname);
                 user.setEmail(email);
@@ -60,7 +60,7 @@ public class SignUpFragment extends Fragment {
                 Requester sender = new Requester(retrofitService);
                 sender.sendUserRegistrationRequest(user, new UserRegistrationCallback() {
                     @Override
-                    public boolean onRegistrationSuccess(UserDTO loggedInUser) {
+                    public boolean onRegistrationSuccess(User loggedInUser) {
                         ActivityFactory activityFactory = new ActivityFactory();
                         Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
                         startActivity(intent);

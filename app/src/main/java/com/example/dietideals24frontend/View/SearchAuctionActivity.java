@@ -1,7 +1,7 @@
 package com.example.dietideals24frontend.View;
 
-import com.example.dietideals24frontend.Model.ItemDTO;
-import com.example.dietideals24frontend.Model.RequestedItemDTO;
+import com.example.dietideals24frontend.Model.Item;
+import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.Retrofit.Callback.ImageContentRequestCallback;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsCallback;
@@ -18,7 +18,7 @@ import android.annotation.SuppressLint;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.MainActivity;
 
 import com.example.dietideals24frontend.View.Dialog.Dialog;
@@ -37,7 +37,7 @@ public class SearchAuctionActivity extends AppCompatActivity {
     private TextView selectedCategoryTextView;
     private boolean[] checkedCategories;
     private List<String> selectedCategories;
-    private UserDTO loggedInUser;
+    private User loggedInUser;
     private Dialog dialog;
 
     @Override
@@ -48,7 +48,7 @@ public class SearchAuctionActivity extends AppCompatActivity {
         Retrofit retrofitService = MainActivity.retrofitService;
 
         Intent intent = getIntent();
-        loggedInUser = (UserDTO) intent.getSerializableExtra("loggedInUser");
+        loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
 
         selectedCategoryTextView = findViewById(R.id.selected_category_view);
 
@@ -126,14 +126,14 @@ public class SearchAuctionActivity extends AppCompatActivity {
             Requester requester = new Requester(retrofitService);
             requester.sendFeaturedItemsUpForAuctionRequest(searchTerm, selectedCategories, loggedInUser, new RetrieveItemsCallback() {
                 @Override
-                public boolean onSearchItemsUpForAuctionSuccess(List<RequestedItemDTO> itemsRetrieved) {
+                public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
                     if (itemsRetrieved.isEmpty()) {
                         Log.i("SEARCH SUCCESS BUT FOUND NONE", "LIST SIZE: " + itemsRetrieved.size());
                         // TODO: Cosa fare in questo caso?
                     } else {
-                        List<ItemDTO> items = new ArrayList<>();
-                        for (RequestedItemDTO itemDTO : itemsRetrieved) {
-                            ItemDTO item = new ItemDTO();
+                        List<Item> items = new ArrayList<>();
+                        for (ItemDTO itemDTO : itemsRetrieved) {
+                            Item item = new Item();
                             item.setItemId(itemDTO.getItemId());
                             item.setName(itemDTO.getName());
                             item.setDescription(itemDTO.getDescription());

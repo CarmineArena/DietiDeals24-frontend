@@ -1,4 +1,6 @@
-package com.example.dietideals24frontend.Model;
+package com.example.dietideals24frontend.Model.DTO;
+
+import com.example.dietideals24frontend.Model.User;
 
 import java.io.Serializable;
 
@@ -9,13 +11,13 @@ import java.io.Serializable;
         -- 2. We then send this object which is used by the Server to create the real Item and then it gets stored!
 **/
 
-public class RequestedItemDTO implements Serializable {
-    private UserDTO user;
+public class ItemDTO implements Serializable {
+    private User user;
     private Integer itemId;
     private float basePrize;
     private String name, description, category;
 
-    public RequestedItemDTO() {}
+    public ItemDTO() {}
 
     public Integer getItemId() {
         return itemId;
@@ -57,11 +59,11 @@ public class RequestedItemDTO implements Serializable {
         this.basePrize = basePrize;
     }
 
-    public UserDTO getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

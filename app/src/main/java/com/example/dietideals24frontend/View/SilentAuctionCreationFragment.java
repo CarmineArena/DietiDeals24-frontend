@@ -25,6 +25,8 @@ import android.widget.ArrayAdapter;
 import android.provider.MediaStore;
 
 import com.bumptech.glide.Glide;
+import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
+import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.Presenter.ActivityFactory;
 
 import com.example.dietideals24frontend.R;
@@ -49,7 +51,7 @@ import com.example.dietideals24frontend.MainActivity;
 
 public class SilentAuctionCreationFragment extends Fragment {
     private Requester sender;
-    private UserDTO user;
+    private User user;
     private static final int PICK_IMAGE_REQUEST = 1;
     private View view;
     private byte[] imageContent;
@@ -68,7 +70,7 @@ public class SilentAuctionCreationFragment extends Fragment {
         // Retrieve LoggedIn User
         Bundle bundle = getArguments();
         if (bundle != null) {
-            user = (UserDTO) bundle.getSerializable("loggedInUser");
+            user = (User) bundle.getSerializable("loggedInUser");
         } else {
             user = null;
         }
@@ -171,7 +173,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                     public boolean onReceptionFailure(String errorMessage) { return false; }
                 });
 
-                RequestedItemDTO requestedItem = new RequestedItemDTO();
+                ItemDTO requestedItem = new ItemDTO();
                 requestedItem.setUser(user);
                 requestedItem.setName(itemName);
                 requestedItem.setCategory(itemCategory);
@@ -244,21 +246,21 @@ public class SilentAuctionCreationFragment extends Fragment {
     }
 
     private void registerAuction(Integer itemId, Integer userId, Date sqlDate, float itemStartPrize) {
-        RequestedAuctionDTO requestedAuctionDTO = new RequestedAuctionDTO();
-        requestedAuctionDTO.setOwnerId(userId);
-        requestedAuctionDTO.setAuctionType(Type.SILENT);
+        AuctionDTO auctionDTO = new AuctionDTO();
+        auctionDTO.setOwnerId(userId);
+        auctionDTO.setAuctionType(Type.SILENT);
 
         String date = sqlDate.toString();
-        requestedAuctionDTO.setActive(true);
-        requestedAuctionDTO.setExpirationDate(date);
-        requestedAuctionDTO.setExpirationTime(null); // NULL because its a Silent Auction
-        requestedAuctionDTO.setRequestedItemId(itemId);
-        requestedAuctionDTO.setCurrentOfferValue(itemStartPrize);
+        auctionDTO.setActive(true);
+        auctionDTO.setExpirationDate(date);
+        auctionDTO.setExpirationTime(null); // NULL because its a Silent Auction
+        auctionDTO.setRequestedItemId(itemId);
+        auctionDTO.setCurrentOfferValue(itemStartPrize);
 
         // Send to Server the Auction's registration Request
-        sender.sendRegisterAuctionRequest(requestedAuctionDTO, new AuctionRegistrationCallback() {
+        sender.sendRegisterAuctionRequest(auctionDTO, new AuctionRegistrationCallback() {
             @Override
-            public boolean onAuctionRegistrationSuccess(RequestedAuctionDTO requestedAuctionDTO) {
+            public boolean onAuctionRegistrationSuccess(AuctionDTO auctionDTO) {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
 
                 // TODO: Devo mostrare il Dialog di successo nella registrazione dell'asta?

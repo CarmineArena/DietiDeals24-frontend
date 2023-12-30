@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.widget.TextView;
 import com.example.dietideals24frontend.R;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.dietideals24frontend.Model.UserDTO;
+import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Presenter.ActivityFactory;
 
 public class Home extends AppCompatActivity {
@@ -18,7 +18,7 @@ public class Home extends AppCompatActivity {
         // TODO: Mancano i bottoni per aggiornare Bio e/o link al sito web dell'utente.
 
         Intent intent = getIntent();
-        UserDTO user = (UserDTO) intent.getSerializableExtra("loggedInUser");
+        User user = (User) intent.getSerializableExtra("loggedInUser");
 
         TextView welcomeView = findViewById(R.id.WelcomeField);
         welcomeView.setText(String.format("Benvenuto, %s %s", user.getName(), user.getSurname()));

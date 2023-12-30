@@ -1,4 +1,6 @@
-package com.example.dietideals24frontend.Model;
+package com.example.dietideals24frontend.Model.DTO;
+
+import com.example.dietideals24frontend.Model.Type;
 
 import java.sql.Time;
 import java.io.Serializable;
@@ -7,17 +9,17 @@ import java.io.Serializable;
     - This object is used to make a post request to the server asking to save/register an Auction inside the database.
 **/
 
-public class RequestedAuctionDTO implements Serializable {
+public class AuctionDTO implements Serializable {
     private int ownerId;
     private boolean active;
     private Type auctionType;
     private Time expirationTime;
     private String expirationDate; // This corresponds to the java.sql.Data attribute stored inside the Db (The String makes easier data transfer)
     private float currentOfferValue;
-    private RequestedItemDTO requestedItemDTO;
+    private ItemDTO itemDTO;
     private Integer auctionId, requestedItemId;
 
-    public RequestedAuctionDTO() {}
+    public AuctionDTO() {}
 
     public Integer getAuctionId() {
         return auctionId;
@@ -83,11 +85,11 @@ public class RequestedAuctionDTO implements Serializable {
         this.expirationTime = expirationTime;
     }
 
-    public RequestedItemDTO getRequestedItemDTO() {
-        return requestedItemDTO;
+    public ItemDTO getRequestedItemDTO() {
+        return itemDTO;
     }
 
-    public void setRequestedItemDTO(RequestedItemDTO requestedItemDTO) {
-        this.requestedItemDTO = requestedItemDTO;
+    public void setRequestedItemDTO(ItemDTO itemDTO) {
+        this.itemDTO = itemDTO;
     }
 }
