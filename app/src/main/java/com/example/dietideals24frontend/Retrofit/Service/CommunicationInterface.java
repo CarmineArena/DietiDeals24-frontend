@@ -16,5 +16,6 @@ public interface CommunicationInterface {
     /* GET REQUESTS */
     void sendUserLoginRequest(User user, final UserLoginCallback callback);
     void sendFindItemImageRequest(Integer itemId, String name, final ImageContentRequestCallback callback);
-    void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> selectedCategories, User user, final RetrieveItemsCallback callback);
+    void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> selectedCategories, User user, final RetrieveFeaturedItemsCallback callback);
+    void sendCreatedByUserItemsRequest(User user, final RetrieveUserItemsCallback callback);
 }

@@ -7,7 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface SearchItemUpForAuctionService {
+public interface SearchItemUpForFeaturedAuctionService {
     @GET("/item/findItemsUpForFeaturedAuction")
     Call<List<ItemDTO>> searchFeaturedItems(
             @Query("searchTerm") String searchTerm,

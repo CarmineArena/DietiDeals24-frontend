@@ -183,8 +183,8 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> categories, User user, final RetrieveItemsCallback callback) {
-        SearchItemUpForAuctionService api = retrofitService.create(SearchItemUpForAuctionService.class);
+    public void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> categories, User user, final RetrieveFeaturedItemsCallback callback) {
+        SearchItemUpForFeaturedAuctionService api = retrofitService.create(SearchItemUpForFeaturedAuctionService.class);
 
         Call<List<ItemDTO>> call = api.searchFeaturedItems(searchTerm, categories, user.getUserId());
         call.enqueue(new Callback<List<ItemDTO>>() {
@@ -208,6 +208,37 @@ public class Requester implements CommunicationInterface {
             public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onSearchItemsUpForAuctionFailure(t.getMessage());
                 Log.e("Search Featured Items Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendCreatedByUserItemsRequest(User user, final RetrieveUserItemsCallback callback) {
+        SearchItemsCreatedByUserService api = retrofitService.create(SearchItemsCreatedByUserService.class);
+
+        Call<List<ItemDTO>> call = api.searchCreatedByUserItems(user);
+        call.enqueue(new Callback<List<ItemDTO>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
+                boolean returnValue;
+                if(response.isSuccessful()) {
+                    returnValue = callback.onSearchCreatedByUserItemsSuccess(response.body());
+                } else {
+                    returnValue = callback.onSearchCreatedByUserItemsFailure(response.message());
+                }
+
+                if (returnValue) {
+                    Log.i("Search Items", "List<Items> retrieved correctly!");
+                } else {
+                    Log.e("Search Items Error", "Could not find the items requested. Error code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onSearchCreatedByUserItemsFailure(t.getMessage());
+                Log.e("Search Items Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();
             }
         });

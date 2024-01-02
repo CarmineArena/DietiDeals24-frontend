@@ -1,14 +1,7 @@
 package com.example.dietideals24frontend.View;
 
-import com.example.dietideals24frontend.Model.Item;
-import com.example.dietideals24frontend.Model.DTO.ItemDTO;
-import com.example.dietideals24frontend.Retrofit.Callback.ImageContentRequestCallback;
-import com.example.dietideals24frontend.Retrofit.Service.Requester;
-import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsCallback;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.content.Intent;
 import android.widget.Button;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -19,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
+import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.MainActivity;
 
 import com.example.dietideals24frontend.View.Dialog.Dialog;
+import com.example.dietideals24frontend.utility.ItemsRetriever;
 
 import retrofit2.Retrofit;
 
@@ -102,7 +97,6 @@ public class SearchAuctionActivity extends AppCompatActivity {
 
         String selectedCategories = TextUtils.join(", ", selectedCategoriesList);
         selectedCategoryTextView.setText("Categorie selezionate: " + selectedCategories);
-
         setSelectedCategories(selectedCategoriesList);
     }
 
@@ -114,6 +108,7 @@ public class SearchAuctionActivity extends AppCompatActivity {
         return selectedCategories;
     }
 
+    @SuppressLint("SetTextI18n")
     private void handleEnterKey(Retrofit retrofitService, String searchTerm) {
         // Retrieve selected categories
         List<String> selectedCategories = getSelectedCategories();
@@ -122,65 +117,19 @@ public class SearchAuctionActivity extends AppCompatActivity {
             Dialog dialog = new Dialog(getApplicationContext());
             dialog.showAlertDialog("FORM ERROR", "Devi digitare ciò che vuoi cercare!");
         } else {
-            // Send request to server
-            Requester requester = new Requester(retrofitService);
-            requester.sendFeaturedItemsUpForAuctionRequest(searchTerm, selectedCategories, loggedInUser, new RetrieveItemsCallback() {
-                @Override
-                public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
-                    if (itemsRetrieved.isEmpty()) {
-                        Log.i("SEARCH SUCCESS BUT FOUND NONE", "LIST SIZE: " + itemsRetrieved.size());
-                        // TODO: Cosa fare in questo caso?
-                    } else {
-                        List<Item> items = new ArrayList<>();
-                        for (ItemDTO itemDTO : itemsRetrieved) {
-                            Item item = new Item();
-                            item.setItemId(itemDTO.getItemId());
-                            item.setName(itemDTO.getName());
-                            item.setDescription(itemDTO.getDescription());
-                            item.setCategory(itemDTO.getCategory());
-                            item.setBasePrize(itemDTO.getBasePrize());
-                            item.setUser(itemDTO.getUser()); // This is the User who bind to Auction the Item
+            ItemsRetriever retriever = new ItemsRetriever(retrofitService);
+            retriever.setRetrievedFeaturedItems(searchTerm, selectedCategories, loggedInUser);
+            List<Item> items = retriever.getFeaturedItems();
 
-                            items.add(item);
-                        }
+            if (items == null) {
+                // TODO: MOSTRARE NELLA PAGINA "NON CI SONO OGGETTI" O QUALCOSA DI SIMILE
+            } else {
+                // TODO: MOSTRALE ITEMS NELLA PAGINA, CONVERTIRE BYTE[] IN URI?
+            }
+            // TODO: STABILIRE POI IN QUALE ALTRA INTERFACCIA PASSARE
 
-                        // Now retrieve the images: # of requests = # of items inside the list
-                        for (int i = 0; i < items.size(); i++) {
-                            int itemId = items.get(i).getItemId();
-                            String name = items.get(i).getName();
-
-                            int finalI = i;
-                            requester.sendFindItemImageRequest(itemId, name, new ImageContentRequestCallback() {
-                                @Override
-                                public boolean onFetchSuccess(byte[] itemImageContent) {
-                                    items.get(finalI).setImage(itemImageContent);
-                                    return true;
-                                }
-
-                                @Override
-                                public boolean onFetchFailure(String errorMessage) {
-                                    Log.e("Fetch Item Image Failure", errorMessage);
-                                    // TODO: Cosa fare in questo caso?
-                                    return false;
-                                }
-                            });
-                        }
-                        Log.i("Fetch Items", "DONE, LIST SIZE: " + items.size());
-                    }
-
-                    // TODO: CONVERTIRE BYTE[] IN URI?
-                    // TODO: COSA MOSTRO NELL'INTERFACCIA?
-                    // TODO: UNA VOLTA PREMUTO "ENTER" PER CERCARE, LE CATEGORIE DI FILTRAGGIO SI DEVONO RESETTARE (LISTA VUOTA)
-                    return true;
-                }
-
-                @Override
-                public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
-                    Log.e("Search List<Items> Failure", errorMessage);
-                    // TODO: Cosa fare in questo caso?
-                    return false;
-                }
-            });
+            // One clicked "ENTER" to search, filter categories are restted (empty list)
+            selectedCategoryTextView.setText("Categorie selezionate: ");
         }
     }
 }
