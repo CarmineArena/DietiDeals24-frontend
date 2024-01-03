@@ -245,6 +245,37 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
+    public void sendFindItemsForWhichTheUserPartecipateAuction(Integer userId, String email, String password, final RetrieveItemsForWhichTheUserPartecipateAuctionCallback callback) {
+        SearchItemsForWhichTheUserPartecipateAuctionService api = retrofitService.create(SearchItemsForWhichTheUserPartecipateAuctionService.class);
+
+        Call<List<ItemDTO>> call = api.findItemsForUser(userId, email, password);
+        call.enqueue(new Callback<List<ItemDTO>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
+                boolean returnValue;
+                if(response.isSuccessful()) {
+                    returnValue = callback.onItemsFoundWithSuccess(response.body());
+                } else {
+                    returnValue = callback.onItemsNotFoundFailure(response.message());
+                }
+
+                if (returnValue) {
+                    Log.i("Search Partecipate Items", "List<Items> retrieved correctly!");
+                } else {
+                    Log.e("Search Partecipate Items Error", "Could not find the items requested. Error code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onItemsNotFoundFailure(t.getMessage());
+                Log.e("Search Parecipate Items Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public void sendFindItemImageRequest(Integer itemId, String name, final ImageContentRequestCallback callback) {
         RequestItemImageService api = retrofitService.create(RequestItemImageService.class);
 
