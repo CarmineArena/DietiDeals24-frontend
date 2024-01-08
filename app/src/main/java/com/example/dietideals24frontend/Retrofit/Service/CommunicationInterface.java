@@ -18,5 +18,5 @@ public interface CommunicationInterface {
     void sendFindItemImageRequest(Integer itemId, String name, final ImageContentRequestCallback callback);
     void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> selectedCategories, User user, final RetrieveFeaturedItemsCallback callback);
     void sendCreatedByUserItemsRequest(User user, final RetrieveUserItemsCallback callback);
-    void sendFindItemsForWhichTheUserPartecipateAuction(Integer userId, String email, String password, final RetrieveItemsForWhichTheUserPartecipateAuctionCallback callback);
+    void sendFindItemsForWhichTheUserPartecipateAuction(Integer userId, String email, String password, final RetrieveItemsWantedByUserService callback);
 }

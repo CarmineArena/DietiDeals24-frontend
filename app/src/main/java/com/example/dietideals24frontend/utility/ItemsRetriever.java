@@ -146,7 +146,7 @@ public class ItemsRetriever {
     **/
     public void setItemsForWhichUserPartecipateAuction(Integer userId, String email, String password) {
         Requester requester = new Requester(this.retrofitService);
-        requester.sendFindItemsForWhichTheUserPartecipateAuction(userId, email, password, new RetrieveItemsForWhichTheUserPartecipateAuctionCallback() {
+        requester.sendFindItemsForWhichTheUserPartecipateAuction(userId, email, password, new RetrieveItemsWantedByUserService() {
             @Override
             public boolean onItemsFoundWithSuccess(List<ItemDTO> itemsRetrieved) {
                 if (itemsRetrieved.isEmpty()) {

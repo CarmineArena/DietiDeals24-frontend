@@ -245,8 +245,8 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendFindItemsForWhichTheUserPartecipateAuction(Integer userId, String email, String password, final RetrieveItemsForWhichTheUserPartecipateAuctionCallback callback) {
-        SearchItemsForWhichTheUserPartecipateAuctionService api = retrofitService.create(SearchItemsForWhichTheUserPartecipateAuctionService.class);
+    public void sendFindItemsForWhichTheUserPartecipateAuction(Integer userId, String email, String password, final RetrieveItemsWantedByUserService callback) {
+        SearchItemsWantedByUserService api = retrofitService.create(SearchItemsWantedByUserService.class);
 
         Call<List<ItemDTO>> call = api.findItemsForUser(userId, email, password);
         call.enqueue(new Callback<List<ItemDTO>>() {
