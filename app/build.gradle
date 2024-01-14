@@ -6,8 +6,8 @@ plugins {
 sonarqube {
     properties {
         property "sonar.host.url", "http://localhost:9000"
-        property "sonar.projectKey", "INGSW2324FRONTEND"
-        property "sonar.login", "sqp_3f89a8ae41f8e4c31648c39b1b4bdd037909d523"
+        property "sonar.projectKey", "INGSW-2324-FRONTEND"
+        property "sonar.login", "sqp_b7e0782a52b2f89bcd078ba82ec8c7a1b5d35923"
     }
 }
 
