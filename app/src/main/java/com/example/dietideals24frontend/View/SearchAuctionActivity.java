@@ -1,5 +1,6 @@
 package com.example.dietideals24frontend.View;
 
+import android.util.Log;
 import android.os.Bundle;
 import android.content.Intent;
 import android.widget.Button;
@@ -14,11 +15,14 @@ import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.MainActivity;
-
-import com.example.dietideals24frontend.View.Dialog.Dialog;
-import com.example.dietideals24frontend.utility.ItemsRetriever;
+import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 
 import retrofit2.Retrofit;
+import com.example.dietideals24frontend.utility.ItemUtils;
+import com.example.dietideals24frontend.View.Dialog.Dialog;
+import com.example.dietideals24frontend.Retrofit.Service.Requester;
+import com.example.dietideals24frontend.Retrofit.Callback.ImageCallback;
+import com.example.dietideals24frontend.Retrofit.Callback.RetrieveFeaturedItemsCallback;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -117,18 +121,47 @@ public class SearchAuctionActivity extends AppCompatActivity {
             Dialog dialog = new Dialog(getApplicationContext());
             dialog.showAlertDialog("FORM ERROR", "Devi digitare ciò che vuoi cercare!");
         } else {
-            ItemsRetriever retriever = new ItemsRetriever(retrofitService);
-            retriever.setRetrievedFeaturedItems(searchTerm, selectedCategories, loggedInUser);
-            List<Item> items = retriever.getFeaturedItems();
+            Requester requester = new Requester(retrofitService);
+            requester.sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(searchTerm, selectedCategories, loggedInUser, new RetrieveFeaturedItemsCallback() {
+                @Override
+                public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
+                    if (itemsRetrieved.isEmpty()) {
+                        Log.i("SEARCH SUCCESS BUT FOUND NONE", "LIST SIZE: " + itemsRetrieved.size());
+                        // TODO: MOSTRARE NELLA PAGINA "NON CI SONO OGGETTI" O QUALCOSA DI SIMILE
+                    } else {
+                        // Retrieval of all the Items
+                        /*
+                        List<Item> items = ItemUtils.createListOfItems(itemsRetrieved);
 
-            if (items == null) {
-                // TODO: MOSTRARE NELLA PAGINA "NON CI SONO OGGETTI" O QUALCOSA DI SIMILE
-            } else {
-                // TODO: MOSTRALE ITEMS NELLA PAGINA, CONVERTIRE BYTE[] IN URI?
-            }
-            // TODO: STABILIRE POI IN QUALE ALTRA INTERFACCIA PASSARE
+                        // Now retrieve the images: # of requests = # of items inside the list
+                        ItemUtils.assignImageToItem(items, requester, new ImageCallback() { // QUESTA FUNZIONE E' CAMBIATA
+                            @Override
+                            public void onImageAvailable(byte[] imageContent) {
+                                // TODO: COSA CAZZO FACCIO
+                            }
 
-            // One clicked "ENTER" to search, filter categories are restted (empty list)
+                            @Override
+                            public void onImageNotAvailable(String errorMessage) {
+                                // TODO: COSA CAZZO FACCIO
+                            }
+                        });
+                        Log.i("Fetch Items", "DONE, LIST SIZE: " + items.size()); */
+
+                        // TODO: MOSTRARE GLI ITEM NELLA PAGINA
+                        // TODO: STABILIRE POI IN QUALE ALTRA INTERFACCIA PASSARE
+                    }
+                    return true;
+                }
+
+                @Override
+                public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
+                    Log.e("Search Featured List<Items> Failure", errorMessage);
+                    // TODO: MOSTRARE NELLA PAGINA QUALCOSA CHE FACCIA CAPIRE CHE E' PRESENTE UN PROBLEMA
+                    return false;
+                }
+            });
+
+            // Once clicked "ENTER" to search, filter categories are resetted (empty list)
             selectedCategoryTextView.setText("Categorie selezionate: ");
         }
     }

@@ -8,4 +8,5 @@ public interface FactoryFragmentInterface {
     SignUpFragment createSignUpFragment();
     SilentAuctionCreationFragment createSilentAuctionFragment(User user);
     EnglishAuctionCreationFragment createEnglishAuctionFragment(User user);
+    HomeFragment createHomeFragment(User user);
 }

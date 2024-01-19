@@ -1,11 +1,8 @@
 package com.example.dietideals24frontend.Presenter;
 
 import android.os.Bundle;
+import com.example.dietideals24frontend.View.*;
 import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.View.EnglishAuctionCreationFragment;
-import com.example.dietideals24frontend.View.LogInFragment;
-import com.example.dietideals24frontend.View.SignUpFragment;
-import com.example.dietideals24frontend.View.SilentAuctionCreationFragment;
 
 public class FragmentFactory implements FactoryFragmentInterface {
     @Override
@@ -30,6 +27,14 @@ public class FragmentFactory implements FactoryFragmentInterface {
     public EnglishAuctionCreationFragment createEnglishAuctionFragment(User user) {
         Bundle bundle = createBundleWithLoggedInUser(user);
         EnglishAuctionCreationFragment fragment = new EnglishAuctionCreationFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public HomeFragment createHomeFragment(User user) {
+        Bundle bundle = createBundleWithLoggedInUser(user);
+        HomeFragment fragment = new HomeFragment();
         fragment.setArguments(bundle);
         return fragment;
     }

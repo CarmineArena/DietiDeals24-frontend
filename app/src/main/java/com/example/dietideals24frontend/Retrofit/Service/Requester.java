@@ -183,10 +183,41 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendFeaturedItemsUpForAuctionRequest(String searchTerm, List<String> categories, User user, final RetrieveFeaturedItemsCallback callback) {
+    public void sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(String searchTerm, List<String> categories, User user, final RetrieveFeaturedItemsCallback callback) {
         SearchItemUpForFeaturedAuctionService api = retrofitService.create(SearchItemUpForFeaturedAuctionService.class);
 
-        Call<List<ItemDTO>> call = api.searchFeaturedItems(searchTerm, categories, user.getUserId());
+        Call<List<ItemDTO>> call = api.searchFeaturedItemsBySearchTermAndCategory(searchTerm, categories, user.getUserId());
+        call.enqueue(new Callback<List<ItemDTO>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
+                boolean returnValue;
+                if(response.isSuccessful()) {
+                    returnValue = callback.onSearchItemsUpForAuctionSuccess(response.body());
+                } else {
+                    returnValue = callback.onSearchItemsUpForAuctionFailure(response.message());
+                }
+
+                if (returnValue) {
+                    Log.i("Search Featured Items", "List<Items> retrieved correctly!");
+                } else {
+                    Log.e("Search Featured Items Error", "Could not find the items requested. Error code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onSearchItemsUpForAuctionFailure(t.getMessage());
+                Log.e("Search Featured Items Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendFeaturedItemsUpForAuctionRequest(Integer userId, String email, final RetrieveFeaturedItemsCallback callback) {
+        SearchItemUpForFeaturedAuctionService api = retrofitService.create(SearchItemUpForFeaturedAuctionService.class);
+
+        Call<List<ItemDTO>> call = api.searchFeaturedItems(userId, email);
         call.enqueue(new Callback<List<ItemDTO>>() {
             @Override
             public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
@@ -217,7 +248,7 @@ public class Requester implements CommunicationInterface {
     public void sendCreatedByUserItemsRequest(User user, final RetrieveUserItemsCallback callback) {
         SearchItemsCreatedByUserService api = retrofitService.create(SearchItemsCreatedByUserService.class);
 
-        Call<List<ItemDTO>> call = api.searchCreatedByUserItems(user);
+        Call<List<ItemDTO>> call = api.searchCreatedByUserItems(user.getUserId(), user.getEmail());
         call.enqueue(new Callback<List<ItemDTO>>() {
             @Override
             public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
@@ -245,7 +276,7 @@ public class Requester implements CommunicationInterface {
     }
 
     @Override
-    public void sendFindItemsForWhichTheUserPartecipateAuction(Integer userId, String email, String password, final RetrieveItemsWantedByUserService callback) {
+    public void sendFindItemsWantedByUserRequest(Integer userId, String email, String password, final RetrieveItemsWantedByUserService callback) {
         SearchItemsWantedByUserService api = retrofitService.create(SearchItemsWantedByUserService.class);
 
         Call<List<ItemDTO>> call = api.findItemsForUser(userId, email, password);
