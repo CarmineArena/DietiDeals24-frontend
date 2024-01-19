@@ -26,6 +26,8 @@ import com.example.dietideals24frontend.Retrofit.Callback.RetrieveUserItemsCallb
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveFeaturedItemsCallback;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsWantedByUserService;
 
+// TODO: LIMITO LA STAMPA DELLE ASTE IN EVIDENZA, STABILIRE UN CRITERIO SECONDO IL QUALE RECUPERARE GLI OGGETTI
+
 public class HomeFragment extends Fragment {
     private View view;
     private User loggedInUser;
@@ -95,18 +97,25 @@ public class HomeFragment extends Fragment {
             public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
                 List<Item> featuredItems = ItemUtils.createListOfItems(itemsRetrieved);
 
-                if (featuredItems == null) {
+                if (featuredItems == null) { // Impossible that something like this occurs, but we handle it anyway
                     Log.d("Home Fragment", "List<Item> featuredItems size: 0");
-                    // TODO: COSA MOSTRO NELLA PAGINA?
                 } else {
                     Log.d("Home Fragment", "List<Item> featuredItems size: " + featuredItems.size());
-                    for (int j = 0; j < featuredItems.size(); j++) {
+                    int size = featuredItems.size();
+                    int steps;
+
+                    if (size < 10) {
+                        steps = size;
+                    } else {
+                        steps = 9; // [0 - 9] 10 elements in total
+                    }
+                    for (int j = 0; j < steps; j++) {
                         final int pos = j;
                         ItemUtils.assignImageToItem(featuredItems.get(pos), requester, new ImageCallback() {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 featuredItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(featuredItems.get(pos), pos, "featured"));
+                                layout.addView(createInternalLayout(featuredItems.get(pos), pos, HomeConstantValues.FEATURED));
                             }
 
                             @Override
@@ -135,16 +144,20 @@ public class HomeFragment extends Fragment {
 
                 if (auctionedByUserItems == null) {
                     Log.d("Home Fragment", "List<Item> createdByUserItems size: 0");
-                    // TODO: COSA MOSTRO NELLA PAGINA?
+                    addImageButton(layout, context, HomeConstantValues.AUCTIONED);
                 } else {
                     Log.d("Home Fragment", "List<Item> createdByUserItems size: " + auctionedByUserItems.size());
-                    for (int j = 0; j < auctionedByUserItems.size(); j++) {
+
+                    final int size = auctionedByUserItems.size();
+                    for (int j = 0; j < size; j++) {
                         final int pos = j;
                         ItemUtils.assignImageToItem(auctionedByUserItems.get(pos), requester, new ImageCallback() {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 auctionedByUserItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(auctionedByUserItems.get(pos), pos, "auctioned"));
+                                layout.addView(createInternalLayout(auctionedByUserItems.get(pos), pos, HomeConstantValues.AUCTIONED));
+
+                                if (pos == size - 1) addImageButton(layout, context, HomeConstantValues.AUCTIONED);
                             }
 
                             @Override
@@ -173,16 +186,20 @@ public class HomeFragment extends Fragment {
 
                 if (wantedByUserItems == null) {
                     Log.d("Home Fragment", "List<Item> wantedByUserItems size: 0");
-                    // TODO: COSA MOSTRO NELLA PAGINA?
+                    addImageButton(layout, context, HomeConstantValues.WANTED);
                 } else {
                     Log.d("Home Fragment", "List<Item> wantedByUserItems size: " + wantedByUserItems.size());
-                    for (int j = 0; j < wantedByUserItems.size(); j++) {
+
+                    final int size = wantedByUserItems.size();
+                    for (int j = 0; j < size; j++) {
                         final int pos = j;
                         ItemUtils.assignImageToItem(wantedByUserItems.get(pos), requester, new ImageCallback() {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 wantedByUserItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(wantedByUserItems.get(pos), pos, "wanted"));
+                                layout.addView(createInternalLayout(wantedByUserItems.get(pos), pos, HomeConstantValues.WANTED));
+
+                                if (pos == size - 1) addImageButton(layout, context, HomeConstantValues.WANTED);
                             }
 
                             @Override
@@ -210,7 +227,8 @@ public class HomeFragment extends Fragment {
         ImageView imageView = new ImageView(context);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(
                 400, // Width in pixel
-                400        // Height in pixel
+                400,       // Height in pixel
+                2f         // Weight
         ));
         fillImageView(imageView, item.getImage());
 
@@ -218,11 +236,8 @@ public class HomeFragment extends Fragment {
 
         if (auctionType.equals(HomeConstantValues.FEATURED))
             button.setText("ACQUISTA");
-        else if (auctionType.equals(HomeConstantValues.AUCTIONED)) {
+        else
             button.setText("VISUALIZZA");
-        } else {
-            button.setText("VISUALIZZA");
-        }
 
         LinearLayout internal = new LinearLayout(context);
         internal.setOrientation(LinearLayout.VERTICAL);
@@ -233,18 +248,44 @@ public class HomeFragment extends Fragment {
         return internal;
     }
 
+    private void addImageButton(LinearLayout layout, Context context, final String auctionType) {
+        ImageButton createAuctionButton = new ImageButton(context);
+        createAuctionButton.setBackgroundResource(R.drawable.add_auction);
+        createAuctionButton.setLayoutParams(new LinearLayout.LayoutParams(
+                400, // Width in pixel
+                400        // Height in pixel
+        ));
+        createAuctionButton.setOnClickListener(v -> handleClickOnImageButton(auctionType));
+        layout.addView(createAuctionButton);
+    }
+
     private void handleClickOnItem(Item item, String auctionType) {
+        // TODO: RECUPERARE I DETTAGLI DELL'ASTA: AUCTION, USER, ITEM
         switch (auctionType) {
             case HomeConstantValues.FEATURED:
+                // TODO: PORTARE A SCHERMATA DI PARTECIPAZIONE ALL' ASTA (RELATIVAMENTE AL TIPO)
                 break;
             case HomeConstantValues.AUCTIONED:
+                // TODO: PORTARE A VISUALIZZAZIONE DELLO STATO DELL'ASTA
                 break;
             case HomeConstantValues.WANTED:
+                // TODO: PORTARE A SCHERMATA DI PARTECIPAZIONE ALL' ASTA
                 break;
             default:
                 // TODO:
         }
-        // TODO: RIPORTARE ALLA CORRETTA SCHERMATA
-        // TODO: RECUPERARE I DETTAGLI DELL'ASTA: AUCTION, USER, ITEM
+    }
+
+    private void handleClickOnImageButton(final String auctionType) {
+        switch (auctionType) {
+            case HomeConstantValues.AUCTIONED:
+                // TODO: PORTARE A SCHERMATA DI CREAZIONE DELL'ASTA (CREATE AUCTION)
+                break;
+            case HomeConstantValues.WANTED:
+                // TODO: PORTARE A SCHERMATA DI RICERCA (SEARCH AUCTION)
+                break;
+            default:
+                // TODO:
+        }
     }
 }
