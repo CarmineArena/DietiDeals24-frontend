@@ -1,6 +1,7 @@
 package com.example.dietideals24frontend.Presenter;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.annotation.SuppressLint;
+import android.widget.RelativeLayout;
 
 import java.util.List;
 import com.example.dietideals24frontend.R;
@@ -62,7 +64,47 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 featuredItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(featuredItems.get(pos), pos, HomeConstantValues.FEATURED));
+                                layout.addView(createInternalLayout(featuredItems.get(pos), HomeConstantValues.FEATURED));
+                            }
+
+                            @Override
+                            public void onImageNotAvailable(String errorMessage) {
+                                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
+                            }
+                        });
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
+                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
+                return false;
+            }
+        });
+    }
+
+    public void createInternalLayoutWithFeaturedAuctions(RelativeLayout layout, User loggedInUser,
+                                                         String searchTerm, List<String> categories) {
+        requester.sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(searchTerm, categories, loggedInUser, new RetrieveFeaturedItemsCallback() {
+            @Override
+            public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
+                List<Item> items = ItemUtils.createListOfItems(itemsRetrieved);
+
+                if (items == null) { // It is impossible that something like this occurs, but we handle it anyway
+                    Log.d("Home Fragment", "List<Item> Search Auction Activity size: 0");
+                    // TODO: IMPOSSIBILE ESCA NULL VERO??
+                } else {
+                    Log.d("Home Fragment", "List<Item> Search Auction Activity size: " + items.size());
+                    int size = items.size();
+                    for (int j = 0; j < size; j++) {
+                        final int pos = j;
+                        ItemUtils.assignImageToItem(items.get(pos), requester, new ImageCallback() {
+                            @Override
+                            public void onImageAvailable(byte[] imageContent) {
+                                items.get(pos).setImage(imageContent);
+                                createRelativeLayout(layout, items.get(pos));
                             }
 
                             @Override
@@ -102,7 +144,7 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 auctionedByUserItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(auctionedByUserItems.get(pos), pos, HomeConstantValues.AUCTIONED));
+                                layout.addView(createInternalLayout(auctionedByUserItems.get(pos), HomeConstantValues.AUCTIONED));
                             }
 
                             @Override
@@ -142,7 +184,7 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 wantedByUserItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(wantedByUserItems.get(pos), pos, HomeConstantValues.WANTED));
+                                layout.addView(createInternalLayout(wantedByUserItems.get(pos), HomeConstantValues.WANTED));
                             }
 
                             @Override
@@ -166,7 +208,7 @@ public class LinearLayoutForItemsPresenter {
     /* PRIVATE METHODS */
 
     @SuppressLint("SetTextI18n")
-    private LinearLayout createInternalLayout(Item item, final int position, final String auctionType) {
+    private LinearLayout createInternalLayout(Item item, final String auctionType) {
         ImageView imageView = new ImageView(context);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(
                 400, // Width in pixel
@@ -178,6 +220,8 @@ public class LinearLayoutForItemsPresenter {
         Button button = new Button(context);
         if (auctionType.equals(HomeConstantValues.FEATURED))
             button.setText("ACQUISTA");
+        else if (auctionType.equals(HomeConstantValues.FEATURED_SEARCH_AUCTION))
+            button.setText(item.getDescription());
         else
             button.setText("VISUALIZZA");
 
@@ -190,6 +234,30 @@ public class LinearLayoutForItemsPresenter {
 
         // internal.setOnClickListener(v -> handleClickOnItem(item, auctionType));
         return internal;
+    }
+
+    private void createRelativeLayout(RelativeLayout layout, Item item) {
+        ImageView imageView = new ImageView(context);
+        imageView.setId(View.generateViewId());
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(
+                400, // Width in pixel
+                400        // Height in pixel
+        ));
+        ImageUtils.fillImageView(imageView, item.getImage());
+        layout.addView(imageView);
+
+        Button button = new Button(context);
+        button.setText(item.getDescription()); // TODO: COSA DEVO SCRIVERE?
+        button.setBackgroundResource(android.R.color.transparent); // background_light
+        RelativeLayout.LayoutParams btnParams = new RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.WRAP_CONTENT,
+            RelativeLayout.LayoutParams.MATCH_PARENT
+        );
+        btnParams.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
+        btnParams.addRule(RelativeLayout.CENTER_VERTICAL);
+
+        // TODO: AGGIUNGERE LISTENER AL BOTTONE
+        layout.addView(button, btnParams);
     }
 
     private void addImageButton(LinearLayout layout, Context context, User loggedInUser, final String auctionType) {

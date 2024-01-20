@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
 
         verticalLayout.removeAllViews();
         LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester);
+
         for (int i = 1; i <= 3; i++) {
             TextView textView = new TextView(context);
             HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
@@ -55,7 +56,6 @@ public class HomeFragment extends Fragment {
             if (i == 1) {
                 textView.setText("Aste in evidenza");
                 presenter.createFeaturedItemsLinearLayout(layout, loggedInUser);
-
             } else if (i == 2) {
                 textView.setText("Le tue aste");
                 presenter.createAuctionedByUserItemsLinearLayout(layout, loggedInUser);

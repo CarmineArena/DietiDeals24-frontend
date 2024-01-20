@@ -2,31 +2,31 @@ package com.example.dietideals24frontend.View;
 
 import android.util.Log;
 import android.os.Bundle;
-import android.content.Intent;
 import android.widget.Button;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 import android.annotation.SuppressLint;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
+import com.example.dietideals24frontend.Presenter.LinearLayoutForItemsPresenter;
 
 import retrofit2.Retrofit;
-import com.example.dietideals24frontend.utility.ItemUtils;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
-import com.example.dietideals24frontend.Retrofit.Callback.ImageCallback;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveFeaturedItemsCallback;
 
 import java.util.List;
 import java.util.ArrayList;
-
 import android.content.res.Resources;
 
 import android.view.KeyEvent;
@@ -38,13 +38,14 @@ public class SearchAuctionActivity extends AppCompatActivity {
     private List<String> selectedCategories;
     private User loggedInUser;
     private Dialog dialog;
+    private Retrofit retrofitService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_auction);
 
-        Retrofit retrofitService = MainActivity.retrofitService;
+        retrofitService = MainActivity.retrofitService;
 
         Intent intent = getIntent();
         loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
@@ -129,26 +130,17 @@ public class SearchAuctionActivity extends AppCompatActivity {
                         Log.i("SEARCH SUCCESS BUT FOUND NONE", "LIST SIZE: " + itemsRetrieved.size());
                         // TODO: MOSTRARE NELLA PAGINA "NON CI SONO OGGETTI" O QUALCOSA DI SIMILE
                     } else {
-                        // Retrieval of all the Items
-                        /*
-                        List<Item> items = ItemUtils.createListOfItems(itemsRetrieved);
+                        Context context = getApplicationContext();
+                        ScrollView scrollView = findViewById(R.id.scrollView);
 
-                        // Now retrieve the images: # of requests = # of items inside the list
-                        ItemUtils.assignImageToItem(items, requester, new ImageCallback() { // QUESTA FUNZIONE E' CAMBIATA
-                            @Override
-                            public void onImageAvailable(byte[] imageContent) {
-                                // TODO: COSA CAZZO FACCIO
-                            }
+                        RelativeLayout layout = new RelativeLayout(context);
+                        // layout.setOrientation(LinearLayout.VERTICAL);
 
-                            @Override
-                            public void onImageNotAvailable(String errorMessage) {
-                                // TODO: COSA CAZZO FACCIO
-                            }
-                        });
-                        Log.i("Fetch Items", "DONE, LIST SIZE: " + items.size()); */
+                        LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester);
+                        presenter.createInternalLayoutWithFeaturedAuctions(layout, loggedInUser, searchTerm, selectedCategories);
 
-                        // TODO: MOSTRARE GLI ITEM NELLA PAGINA
-                        // TODO: STABILIRE POI IN QUALE ALTRA INTERFACCIA PASSARE
+                        scrollView.removeAllViews();
+                        scrollView.addView(layout);
                     }
                     return true;
                 }
