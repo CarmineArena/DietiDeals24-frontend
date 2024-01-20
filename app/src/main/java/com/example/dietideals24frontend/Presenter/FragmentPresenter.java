@@ -4,7 +4,7 @@ import android.os.Bundle;
 import com.example.dietideals24frontend.View.*;
 import com.example.dietideals24frontend.Model.User;
 
-public class FragmentFactory implements FactoryFragmentInterface {
+public class FragmentPresenter implements FragmentPresenterInterface {
     @Override
     public LogInFragment createLoginFragment() {
         return new LogInFragment();

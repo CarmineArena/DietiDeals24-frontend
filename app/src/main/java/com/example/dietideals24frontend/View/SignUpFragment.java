@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.Presenter.ActivityFactory;
+import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 
 import retrofit2.Retrofit;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
@@ -61,7 +61,7 @@ public class SignUpFragment extends Fragment {
                 sender.sendUserRegistrationRequest(user, new UserRegistrationCallback() {
                     @Override
                     public boolean onRegistrationSuccess(User loggedInUser) {
-                        ActivityFactory activityFactory = new ActivityFactory();
+                        ActivityPresenter activityFactory = new ActivityPresenter();
                         Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
                         startActivity(intent);
                         return true;

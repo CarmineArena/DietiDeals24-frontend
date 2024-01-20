@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.ByteArrayOutputStream;
 
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 import android.graphics.BitmapFactory;
 
 public class ImageUtils {
@@ -35,5 +36,9 @@ public class ImageUtils {
 
     public static Bitmap getImageBitMap(byte[] imageContent) {
         return BitmapFactory.decodeByteArray(imageContent, 0, imageContent.length);
+    }
+
+    public static void fillImageView(ImageView imageView, byte[] imageContent) {
+        imageView.setImageBitmap(ImageUtils.getImageBitMap(imageContent));
     }
 }

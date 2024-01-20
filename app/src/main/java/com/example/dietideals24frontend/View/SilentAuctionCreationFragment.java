@@ -27,7 +27,7 @@ import android.provider.MediaStore;
 import com.bumptech.glide.Glide;
 import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
-import com.example.dietideals24frontend.Presenter.ActivityFactory;
+import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.*;
@@ -265,7 +265,7 @@ public class SilentAuctionCreationFragment extends Fragment {
 
                 // TODO: Devo mostrare il Dialog di successo nella registrazione dell'asta?
 
-                ActivityFactory factory = new ActivityFactory();
+                ActivityPresenter factory = new ActivityPresenter();
                 Intent intent = factory.createIntentForHome(getContext(), user); // Return Home with loggedIn user's informations
                 startActivity(intent);
                 return true;

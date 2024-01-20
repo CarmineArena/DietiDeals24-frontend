@@ -11,8 +11,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.Presenter.ActivityFactory;
-import com.example.dietideals24frontend.Presenter.FragmentFactory;
+import com.example.dietideals24frontend.Presenter.ActivityPresenter;
+import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 
 public class Home extends AppCompatActivity {
     @Override
@@ -23,8 +23,8 @@ public class Home extends AppCompatActivity {
         Intent intent = getIntent();
         User loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
 
-        FragmentFactory fragmentFactory = new FragmentFactory();
-        ActivityFactory activityFactory = new ActivityFactory();
+        FragmentPresenter fragmentFactory = new FragmentPresenter();
+        ActivityPresenter activityFactory = new ActivityPresenter();
 
         HomeFragment fragment = fragmentFactory.createHomeFragment(loggedInUser);
         replaceFragment(fragment);

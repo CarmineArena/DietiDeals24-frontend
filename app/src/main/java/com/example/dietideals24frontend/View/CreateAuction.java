@@ -13,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.Presenter.FragmentFactory;
+import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 
 public class CreateAuction extends AppCompatActivity {
     String[] type = { "Asta Silenziosa", "Asta all'Inglese" };
@@ -26,7 +26,7 @@ public class CreateAuction extends AppCompatActivity {
         Intent intent = getIntent();
         User user = (User) intent.getSerializableExtra("loggedInUser");
 
-        FragmentFactory fragmentFactory = new FragmentFactory();
+        FragmentPresenter fragmentFactory = new FragmentPresenter();
         SilentAuctionCreationFragment silentFragment = fragmentFactory.createSilentAuctionFragment(user);
         EnglishAuctionCreationFragment englishFragment = fragmentFactory.createEnglishAuctionFragment(user);
 

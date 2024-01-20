@@ -5,7 +5,7 @@ import android.content.Context;
 import com.example.dietideals24frontend.View.*;
 import com.example.dietideals24frontend.Model.User;
 
-public class ActivityFactory implements FactoryActivityInterface {
+public class ActivityPresenter implements ActivityPresenterInterface {
     @Override
     public Intent createIntentForHome(Context context, User loggedInUser) {
         Intent intent = new Intent(context, Home.class);

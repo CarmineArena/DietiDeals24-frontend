@@ -10,7 +10,7 @@ import androidx.appcompat.app.*;
 
 import com.example.dietideals24frontend.View.LogInFragment;
 import com.example.dietideals24frontend.View.SignUpFragment;
-import com.example.dietideals24frontend.Presenter.FragmentFactory;
+import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 // TODO: 2. Define OnRestart(), OnDestroy(), OnPause() ...
 
 public class MainActivity extends AppCompatActivity {
-    public static final String BASE_URL = ""; // TODO: REMEMBER NOT TO PUSH THIS
+    public static final String BASE_URL = "http://192.168.1.12:8080/"; // ALWAYS REMEMBER NOT TO PUSH THIS
     public static Retrofit retrofitService;
     private Button btnFragment;
     private TextView TextFragment;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        FragmentFactory fragmentFactory = new FragmentFactory();
+        FragmentPresenter fragmentFactory = new FragmentPresenter();
 
         LogInFragment logInFragment   = fragmentFactory.createLoginFragment();
         SignUpFragment signUpFragment = fragmentFactory.createSignUpFragment();
