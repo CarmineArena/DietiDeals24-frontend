@@ -8,8 +8,8 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.annotation.SuppressLint;
 import android.widget.RelativeLayout;
+import android.annotation.SuppressLint;
 
 import java.util.List;
 import com.example.dietideals24frontend.R;
@@ -17,6 +17,7 @@ import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
+import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.utility.HomeConstantValues;
 import com.example.dietideals24frontend.Retrofit.Callback.ImageCallback;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveUserItemsCallback;
@@ -26,10 +27,10 @@ import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsWantedByU
 import com.example.dietideals24frontend.utility.ItemUtils;
 import com.example.dietideals24frontend.utility.ImageUtils;
 
-// TODO: PENSARE A COME PORTARE NELL VARIE SCHERMATE
-// TODO: LIMITO LA STAMPA DELLE ASTE IN EVIDENZA, STABILIRE UN CRITERIO SECONDO IL QUALE RECUPERARE GLI OGGETTI
+// TODO: SICCOME LIMITO LA STAMPA DELLE ASTE IN EVIDENZA A 10, STABILIRE UN CRITERIO SECONDO IL QUALE RECUPERARE GLI OGGETTI
 
 public class LinearLayoutForItemsPresenter {
+    private static final String TAG = "LinearLayoutForItemsPresenter";
     private final Context context;
     private final Requester requester;
 
@@ -48,6 +49,7 @@ public class LinearLayoutForItemsPresenter {
 
                 if (featuredItems == null) { // It is impossible that something like this occurs, but we handle it anyway
                     Log.d("Home Fragment", "List<Item> featuredItems size: 0");
+                    addImageButtonToLinearLayout(layout, context, loggedInUser, HomeConstantValues.WANTED);
                 } else {
                     Log.d("Home Fragment", "List<Item> featuredItems size: " + featuredItems.size());
                     int size = featuredItems.size();
@@ -69,7 +71,11 @@ public class LinearLayoutForItemsPresenter {
 
                             @Override
                             public void onImageNotAvailable(String errorMessage) {
-                                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
+                                /* [MOTIVATION]
+                                    - If the request is done correctly there is no way that the image is not available.
+                                    - That is because of how we crate auction: the item image must exits otherwise you can't create the auction
+                                **/
+                                Log.e("ERROR", "createFeaturedItemsLinearLayout, Item's image is not available: " + errorMessage);
                             }
                         });
                     }
@@ -79,7 +85,9 @@ public class LinearLayoutForItemsPresenter {
 
             @Override
             public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
-                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
+                /* [MOTIVATION: BAD REQUEST] */
+                Log.d("onSearchItemsUpForAuctionFailure", errorMessage);
+                showPopUpError("Could not retrieve the items requested. " + errorMessage);
                 return false;
             }
         });
@@ -94,7 +102,7 @@ public class LinearLayoutForItemsPresenter {
 
                 if (items == null) { // It is impossible that something like this occurs, but we handle it anyway
                     Log.d("Home Fragment", "List<Item> Search Auction Activity size: 0");
-                    // TODO: IMPOSSIBILE ESCA NULL VERO??
+                    addImageButtonToRelativeLayout(layout, context, loggedInUser);
                 } else {
                     Log.d("Home Fragment", "List<Item> Search Auction Activity size: " + items.size());
                     int size = items.size();
@@ -109,7 +117,11 @@ public class LinearLayoutForItemsPresenter {
 
                             @Override
                             public void onImageNotAvailable(String errorMessage) {
-                                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
+                               /* [MOTIVATION]
+                                    - If the request is done correctly there is no way that the image is not available.
+                                    - That is because of how we crate auction: the item image must exits otherwise you can't create the auction
+                                **/
+                                Log.e("ERROR", "createInternalLayoutWithFeaturedAuctions, Item's image is not available: " + errorMessage);
                             }
                         });
                     }
@@ -119,7 +131,9 @@ public class LinearLayoutForItemsPresenter {
 
             @Override
             public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
-                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
+                /* [MOTIVATION: BAD REQUEST] */
+                Log.d("onSearchItemsUpForAuctionFailure", errorMessage);
+                showPopUpError("Could not retrieve the items requested. " + errorMessage);
                 return false;
             }
         });
@@ -133,7 +147,7 @@ public class LinearLayoutForItemsPresenter {
 
                 if (auctionedByUserItems == null) {
                     Log.d("Home Fragment", "List<Item> createdByUserItems size: 0");
-                    addImageButton(layout, context, loggedInUser, HomeConstantValues.AUCTIONED);
+                    addImageButtonToLinearLayout(layout, context, loggedInUser, HomeConstantValues.AUCTIONED);
                 } else {
                     Log.d("Home Fragment", "List<Item> createdByUserItems size: " + auctionedByUserItems.size());
 
@@ -149,8 +163,11 @@ public class LinearLayoutForItemsPresenter {
 
                             @Override
                             public void onImageNotAvailable(String errorMessage) {
-                                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
-                            }
+                               /* [MOTIVATION]
+                                    - If the request is done correctly there is no way that the image is not available.
+                                    - That is because of how we crate auction: the item image must exits otherwise you can't create the auction
+                                **/
+                                Log.e("ERROR", "createAuctionedByUserItemsLinearLayout, Item's image is not available: " + errorMessage);                            }
                         });
                     }
                 }
@@ -159,7 +176,9 @@ public class LinearLayoutForItemsPresenter {
 
             @Override
             public boolean onSearchCreatedByUserItemsFailure(String errorMessage) {
-                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
+                /* [MOTIVATION: BAD REQUEST] */
+                Log.d("onSearchCreatedByUserItemsFailure", errorMessage);
+                showPopUpError("Could not retrieve the items auctioned by you. " + errorMessage);
                 return false;
             }
         });
@@ -173,7 +192,7 @@ public class LinearLayoutForItemsPresenter {
 
                 if (wantedByUserItems == null) {
                     Log.d("Home Fragment", "List<Item> wantedByUserItems size: 0");
-                    addImageButton(layout, context, loggedInUser, HomeConstantValues.WANTED);
+                    addImageButtonToLinearLayout(layout, context, loggedInUser, HomeConstantValues.WANTED);
                 } else {
                     Log.d("Home Fragment", "List<Item> wantedByUserItems size: " + wantedByUserItems.size());
 
@@ -189,7 +208,11 @@ public class LinearLayoutForItemsPresenter {
 
                             @Override
                             public void onImageNotAvailable(String errorMessage) {
-                                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
+                               /* [MOTIVATION]
+                                    - If the request is done correctly there is no way that the image is not available.
+                                    - That is because of how we crate auction: the item image must exits otherwise you can't create the auction
+                                **/
+                                Log.e("ERROR", "createAuctionedByUserItemsLinearLayout, Item's image is not available: " + errorMessage);
                             }
                         });
                     }
@@ -199,7 +222,9 @@ public class LinearLayoutForItemsPresenter {
 
             @Override
             public boolean onItemsNotFoundFailure(String errorMessage) {
-                // TODO: COSA CAZZO FACCIO ORA, SICURO IMAGE_CONTENT DEVE ESSERE NULL E VA GESTITO
+                /* [MOTIVATION: BAD REQUEST] */
+                Log.d("onItemsNotFoundFailure", errorMessage);
+                showPopUpError("Could not retrieve the items you wanted to search. " + errorMessage);
                 return false;
             }
         });
@@ -247,7 +272,7 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(imageView);
 
         Button button = new Button(context);
-        button.setText(item.getDescription()); // TODO: COSA DEVO SCRIVERE?
+        button.setText(item.getDescription()); // TODO: COSA DEVO SCRIVERE NEL BOTTONE?
         button.setBackgroundResource(android.R.color.transparent); // background_light
         RelativeLayout.LayoutParams btnParams = new RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -256,11 +281,11 @@ public class LinearLayoutForItemsPresenter {
         btnParams.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
         btnParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        // TODO: AGGIUNGERE LISTENER AL BOTTONE
+        button.setOnClickListener(v -> handleClickOnItem(item, HomeConstantValues.WANTED));
         layout.addView(button, btnParams);
     }
 
-    private void addImageButton(LinearLayout layout, Context context, User loggedInUser, final String auctionType) {
+    private void addImageButtonToLinearLayout(LinearLayout layout, Context context, User loggedInUser, final String auctionType) {
         ImageButton createAuctionButton = new ImageButton(context);
 
         if (auctionType.equals(HomeConstantValues.AUCTIONED))
@@ -280,20 +305,36 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(createAuctionButton);
     }
 
+    private void addImageButtonToRelativeLayout(RelativeLayout layout, Context context, User loggedInUser) {
+        ImageButton createAuctionButton = new ImageButton(context);
+
+        createAuctionButton.setBackgroundResource(R.drawable.search_auction);
+        createAuctionButton.setLayoutParams(new LinearLayout.LayoutParams(
+                400, // Width in pixel
+                400,       // Height in pixel
+                0f         // Weight
+        ));
+        createAuctionButton.setOnClickListener(v -> {
+            Intent intent = handleClickOnImageButton(HomeConstantValues.WANTED, loggedInUser);
+            context.startActivity(intent);
+        });
+        layout.addView(createAuctionButton);
+    }
+
     private void handleClickOnItem(Item item, String auctionType) {
-        // TODO: RECUPERARE I DETTAGLI DELL'ASTA: AUCTION, ITEM (UTENTE DALL'ITEM)
+        // TODO: RECUPERARE I DETTAGLI DELL'ASTA: AUCTION, ITEM (L'UTENTE LO HAI NELL'ITEM)
         switch (auctionType) {
             case HomeConstantValues.FEATURED:
-                // TODO: PORTARE A SCHERMATA DI PARTECIPAZIONE ALL' ASTA (RELATIVAMENTE AL TIPO)
+                // TODO: PORTARE L'UTENTE ALLA SCHERMATA DI PARTECIPAZIONE ALL' ASTA (RELATIVAMENTE AL TIPO)
                 break;
             case HomeConstantValues.AUCTIONED:
-                // TODO: PORTARE A VISUALIZZAZIONE DELLO STATO DELL'ASTA
+                // TODO: PORTARE L'UTENTE ALLA VISUALIZZAZIONE DELLO STATO DELL'ASTA
                 break;
             case HomeConstantValues.WANTED:
-                // TODO: PORTARE A SCHERMATA DI PARTECIPAZIONE ALL' ASTA
+                // TODO: PORTARE L'UTENTE ALLA SCHERMATA DI PARTECIPAZIONE ALL' ASTA (RELATIVAMENTE AL TIPO) [QUI L'UTENTE FARA' L'OFFERTA PER LA PRIMA VOLTA]
                 break;
             default:
-                // TODO:
+                Log.e(TAG, "handleClickOnItem() --> Unexpected auctionType: " + auctionType);
         }
     }
 
@@ -303,5 +344,10 @@ public class LinearLayoutForItemsPresenter {
             return activityFactory.createIntentForSearchAuction(this.context, loggedInUser);
         }
         return activityFactory.createIntentForCreateAuction(this.context, loggedInUser);
+    }
+
+    private void showPopUpError(String message) {
+        Dialog dialog = new Dialog(context);
+        dialog.showAlertDialog("ITEM RETRIEVAL ERROR", message);
     }
 }

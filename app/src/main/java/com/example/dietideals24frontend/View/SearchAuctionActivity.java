@@ -148,7 +148,8 @@ public class SearchAuctionActivity extends AppCompatActivity {
                 @Override
                 public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
                     Log.e("Search Featured List<Items> Failure", errorMessage);
-                    // TODO: MOSTRARE NELLA PAGINA QUALCOSA CHE FACCIA CAPIRE CHE E' PRESENTE UN PROBLEMA
+                    Dialog dialog = new Dialog(getApplicationContext());
+                    dialog.showAlertDialog("ITEM RETRIEVAL ERROR", "Could not retrieve the items requested. " + errorMessage);
                     return false;
                 }
             });
