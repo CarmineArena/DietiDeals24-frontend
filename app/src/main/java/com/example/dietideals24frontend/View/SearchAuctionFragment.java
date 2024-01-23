@@ -1,13 +1,11 @@
-package com.example.dietideals24frontend.View.Dialog;
+package com.example.dietideals24frontend.View;
 
+import android.view.View;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-
+import android.view.LayoutInflater;
 import com.example.dietideals24frontend.R;
 
 public class SearchAuctionFragment extends Fragment {

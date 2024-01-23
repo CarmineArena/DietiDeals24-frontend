@@ -45,8 +45,8 @@ public class HomeFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         verticalLayout.removeAllViews();
-        LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester);
 
+        LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester, getFragmentManager());
         for (int i = 1; i <= 3; i++) {
             TextView textView = new TextView(context);
             HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);

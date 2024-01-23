@@ -11,13 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.annotation.SuppressLint;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import java.util.List;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
-import com.example.dietideals24frontend.Retrofit.Service.Requester;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
+import com.example.dietideals24frontend.Retrofit.Service.Requester;
 import com.example.dietideals24frontend.utility.HomeConstantValues;
 import com.example.dietideals24frontend.Retrofit.Callback.ImageCallback;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveUserItemsCallback;
@@ -33,10 +36,12 @@ public class LinearLayoutForItemsPresenter {
     private static final String TAG = "LinearLayoutForItemsPresenter";
     private final Context context;
     private final Requester requester;
+    private final FragmentManager manager;
 
-    public LinearLayoutForItemsPresenter(Context context, Requester requester) {
+    public LinearLayoutForItemsPresenter(Context context, Requester requester, FragmentManager manager) {
         this.context = context;
         this.requester = requester;
+        this.manager = manager;
     }
 
     /* METHODS */
@@ -286,39 +291,41 @@ public class LinearLayoutForItemsPresenter {
     }
 
     private void addImageButtonToLinearLayout(LinearLayout layout, Context context, User loggedInUser, final String auctionType) {
-        ImageButton createAuctionButton = new ImageButton(context);
+        ImageButton button = new ImageButton(context);
 
         if (auctionType.equals(HomeConstantValues.AUCTIONED))
-            createAuctionButton.setBackgroundResource(R.drawable.add_auction);
+            button.setBackgroundResource(R.drawable.add_auction);
         else
-            createAuctionButton.setBackgroundResource(R.drawable.search_auction);
+            button.setBackgroundResource(R.drawable.search_auction);
 
-        createAuctionButton.setLayoutParams(new LinearLayout.LayoutParams(
+        button.setLayoutParams(new LinearLayout.LayoutParams(
                 400, // Width in pixel
                 400,       // Height in pixel
                 0f         // Weight
         ));
-        createAuctionButton.setOnClickListener(v -> {
-            Intent intent = handleClickOnImageButton(auctionType, loggedInUser);
-            context.startActivity(intent);
+        button.setOnClickListener(v -> {
+            if (auctionType.equals(HomeConstantValues.AUCTIONED)) {
+                Intent intent = handleClickForCreateAuction(loggedInUser);
+                context.startActivity(intent);
+            } else {
+                createSearchAuctionFragment(loggedInUser);
+            }
         });
-        layout.addView(createAuctionButton);
+        layout.addView(button);
     }
 
     private void addImageButtonToRelativeLayout(RelativeLayout layout, Context context, User loggedInUser) {
-        ImageButton createAuctionButton = new ImageButton(context);
+        ImageButton button = new ImageButton(context);
 
-        createAuctionButton.setBackgroundResource(R.drawable.search_auction);
-        createAuctionButton.setLayoutParams(new LinearLayout.LayoutParams(
+        button.setBackgroundResource(R.drawable.search_auction);
+        button.setLayoutParams(new LinearLayout.LayoutParams(
                 400, // Width in pixel
                 400,       // Height in pixel
                 0f         // Weight
         ));
-        createAuctionButton.setOnClickListener(v -> {
-            Intent intent = handleClickOnImageButton(HomeConstantValues.WANTED, loggedInUser);
-            context.startActivity(intent);
-        });
-        layout.addView(createAuctionButton);
+        // It takes you only to SearchAuctionFragment
+        button.setOnClickListener(v -> createSearchAuctionFragment(loggedInUser));
+        layout.addView(button);
     }
 
     private void handleClickOnItem(Item item, String auctionType) {
@@ -338,16 +345,21 @@ public class LinearLayoutForItemsPresenter {
         }
     }
 
-    private Intent handleClickOnImageButton(final String auctionType, User loggedInUser) {
-        ActivityPresenter activityFactory = new ActivityPresenter();
-        if (auctionType.equals(HomeConstantValues.WANTED)) {
-            return activityFactory.createIntentForSearchAuction(this.context, loggedInUser);
-        }
-        return activityFactory.createIntentForCreateAuction(this.context, loggedInUser);
+    private Intent handleClickForCreateAuction(User loggedInUser) {
+        ActivityPresenter activityPresenter = new ActivityPresenter();
+        return activityPresenter.createIntentForCreateAuction(this.context, loggedInUser);
     }
 
     private void showPopUpError(String message) {
         Dialog dialog = new Dialog(context);
         dialog.showAlertDialog("ITEM RETRIEVAL ERROR", message);
+    }
+
+    private void createSearchAuctionFragment(User loggedInUser) {
+        FragmentTransaction fr = this.manager.beginTransaction();
+
+        FragmentPresenter presenter = new FragmentPresenter();
+        fr.replace(R.id.frameGeneral, presenter.createSearchAuctionFragment(loggedInUser));
+        fr.commit();
     }
 }

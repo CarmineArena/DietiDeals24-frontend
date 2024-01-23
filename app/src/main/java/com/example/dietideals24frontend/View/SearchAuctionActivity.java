@@ -136,7 +136,7 @@ public class SearchAuctionActivity extends AppCompatActivity {
                         RelativeLayout layout = new RelativeLayout(context);
                         // layout.setOrientation(LinearLayout.VERTICAL);
 
-                        LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester);
+                        LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester, getSupportFragmentManager());
                         presenter.createInternalLayoutWithFeaturedAuctions(layout, loggedInUser, searchTerm, selectedCategories);
 
                         scrollView.removeAllViews();

@@ -37,8 +37,13 @@ public class Home extends AppCompatActivity {
 
         Button btnSearch = findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(v -> {
-            // Intent intent1 = activityPresenter.createIntentForSearchAuction(Home.this, loggedInUser);
+            SearchAuctionFragment searchAuctionFragment = fragmentPresenter.createSearchAuctionFragment(loggedInUser);
+            replaceFragment(searchAuctionFragment);
+        });
 
+        Button btnHome = findViewById(R.id.button2);
+        btnHome.setOnClickListener(v -> {
+            Intent intent1 = activityPresenter.createIntentForHome(Home.this, loggedInUser);
             startActivity(intent1);
         });
     }
