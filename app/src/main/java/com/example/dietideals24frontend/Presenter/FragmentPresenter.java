@@ -3,6 +3,7 @@ package com.example.dietideals24frontend.Presenter;
 import android.os.Bundle;
 import com.example.dietideals24frontend.View.*;
 import com.example.dietideals24frontend.Model.User;
+import com.example.dietideals24frontend.View.Dialog.SearchAuctionFragment;
 
 public class FragmentPresenter implements FragmentPresenterInterface {
     @Override
@@ -35,6 +36,14 @@ public class FragmentPresenter implements FragmentPresenterInterface {
     public HomeFragment createHomeFragment(User user) {
         Bundle bundle = createBundleWithLoggedInUser(user);
         HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public SearchAuctionFragment createSearchAuctionFragment(User user) {
+        Bundle bundle = createBundleWithLoggedInUser(user);
+        SearchAuctionFragment fragment = new SearchAuctionFragment();
         fragment.setArguments(bundle);
         return fragment;
     }

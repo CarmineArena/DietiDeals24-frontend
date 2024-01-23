@@ -23,21 +23,22 @@ public class Home extends AppCompatActivity {
         Intent intent = getIntent();
         User loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
 
-        FragmentPresenter fragmentFactory = new FragmentPresenter();
-        ActivityPresenter activityFactory = new ActivityPresenter();
+        FragmentPresenter fragmentPresenter = new FragmentPresenter();
+        ActivityPresenter activityPresenter = new ActivityPresenter();
 
-        HomeFragment fragment = fragmentFactory.createHomeFragment(loggedInUser);
+        HomeFragment fragment = fragmentPresenter.createHomeFragment(loggedInUser);
         replaceFragment(fragment);
 
         Button btnCreate = findViewById(R.id.btnCreate);
         btnCreate.setOnClickListener(v -> {
-            Intent intent1 = activityFactory.createIntentForCreateAuction(Home.this, loggedInUser);
+            Intent intent1 = activityPresenter.createIntentForCreateAuction(Home.this, loggedInUser);
             startActivity(intent1);
         });
 
         Button btnSearch = findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(v -> {
-            Intent intent1 = activityFactory.createIntentForSearchAuction(Home.this, loggedInUser);
+            // Intent intent1 = activityPresenter.createIntentForSearchAuction(Home.this, loggedInUser);
+
             startActivity(intent1);
         });
     }
