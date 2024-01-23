@@ -135,17 +135,17 @@ public class SearchAuctionFragment extends Fragment {
             requester.sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(searchTerm, selectedCategories, loggedInUser, new RetrieveFeaturedItemsCallback() {
                 @Override
                 public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
+                    Context context = getContext();
                     if (itemsRetrieved.isEmpty()) {
                         Log.i("SEARCH SUCCESS BUT FOUND NONE", "LIST SIZE: " + itemsRetrieved.size());
-                        // TODO: MOSTRARE NELLA PAGINA "NON CI SONO OGGETTI" O QUALCOSA DI SIMILE
+                        Dialog dialog = new Dialog(context);
+                        dialog.showAlertDialog("ELEMENTS NOT FOUND", "Non ci sono oggetti all'asta che soddisfano la tua richiesta!");
+                        // TODO: RIPULIRE IL CAMPO DI RICERCA
                     } else {
-                        Context context = getContext();
-                        ScrollView scrollView = view.findViewById(R.id.scrollView);
-
-                        RelativeLayout layout = new RelativeLayout(context);
-                        // layout.setOrientation(LinearLayout.VERTICAL);
-
                         LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester, getFragmentManager());
+
+                        ScrollView scrollView = view.findViewById(R.id.scrollView);
+                        RelativeLayout layout = new RelativeLayout(context);
                         presenter.createInternalLayoutWithFeaturedAuctions(layout, loggedInUser, searchTerm, selectedCategories);
 
                         scrollView.removeAllViews();

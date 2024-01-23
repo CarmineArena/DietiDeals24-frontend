@@ -320,8 +320,7 @@ public class LinearLayoutForItemsPresenter {
         button.setBackgroundResource(R.drawable.search_auction);
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 400, // Width in pixel
-                400,       // Height in pixel
-                0f         // Weight
+                400        // Height in pixel
         ));
         // It takes you only to SearchAuctionFragment
         button.setOnClickListener(v -> createSearchAuctionFragment(loggedInUser));
