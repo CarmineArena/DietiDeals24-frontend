@@ -18,7 +18,6 @@ import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// TODO: 1. WHAT IF THE CLIENT (AT STARTUP) CANNOT CONNECT TO THE SERVER?
 // TODO: 2. Define OnRestart(), OnDestroy(), OnPause() ...
 
 public class MainActivity extends AppCompatActivity {

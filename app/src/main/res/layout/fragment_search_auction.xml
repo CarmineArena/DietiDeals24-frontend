@@ -43,6 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/search_button" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="377dp"
         android:layout_height="561dp"
         android:layout_marginStart="17dp"

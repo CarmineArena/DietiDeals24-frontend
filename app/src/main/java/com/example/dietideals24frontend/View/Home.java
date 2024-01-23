@@ -14,6 +14,8 @@ import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 
+// TODO: AGGIUNGERE TASTO "CERCA" E "TUTTE LE ASTE" (NON DINAMICAMENTE)
+
 public class Home extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

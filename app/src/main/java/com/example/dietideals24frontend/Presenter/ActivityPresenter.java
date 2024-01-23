@@ -19,11 +19,4 @@ public class ActivityPresenter implements ActivityPresenterInterface {
         intent.putExtra("loggedInUser", loggedInUser);
         return intent;
     }
-
-    @Override
-    public Intent createIntentForSearchAuction(Context context, User loggedInUser) {
-        Intent intent = new Intent(context, SearchAuctionActivity.class);
-        intent.putExtra("loggedInUser", loggedInUser);
-        return intent;
-    }
 }

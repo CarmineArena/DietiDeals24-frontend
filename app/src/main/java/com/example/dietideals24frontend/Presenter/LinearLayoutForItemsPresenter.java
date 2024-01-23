@@ -277,7 +277,7 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(imageView);
 
         Button button = new Button(context);
-        button.setText(item.getDescription()); // TODO: COSA DEVO SCRIVERE NEL BOTTONE?
+        button.setText(item.getName()); // We show the name of the Item
         button.setBackgroundResource(android.R.color.transparent); // background_light
         RelativeLayout.LayoutParams btnParams = new RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.WRAP_CONTENT,
