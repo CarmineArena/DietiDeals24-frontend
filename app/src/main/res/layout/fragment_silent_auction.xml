@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B9B9B9"
+    tools:context=".SilentAuctionFragment">
+
+    <TextView
+        android:id="@+id/ItemNameField"
+        android:layout_width="110dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="Nome Oggetto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/itemImage"
+        android:layout_width="127dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="22dp"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ItemNameField" />
+
+    <TextView
+        android:id="@+id/AuctionTypeField"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Asta Silenziosa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemImage" />
+
+    <TextView
+        android:id="@+id/DescriptionView"
+        android:layout_width="207dp"
+        android:layout_height="122dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/descriptionbg"
+        android:text="Descrizione..."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ItemNameField" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Asta creata da: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AuctionTypeField" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/NameBtn"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:background="@android:color/transparent"
+        android:text="Nome persona"
+        android:textAlignment="viewStart"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/AuctionTypeField" />
+
+    <TextView
+        android:id="@+id/LastOfferView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:text="Ultima offerta: €__,__"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Name2Btn"
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:text="Nome persona"
+        android:textAlignment="viewStart"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/LastOfferView" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/OfferButton"
+        android:layout_width="113dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="104dp"
+        android:background="@drawable/buttonbg"
+        android:text="Fai un'offerta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/offertField" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="Fatta da:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LastOfferView" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
+        android:text="Asta aperta fino al giorno:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NameBtn" />
+
+    <Spinner
+        android:id="@+id/offerSpinner"
+        android:layout_width="182dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="35dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Name2Btn" />
+
+    <EditText
+        android:id="@+id/offertField"
+        android:layout_width="162dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/inputtextbg"
+        android:ems="10"
+        android:hint="€:__,__"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toEndOf="@+id/offerSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/Name2Btn" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Prezzo iniziale: €"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
