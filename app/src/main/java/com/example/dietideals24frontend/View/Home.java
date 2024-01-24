@@ -14,7 +14,7 @@ import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 
-// TODO: AGGIUNGERE TASTO "CERCA" E "TUTTE LE ASTE" (NON DINAMICAMENTE)
+// TODO: GESTIRE MEGLIO I DUE BOTTONI AL "TOP" DELLA SCHERMATA
 
 public class Home extends AppCompatActivity {
     @Override

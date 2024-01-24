@@ -39,12 +39,14 @@ public class HomeFragment extends Fragment {
         LinearLayout verticalLayout = new LinearLayout(context);
         verticalLayout.setOrientation(LinearLayout.VERTICAL);
 
+        /* [START] SCROLL VIEW CREATION */
         ScrollView scrollView = new ScrollView(context);
         scrollView.setLayoutParams(new ViewGroup.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         verticalLayout.removeAllViews();
+        /* [END] SCROLL VIEW */
 
         LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester, getFragmentManager());
         for (int i = 1; i <= 3; i++) {

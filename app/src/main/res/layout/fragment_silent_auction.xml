@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#B9B9B9"
-    tools:context=".SilentAuctionFragment">
+    tools:context=".View.SilentAuctionFragment">
 
     <TextView
         android:id="@+id/ItemNameField"

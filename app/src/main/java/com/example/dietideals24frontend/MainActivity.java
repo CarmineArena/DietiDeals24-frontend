@@ -18,8 +18,6 @@ import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-// TODO: 2. Define OnRestart(), OnDestroy(), OnPause() ...
-
 public class MainActivity extends AppCompatActivity {
     public static final String BASE_URL = ""; // ALWAYS REMEMBER NOT TO PUSH THIS
     public static Retrofit retrofitService;

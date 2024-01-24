@@ -328,16 +328,14 @@ public class LinearLayoutForItemsPresenter {
     }
 
     private void handleClickOnItem(Item item, String auctionType) {
-        // TODO: RECUPERARE I DETTAGLI DELL'ASTA: AUCTION, ITEM (L'UTENTE LO HAI NELL'ITEM)
         switch (auctionType) {
             case HomeConstantValues.FEATURED:
-                // TODO: PORTARE L'UTENTE ALLA SCHERMATA DI PARTECIPAZIONE ALL' ASTA (RELATIVAMENTE AL TIPO)
+            case HomeConstantValues.WANTED:
+                Intent intent1 = new ActivityPresenter().createAuctionIntent(context, item);
+                this.context.startActivity(intent1);
                 break;
             case HomeConstantValues.AUCTIONED:
                 // TODO: PORTARE L'UTENTE ALLA VISUALIZZAZIONE DELLO STATO DELL'ASTA
-                break;
-            case HomeConstantValues.WANTED:
-                // TODO: PORTARE L'UTENTE ALLA SCHERMATA DI PARTECIPAZIONE ALL' ASTA (RELATIVAMENTE AL TIPO) [QUI L'UTENTE FARA' L'OFFERTA PER LA PRIMA VOLTA]
                 break;
             default:
                 Log.e(TAG, "handleClickOnItem() --> Unexpected auctionType: " + auctionType);

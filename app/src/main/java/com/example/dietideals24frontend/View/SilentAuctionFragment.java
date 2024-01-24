@@ -1,20 +1,22 @@
-package com.example.dietideals24frontend;
+package com.example.dietideals24frontend.View;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Spinner;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.view.LayoutInflater;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
+import com.example.dietideals24frontend.R;
+
+// TODO: RICORDATI DI GESTIRE CORRETTAMENTE QUESTO FRAGMENT
 
 public class SilentAuctionFragment extends Fragment {
 

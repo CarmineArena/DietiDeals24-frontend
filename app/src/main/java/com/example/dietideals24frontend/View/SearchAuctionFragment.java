@@ -42,6 +42,7 @@ public class SearchAuctionFragment extends Fragment {
     private User loggedInUser;
     private Dialog dialog;
     private Retrofit retrofitService;
+    private EditText searchTextField;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,7 +63,7 @@ public class SearchAuctionFragment extends Fragment {
         Button selectCategoryButton = view.findViewById(R.id.filter_button);
         selectCategoryButton.setOnClickListener(v -> showCategoryDialog());
 
-        EditText searchTextField = view.findViewById(R.id.search_button);
+        searchTextField = view.findViewById(R.id.search_button);
         searchTextField.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                     (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
@@ -140,7 +141,7 @@ public class SearchAuctionFragment extends Fragment {
                         Log.i("SEARCH SUCCESS BUT FOUND NONE", "LIST SIZE: " + itemsRetrieved.size());
                         Dialog dialog = new Dialog(context);
                         dialog.showAlertDialog("ELEMENTS NOT FOUND", "Non ci sono oggetti all'asta che soddisfano la tua richiesta!");
-                        // TODO: RIPULIRE IL CAMPO DI RICERCA
+                        searchTextField.setText("");
                     } else {
                         LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester, getFragmentManager());
 

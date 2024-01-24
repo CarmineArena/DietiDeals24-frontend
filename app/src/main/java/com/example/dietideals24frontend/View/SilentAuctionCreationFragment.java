@@ -15,18 +15,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.provider.MediaStore;
 
 import com.bumptech.glide.Glide;
-import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
+import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 
 import com.example.dietideals24frontend.R;
@@ -113,7 +113,6 @@ public class SilentAuctionCreationFragment extends Fragment {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                         String currentDateString = currentDate.format(formatter);
 
-                        // TODO: A questo vogliamo aggiungere un tetto massimo relativo all'anno?
                         if (currentDateString.compareTo(selectedDate) < 0) {
                             dataButton.setText(selectedDate);
                         }
@@ -132,8 +131,6 @@ public class SilentAuctionCreationFragment extends Fragment {
             String itemCategory    = getCategoryChoice();
             String itemBasePrize   = String.valueOf(basePrizeField.getText());
             String itemDescription = String.valueOf(descriptionField.getText());
-
-            // TODO: Bisogna aggiungere il campo "Description" per l'Item. Per il momento è messo "Unknown"
 
             if (itemName.isEmpty() || itemCategory.isEmpty() || itemCategory.equals("Scegli una categoria") || itemBasePrize.isEmpty()
                     || expirationDate.isEmpty() || getImageContent() == null || itemDescription.isEmpty()) {
@@ -263,7 +260,7 @@ public class SilentAuctionCreationFragment extends Fragment {
             public boolean onAuctionRegistrationSuccess(AuctionDTO auctionDTO) {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
 
-                // TODO: Devo mostrare il Dialog di successo nella registrazione dell'asta?
+                // TODO: NOTIFICARE ALL'UTENTE L'AVVENIMENTO DELLA CORRETTA CREAZIONE DELL'ASTA
 
                 ActivityPresenter factory = new ActivityPresenter();
                 Intent intent = factory.createIntentForHome(getContext(), user); // Return Home with loggedIn user's informations
@@ -274,7 +271,8 @@ public class SilentAuctionCreationFragment extends Fragment {
             @Override
             public boolean onAuctionRegistrationFailure(String errorMessage) {
                 Log.i("AUCTION REGISTRATION REQUEST", "FAILED TO SEND");
-                // TODO: Devo mostrare il Dialog di fallimento nella registrazione dell'asta?
+                Dialog dialog = new Dialog(getContext());
+                dialog.showAlertDialog("AUCTION ERROR", "Non è stato possibile registrare la creazione dell'asta. Errore: " + errorMessage);
                 return false;
             }
         });
