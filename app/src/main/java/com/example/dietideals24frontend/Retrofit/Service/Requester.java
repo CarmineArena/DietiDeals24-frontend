@@ -6,10 +6,12 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 
 import com.example.dietideals24frontend.Model.*;
-import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
-import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.Retrofit.*;
 import com.example.dietideals24frontend.Retrofit.Callback.*;
+
+import com.example.dietideals24frontend.Model.DTO.ItemDTO;
+import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
+import com.example.dietideals24frontend.Utility.Exception.UnhandledOptionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -332,6 +334,41 @@ public class Requester implements CommunicationInterface {
             public void onFailure(@NonNull Call<byte[]> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onFetchFailure(t.getMessage());
                 Log.e("Search Item Image Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendFindAuctionRequest(Integer itemId, String name, String description, final RetrieveAuctionCallback callback) throws UnhandledOptionException {
+        SearchAuctionService api = retrofitService.create(SearchAuctionService.class);
+
+        Call<AuctionDTO> call = api.searchAuction(itemId, name, description);
+        call.enqueue(new Callback<AuctionDTO>() {
+            @Override
+            public void onResponse(@NonNull Call<AuctionDTO> call, @NonNull Response<AuctionDTO> response) {
+                boolean returnValue;
+                if(response.isSuccessful()) {
+                    try {
+                        returnValue = callback.onRetrieveAuctionSuccess(response.body());
+                    } catch (UnhandledOptionException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    returnValue = callback.onRetrieveAuctionFailure(response.message());
+                }
+
+                if (returnValue) {
+                    Log.i("Search Auction", "Auction retrieved correctly!");
+                } else {
+                    Log.e("Search Auction Error", "Could not find the auction requested. Error code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AuctionDTO> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onRetrieveAuctionFailure(t.getMessage());
+                Log.e("Search Auction Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();
             }
         });

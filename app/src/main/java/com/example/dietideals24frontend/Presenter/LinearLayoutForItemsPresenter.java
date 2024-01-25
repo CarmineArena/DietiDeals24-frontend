@@ -21,14 +21,14 @@ import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
-import com.example.dietideals24frontend.utility.HomeConstantValues;
+import com.example.dietideals24frontend.Utility.HomeConstantValues;
 import com.example.dietideals24frontend.Retrofit.Callback.ImageCallback;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveUserItemsCallback;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveFeaturedItemsCallback;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsWantedByUserService;
 
-import com.example.dietideals24frontend.utility.ItemUtils;
-import com.example.dietideals24frontend.utility.ImageUtils;
+import com.example.dietideals24frontend.Utility.ItemUtils;
+import com.example.dietideals24frontend.Utility.ImageUtils;
 
 // TODO: SICCOME LIMITO LA STAMPA DELLE ASTE IN EVIDENZA A 10, STABILIRE UN CRITERIO SECONDO IL QUALE RECUPERARE GLI OGGETTI
 

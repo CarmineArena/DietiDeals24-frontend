@@ -20,7 +20,7 @@ import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 
 import retrofit2.Retrofit;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
-import com.example.dietideals24frontend.utility.EmailValidator;
+import com.example.dietideals24frontend.Utility.EmailValidator;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
 import com.example.dietideals24frontend.Retrofit.Callback.UserRegistrationCallback;
 

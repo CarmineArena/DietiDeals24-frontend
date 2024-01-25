@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.utility.EmailValidator;
+import com.example.dietideals24frontend.Utility.EmailValidator;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
 import com.example.dietideals24frontend.Retrofit.Callback.UserLoginCallback;
 

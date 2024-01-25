@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.utility;
+package com.example.dietideals24frontend.Utility;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

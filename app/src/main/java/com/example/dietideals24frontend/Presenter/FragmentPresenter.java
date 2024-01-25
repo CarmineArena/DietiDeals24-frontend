@@ -3,6 +3,8 @@ package com.example.dietideals24frontend.Presenter;
 import android.os.Bundle;
 import com.example.dietideals24frontend.View.*;
 import com.example.dietideals24frontend.Model.User;
+import com.example.dietideals24frontend.Model.Item;
+import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 import com.example.dietideals24frontend.View.SearchAuctionFragment;
 
 public class FragmentPresenter implements FragmentPresenterInterface {
@@ -44,6 +46,17 @@ public class FragmentPresenter implements FragmentPresenterInterface {
     public SearchAuctionFragment createSearchAuctionFragment(User user) {
         Bundle bundle = createBundleWithLoggedInUser(user);
         SearchAuctionFragment fragment = new SearchAuctionFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public SilentAuctionFragment createSilenAuctionFragment(AuctionDTO auctionDTO, Item item) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("selectedItem", item);
+        bundle.putSerializable("selectedAuction", auctionDTO);
+
+        SilentAuctionFragment fragment = new SilentAuctionFragment();
         fragment.setArguments(bundle);
         return fragment;
     }

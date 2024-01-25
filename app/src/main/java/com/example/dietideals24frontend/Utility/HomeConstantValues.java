@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.utility;
+package com.example.dietideals24frontend.Utility;
 
 public class HomeConstantValues {
     public static final String FEATURED = "featured";

@@ -5,6 +5,7 @@ import com.example.dietideals24frontend.Model.*;
 import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.Retrofit.Callback.*;
+import com.example.dietideals24frontend.Utility.Exception.UnhandledOptionException;
 
 public interface CommunicationInterface {
     /* POST REQUESTS */
@@ -20,4 +21,5 @@ public interface CommunicationInterface {
     void sendFeaturedItemsUpForAuctionRequest(Integer userId, String email, final RetrieveFeaturedItemsCallback callback);
     void sendCreatedByUserItemsRequest(User user, final RetrieveUserItemsCallback callback);
     void sendFindItemsWantedByUserRequest(Integer userId, String email, String password, final RetrieveItemsWantedByUserService callback);
+    void sendFindAuctionRequest(Integer itemId, String name, String description, final RetrieveAuctionCallback callback) throws UnhandledOptionException;
 }

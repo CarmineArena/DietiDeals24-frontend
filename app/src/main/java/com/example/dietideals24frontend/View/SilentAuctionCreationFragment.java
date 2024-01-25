@@ -32,7 +32,7 @@ import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.*;
 import com.example.dietideals24frontend.Retrofit.Callback.*;
-import com.example.dietideals24frontend.utility.ImageUtils;
+import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
 

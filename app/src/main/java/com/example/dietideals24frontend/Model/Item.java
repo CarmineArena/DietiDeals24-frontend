@@ -3,7 +3,7 @@ package com.example.dietideals24frontend.Model;
 import java.io.Serializable;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.example.dietideals24frontend.utility.ByteArrayAdapter;
+import com.example.dietideals24frontend.Utility.ByteArrayAdapter;
 
 public class Item implements Serializable {
     private Integer itemId;
