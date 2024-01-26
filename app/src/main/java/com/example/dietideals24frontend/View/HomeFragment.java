@@ -36,17 +36,17 @@ public class HomeFragment extends Fragment {
         retrofitService = MainActivity.retrofitService;
         Requester requester = new Requester(retrofitService);
 
-        LinearLayout verticalLayout = new LinearLayout(context);
+        /*LinearLayout verticalLayout = new LinearLayout(context);
         verticalLayout.setOrientation(LinearLayout.VERTICAL);
 
-        /* [START] SCROLL VIEW CREATION */
+        /* [START] SCROLL VIEW CREATION
         ScrollView scrollView = new ScrollView(context);
         scrollView.setLayoutParams(new ViewGroup.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         verticalLayout.removeAllViews();
-        /* [END] SCROLL VIEW */
+        /* [END] SCROLL VIEW
 
         LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester, getFragmentManager());
         for (int i = 1; i <= 3; i++) {
@@ -71,7 +71,15 @@ public class HomeFragment extends Fragment {
             verticalLayout.addView(textView);
             verticalLayout.addView(horizontalScrollView);
         }
-        scrollView.addView(verticalLayout);
-        return scrollView;
+        scrollView.addView(verticalLayout);*/
+        LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester, getFragmentManager());
+        LinearLayout evidenceLayout = view.findViewById(R.id.evidenceAuction);
+        presenter.createFeaturedItemsLinearLayout(evidenceLayout, loggedInUser);
+        LinearLayout createdLayout = view.findViewById(R.id.createdAuction);
+        presenter.createAuctionedByUserItemsLinearLayout(createdLayout, loggedInUser);
+        LinearLayout joinedLayout = view.findViewById(R.id.joinedAuction);
+        presenter.createItemsWantedByUserLinearLayout(joinedLayout, loggedInUser);
+
+        return view;
     }
 }
