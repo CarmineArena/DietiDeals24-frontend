@@ -10,13 +10,16 @@
     <ScrollView
         android:layout_width="414dp"
         android:layout_height="614dp"
-        tools:layout_editor_absoluteX="-2dp"
-        tools:layout_editor_absoluteY="117dp">
+        android:layout_marginTop="21dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchButton">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView3"
@@ -70,5 +73,35 @@
             </HorizontalScrollView>
         </LinearLayout>
     </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/searchButton"
+        android:layout_width="198dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="9dp"
+        android:hint="Cerca..."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeView" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/allAuctionButton"
+        android:layout_width="145dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="47dp"
+        android:layout_marginEnd="17dp"
+        android:text="Tutte le aste"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/welcomeView"
+        android:layout_width="119dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Benvenuto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
