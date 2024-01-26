@@ -32,7 +32,7 @@
             android:background="@drawable/inputtextbg"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="TITOLO OGGETTO"
+            android:hint="Titolo oggetto"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TitleView" />
 

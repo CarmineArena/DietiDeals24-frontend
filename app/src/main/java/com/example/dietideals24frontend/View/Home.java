@@ -14,8 +14,6 @@ import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 
-// TODO: GESTIRE MEGLIO I DUE BOTTONI AL "TOP" DELLA SCHERMATA
-
 public class Home extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +45,11 @@ public class Home extends AppCompatActivity {
         btnHome.setOnClickListener(v -> {
             Intent intent1 = activityPresenter.createIntentForHome(Home.this, loggedInUser);
             startActivity(intent1);
+        });
+
+        Button btnProfile = findViewById(R.id.button3);
+        btnProfile.setOnClickListener(v -> {
+            // TODO: GESTIRE IL PROFILO UTENTE
         });
     }
 

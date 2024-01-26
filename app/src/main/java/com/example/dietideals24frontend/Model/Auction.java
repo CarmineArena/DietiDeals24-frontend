@@ -4,6 +4,7 @@ import java.util.Set;
 import java.sql.Date;
 import java.sql.Time;
 import java.io.Serializable;
+import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 
 public class Auction implements Serializable {
     private Integer auctionId;
@@ -19,6 +20,17 @@ public class Auction implements Serializable {
     /* CONSTRUCTOR */
 
     public Auction() {}
+
+    public Auction(AuctionDTO auctionDTO, Item item) {
+        this.auctionId         = auctionDTO.getAuctionId();
+        this.ownerId           = auctionDTO.getOwnerId();
+        this.item              = item;
+        this.active            = auctionDTO.isActive();
+        this.auctionType       = auctionDTO.getAuctionType();
+        this.expirationDate    = Date.valueOf(auctionDTO.getExpirationDate());
+        this.expirationTime    = auctionDTO.getExpirationTime();
+        this.currentOfferValue = auctionDTO.getCurrentOfferValue();
+    }
 
     /* GETTERS AND SETTERS */
 

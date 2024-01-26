@@ -4,7 +4,7 @@ import android.os.Bundle;
 import com.example.dietideals24frontend.View.*;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Item;
-import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
+import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.View.SearchAuctionFragment;
 
 public class FragmentPresenter implements FragmentPresenterInterface {
@@ -51,10 +51,9 @@ public class FragmentPresenter implements FragmentPresenterInterface {
     }
 
     @Override
-    public SilentAuctionFragment createSilenAuctionFragment(AuctionDTO auctionDTO, Item item) {
+    public SilentAuctionFragment createSilenAuctionFragment(Auction auction) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("selectedItem", item);
-        bundle.putSerializable("selectedAuction", auctionDTO);
+        bundle.putSerializable("selectedAuction", auction);
 
         SilentAuctionFragment fragment = new SilentAuctionFragment();
         fragment.setArguments(bundle);

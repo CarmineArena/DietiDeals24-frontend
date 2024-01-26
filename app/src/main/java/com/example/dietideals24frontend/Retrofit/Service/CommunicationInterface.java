@@ -22,4 +22,5 @@ public interface CommunicationInterface {
     void sendCreatedByUserItemsRequest(User user, final RetrieveUserItemsCallback callback);
     void sendFindItemsWantedByUserRequest(Integer userId, String email, String password, final RetrieveItemsWantedByUserService callback);
     void sendFindAuctionRequest(Integer itemId, String name, String description, final RetrieveAuctionCallback callback) throws UnhandledOptionException;
+    void sendFindBestOfferRequest(Integer itemId, Integer auctionId, final RetrieveBestOfferCallback callback);
 }

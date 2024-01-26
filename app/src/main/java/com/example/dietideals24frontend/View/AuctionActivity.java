@@ -16,11 +16,12 @@ import com.example.dietideals24frontend.Utility.Exception.UnhandledOptionExcepti
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.MainActivity;
+import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveAuctionCallback;
 
-public class Auction extends AppCompatActivity {
+public class AuctionActivity extends AppCompatActivity {
     private Item item;
     private Retrofit retrofitService;
 
@@ -38,14 +39,14 @@ public class Auction extends AppCompatActivity {
             requester.sendFindAuctionRequest(item.getItemId(), item.getName(), item.getDescription(), new RetrieveAuctionCallback() {
                 @Override
                 public boolean onRetrieveAuctionSuccess(AuctionDTO retrievedAuction) throws UnhandledOptionException {
-                    // TODO: COSTRUISCO L'OGGETTO AUCTION OPPURE LASCIO AUCTION_DTO?
+                    Auction auction = new Auction(retrievedAuction, item);
 
                     String auctionType = String.valueOf(retrievedAuction.getAuctionType());
                     FragmentPresenter presenter = new FragmentPresenter();
 
                     switch (auctionType) {
                         case "SILENT":
-                            SilentAuctionFragment fragment = presenter.createSilenAuctionFragment(retrievedAuction, item);
+                            SilentAuctionFragment fragment = presenter.createSilenAuctionFragment(auction);
                             replaceFragment(fragment);
                             break;
                         case "ENGLISH":
