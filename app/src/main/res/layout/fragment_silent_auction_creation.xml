@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B9B9B9">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".View.SilentAuctionCreationFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".SilentAuctionCreationFragment">
+        <TextView
+            android:id="@+id/imagetextview"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_medium_italic"
+            android:gravity="center_vertical"
+            android:text="Foto dell'articolo"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button"
-            android:layout_width="118dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="62dp"
-            android:layout_marginTop="52dp"
-            android:text="Immagine"
+            android:layout_width="180dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/button2bg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.9"
-            app:layout_constraintStart_toEndOf="@+id/itemImage"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+            android:text="Carica una foto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemImage" />
 
         <EditText
             android:id="@+id/editTextTextPersonName"
             android:layout_width="205dp"
             android:layout_height="39dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/inputtextbg"
             android:ems="10"
+            android:hint="Nome..."
             android:inputType="textPersonName"
-            android:hint="Titolo oggetto"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TitleView" />
 
@@ -40,39 +47,45 @@
             android:id="@+id/spinner"
             android:layout_width="275dp"
             android:layout_height="29dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description_field" />
+            app:layout_constraintTop_toBottomOf="@+id/button" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/data_button"
-            android:layout_width="103dp"
-            android:layout_height="43dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="28dp"
+            android:layout_width="166dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/button2bg"
-            android:text="SetData"
+            android:text="Imposta la data"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="26dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="8dp"
-            android:text="Importo minimo: €"
+            android:layout_width="166dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/poppins_medium_italic"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Importo minimo:"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
         <EditText
             android:id="@+id/editTextTextPersonName2"
-            android:layout_width="135dp"
-            android:layout_height="34dp"
+            android:layout_width="166dp"
+            android:layout_height="40dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/inputtextbg"
             android:ems="10"
-            android:hint="__,__"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="€0,00"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -81,8 +94,8 @@
             android:id="@+id/next_button"
             android:layout_width="94dp"
             android:layout_height="42dp"
-            android:layout_marginTop="44dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="32dp"
             android:background="@drawable/button2bg"
             android:text="avanti"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,51 +103,61 @@
 
         <ImageView
             android:id="@+id/itemImage"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
             android:scaleType="centerInside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+            app:layout_constraintTop_toBottomOf="@+id/imagetextview" />
 
         <EditText
             android:id="@+id/description_field"
-            android:layout_width="336dp"
-            android:layout_height="114dp"
-            android:layout_marginTop="7dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/inputtextbg"
+            android:gravity="top"
             android:hint="Descrizione..."
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <TextView
             android:id="@+id/TitleView"
-            android:layout_width="167dp"
-            android:layout_height="33dp"
-            android:text="Titolo"
-            android:textSize="24sp"
+            android:layout_width="171dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_medium_italic"
+            android:text="Nome dell'articolo"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/poppins_medium_italic"
+            android:gravity="center_vertical"
             android:text="Descrizione dell'articolo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemImage" />
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="40dp"
+            android:layout_width="166dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins_medium_italic"
+            android:gravity="center_horizontal|center_vertical"
             android:text="Data di scadenza"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>

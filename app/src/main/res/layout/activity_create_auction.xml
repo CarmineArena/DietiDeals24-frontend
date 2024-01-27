@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.CreateAuction">
+    tools:context=".View.CreateAuction"
+    android:background="#B9B9B9">
 
 
     <Spinner
@@ -12,22 +13,21 @@
         android:layout_width="334dp"
         android:layout_height="34dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <FrameLayout
         android:id="@+id/frameAuction"
-        android:layout_width="304dp"
-        android:layout_height="572dp"
-        android:layout_marginStart="53dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="54dp"
+        android:layout_width="404dp"
+        android:layout_height="627dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerTypeAuction">
 
@@ -35,13 +35,15 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="200dp"
-        android:layout_height="23dp"
+        android:layout_width="289dp"
+        android:layout_height="30dp"
         android:layout_marginStart="105dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="106dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="105dp"
         android:text="Definisci la tua asta"
+        android:fontFamily="@font/poppins_bold_italic"
         android:textAlignment="center"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
