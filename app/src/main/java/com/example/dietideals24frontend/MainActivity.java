@@ -8,6 +8,15 @@ import android.annotation.SuppressLint;
 import androidx.fragment.app.*;
 import androidx.appcompat.app.*;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import com.example.dietideals24frontend.Retrofit.AuctionNotificationService;
+import com.example.dietideals24frontend.Utility.Task.AuctionNotificationTask;
+import com.example.dietideals24frontend.Retrofit.Callback.AuctionNotificationCallback;
+
 import com.example.dietideals24frontend.View.LogInFragment;
 import com.example.dietideals24frontend.View.SignUpFragment;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
@@ -23,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public static Retrofit retrofitService;
     private Button btnFragment;
     private TextView TextFragment;
+    private ScheduledExecutorService scheduler;
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -63,5 +73,35 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(logInFragment);
             }
         });
+
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        startNotificationTask();
+    }
+
+    // TODO: MOSTRARE LE NOTIFICHE ALL'UTENTE (NOTIFICATION MANAGER)
+    private void startNotificationTask() {
+        long interval = 20 * 1000; // 20 seconds
+
+        scheduler.scheduleAtFixedRate(() -> {
+            AuctionNotificationService service = retrofitService.create(AuctionNotificationService.class);
+            AuctionNotificationTask task = new AuctionNotificationTask(service, new AuctionNotificationCallback() {
+                @Override
+                public void onNotificationsReceived(List<String> notifications) {
+                    // TODO: STABILIRE COSA FARE
+                }
+
+                @Override
+                public void onApiError() {
+                    // TODO: STABILIRE COSA FARE
+                }
+            });
+            task.execute();
+        }, 0, interval, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (scheduler != null) scheduler.shutdown();
     }
 }

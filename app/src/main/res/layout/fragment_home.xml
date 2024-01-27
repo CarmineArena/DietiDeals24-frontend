@@ -61,7 +61,7 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Le tue aste" />
+                android:text="Aste a cui partecipi" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
