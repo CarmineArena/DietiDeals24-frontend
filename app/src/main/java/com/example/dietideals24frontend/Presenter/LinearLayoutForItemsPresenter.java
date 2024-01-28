@@ -30,8 +30,6 @@ import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsWantedByU
 import com.example.dietideals24frontend.Utility.ItemUtils;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 
-// TODO: SICCOME LIMITO LA STAMPA DELLE ASTE IN EVIDENZA A 10, STABILIRE UN CRITERIO SECONDO IL QUALE RECUPERARE GLI OGGETTI
-
 public class LinearLayoutForItemsPresenter {
     private static final String TAG = "LinearLayoutForItemsPresenter";
     private final Context context;
@@ -71,7 +69,7 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 featuredItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(featuredItems.get(pos), HomeConstantValues.FEATURED));
+                                layout.addView(createInternalLayout(featuredItems.get(pos), loggedInUser, HomeConstantValues.FEATURED));
                             }
 
                             @Override
@@ -117,7 +115,7 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 items.get(pos).setImage(imageContent);
-                                createRelativeLayout(layout, items.get(pos));
+                                createRelativeLayout(layout, loggedInUser, items.get(pos));
                             }
 
                             @Override
@@ -163,7 +161,7 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 auctionedByUserItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(auctionedByUserItems.get(pos), HomeConstantValues.AUCTIONED));
+                                layout.addView(createInternalLayout(auctionedByUserItems.get(pos), loggedInUser, HomeConstantValues.AUCTIONED));
                             }
 
                             @Override
@@ -208,7 +206,7 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 wantedByUserItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(wantedByUserItems.get(pos), HomeConstantValues.WANTED));
+                                layout.addView(createInternalLayout(wantedByUserItems.get(pos), loggedInUser, HomeConstantValues.WANTED));
                             }
 
                             @Override
@@ -238,7 +236,7 @@ public class LinearLayoutForItemsPresenter {
     /* PRIVATE METHODS */
 
     @SuppressLint("SetTextI18n")
-    private LinearLayout createInternalLayout(Item item, final String auctionType) {
+    private LinearLayout createInternalLayout(Item item, User loggedInUser, final String auctionType) {
         ImageView imageView = new ImageView(context);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(
                 400, // Width in pixel
@@ -255,7 +253,7 @@ public class LinearLayoutForItemsPresenter {
         else
             button.setText("VISUALIZZA");
 
-        button.setOnClickListener(v -> handleClickOnItem(item, auctionType));
+        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser, auctionType));
 
         LinearLayout internal = new LinearLayout(context);
         internal.setOrientation(LinearLayout.VERTICAL);
@@ -266,7 +264,7 @@ public class LinearLayoutForItemsPresenter {
         return internal;
     }
 
-    private void createRelativeLayout(RelativeLayout layout, Item item) {
+    private void createRelativeLayout(RelativeLayout layout, User loggedInUser, Item item) {
         ImageView imageView = new ImageView(context);
         imageView.setId(View.generateViewId());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -286,7 +284,7 @@ public class LinearLayoutForItemsPresenter {
         btnParams.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
         btnParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        button.setOnClickListener(v -> handleClickOnItem(item, HomeConstantValues.WANTED));
+        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser, HomeConstantValues.WANTED));
         layout.addView(button, btnParams);
     }
 
@@ -327,15 +325,15 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(button);
     }
 
-    private void handleClickOnItem(Item item, String auctionType) {
+    private void handleClickOnItem(Item item, User loggedInUser, String auctionType) {
         switch (auctionType) {
             case HomeConstantValues.FEATURED:
             case HomeConstantValues.WANTED:
-                Intent intent1 = new ActivityPresenter().createAuctionIntent(context, item);
+                Intent intent1 = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item);
                 this.context.startActivity(intent1);
                 break;
             case HomeConstantValues.AUCTIONED:
-                // TODO: PORTARE L'UTENTE ALLA VISUALIZZAZIONE DELLO STATO DELL'ASTA
+                // TODO: PORTARE L'UTENTE ALLA VISUALIZZAZIONE DELLO STATO DELLA SUA ASTA
                 break;
             default:
                 Log.e(TAG, "handleClickOnItem() --> Unexpected auctionType: " + auctionType);

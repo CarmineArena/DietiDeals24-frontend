@@ -5,15 +5,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.os.Bundle;
 import android.content.Intent;
 
 import retrofit2.Retrofit;
-
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 import com.example.dietideals24frontend.Utility.Exception.UnhandledOptionException;
 
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.Auction;
@@ -23,6 +24,7 @@ import com.example.dietideals24frontend.Retrofit.Callback.RetrieveAuctionCallbac
 
 public class AuctionActivity extends AppCompatActivity {
     private Item item;
+    private User loggedInUser;
     private Retrofit retrofitService;
 
     @Override
@@ -32,6 +34,7 @@ public class AuctionActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         item = (Item) intent.getSerializableExtra("selectedItem");
+        loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
 
         retrofitService = MainActivity.retrofitService;
         Requester requester = new Requester(retrofitService);
@@ -46,7 +49,7 @@ public class AuctionActivity extends AppCompatActivity {
 
                     switch (auctionType) {
                         case "SILENT":
-                            SilentAuctionFragment fragment = presenter.createSilenAuctionFragment(auction);
+                            SilentAuctionFragment fragment = presenter.createSilenAuctionFragment(loggedInUser, auction);
                             replaceFragment(fragment);
                             break;
                         case "ENGLISH":
@@ -59,9 +62,10 @@ public class AuctionActivity extends AppCompatActivity {
                     return true;
                 }
 
+                // NO ERRORS SHOULD HAPPEN HERE (THE ITEM AND THE AUCTION BOTH EXIST)
                 @Override
                 public boolean onRetrieveAuctionFailure(String errorMessage) {
-                    // TODO: COSA FACCIO IN QUESTO CASO? MOSTRO UN DIALOG? (NON DOVREMMO AVERE ERRORI CLASSE 400 o 500)
+                    Log.e("Auction Activity", "Could not retrieve auction informations. Error: " + errorMessage);
                     return false;
                 }
             });

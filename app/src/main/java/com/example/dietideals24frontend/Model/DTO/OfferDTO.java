@@ -5,6 +5,7 @@ import com.example.dietideals24frontend.Model.User;
 
 public class OfferDTO {
     private Long offerId;
+    private Integer auctionId;
     private User user;
 
     // private Auction auction; // We don't need the auction
@@ -20,6 +21,14 @@ public class OfferDTO {
 
     public void setOfferId(Long offerId) {
         this.offerId = offerId;
+    }
+
+    public Integer getAuctionId() {
+        return auctionId;
+    }
+
+    public void setAuctionId(Integer auctionId) {
+        this.auctionId = auctionId;
     }
 
     public User getUser() {

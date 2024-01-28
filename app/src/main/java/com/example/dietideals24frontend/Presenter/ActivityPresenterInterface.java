@@ -8,5 +8,5 @@ import com.example.dietideals24frontend.Model.User;
 public interface ActivityPresenterInterface {
     Intent createIntentForHome(Context context, User loggedInUser);
     Intent createIntentForCreateAuction(Context context, User loggedInUser);
-    Intent createAuctionIntent(Context context, Item item);
+    Intent createAuctionIntent(Context context, User loggedInUser, Item item);
 }

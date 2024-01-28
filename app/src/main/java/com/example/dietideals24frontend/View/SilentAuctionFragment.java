@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,21 +24,27 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 import retrofit2.Retrofit;
+
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.Model.DTO.OfferDTO;
+import com.example.dietideals24frontend.Retrofit.Callback.OfferRegistrationCallback;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
+import com.example.dietideals24frontend.Utility.DateAndTimeRetriever;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveBestOfferCallback;
 
 public class SilentAuctionFragment extends Fragment {
     private Auction auction;
+    private User loggedInUser;
     private View view;
     private final String[] offer = { "Rialza di 10€", "Rialza di 20€", "Rialzo personalizzato" };
     private List<String> offerList;
     private float lastOfferValue; // The highest value among the current offers
     private Retrofit retrofitService;
+    private String choice;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -47,6 +54,7 @@ public class SilentAuctionFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             auction = (Auction) bundle.getSerializable("selectedAuction");
+            loggedInUser = (User) bundle.getSerializable("loggedInUser");
         } else {
             auction = null;
         }
@@ -79,41 +87,42 @@ public class SilentAuctionFragment extends Fragment {
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ITALIAN);
         symbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("0.00", symbols);
-        priceView.setText(df.format(auction.getCurrentOfferValue()));
+        priceView.setText("Prezzo iniziale: € " + df.format(auction.getCurrentOfferValue()));
 
         /* Retrieval of the Best offer for that Item (with Details) */
 
         TextView bidderView    = view.findViewById(R.id.textView7);
         TextView LastOfferView = view.findViewById(R.id.LastOfferView);
 
+        Button bidderBtn = view.findViewById(R.id.Name2Btn);
+
         Requester requester = new Requester(retrofitService);
         requester.sendFindBestOfferRequest(auction.getItem().getItemId(), auction.getAuctionId(), new RetrieveBestOfferCallback() {
             @Override
             public boolean onBestOfferRetrievalSuccess(OfferDTO offerDTO) {
+                bidderView.setText("Fatta da: ");
 
-                if (offerDTO != null) {
-                    bidderView.setText("Fatta da: " + offerDTO.getUser().getName() + " " + offerDTO.getUser().getSurname());
-                    LastOfferView.setText("Ultima offerta: € " + offerDTO.getOffer());
-                } else {
-                    // TODO: MIGLIORARE E RIPULIRE TUTTO QUANTO
-                    // TODO: COSA FACCIAMO SE NULL?
-                }
+                bidderBtn.setText(offerDTO.getUser().getName() + " " + offerDTO.getUser().getSurname());
+                bidderBtn.setOnClickListener(v -> {
+                    // TODO: PORTARE AL PROFILO DELL'UTENTE
+                });
 
+                LastOfferView.setText("Ultima offerta: € " + offerDTO.getOffer());
                 return true;
             }
 
             @Override
             public boolean onBestOfferRetrievalFailure(String errorMessage) {
-                // TODO: COSA FACCIO QUI?
+                bidderView.setText("Fatta da: ");
+
+                bidderBtn.setEnabled(false);
+                bidderBtn.setVisibility(View.INVISIBLE);
+
+                LastOfferView.setText("Ultima offerta: non ci sono ancora offerte.");
                 return false;
             }
         });
 
-
-
-
-
-        // TODO: GESTIRE LE PROPOSTE DI OFFERTE [ CAPIRE L'ORDINE IN CUI SCRIVERE QUESTO CODICE ]
         TextView offerField = view.findViewById(R.id.offertField);
         offerField.setVisibility(View.INVISIBLE);
 
@@ -128,6 +137,7 @@ public class SilentAuctionFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedType = offer[position];
+                setChoice(choice);
                 if (selectedType.equals("Rialzo personalizzato")) {
                     offerField.setVisibility(View.VISIBLE);
                 } else {
@@ -138,6 +148,67 @@ public class SilentAuctionFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
+
+        manageOffer();
+
         return view;
+    }
+
+    /* PRIVATE */
+
+    private void manageOffer() {
+        Button offerBtn = view.findViewById(R.id.OfferButton);
+        offerBtn.setOnClickListener(v -> {
+
+            float offerta = 0.0f;
+            float currentOfferValue = auction.getCurrentOfferValue();
+
+            switch(getChoice()) {
+                case "Rialza di 10€":
+                    offerta = currentOfferValue + 10.0f;
+                    break;
+                case "Rialza di 20€":
+                    offerta = currentOfferValue + 20.0f;
+                    break;
+                default:
+                    EditText offerText = view.findViewById(R.id.offertField);
+                    String offer = String.valueOf(offerText.getText());
+
+                    if (!(offer.isEmpty() || offer.isBlank())) {
+                        offerta = Float.parseFloat(offer);
+                    }
+            }
+
+            OfferDTO offerDTO = new OfferDTO();
+            offerDTO.setUser(loggedInUser);
+            offerDTO.setOffer(offerta);
+            offerDTO.setAuctionId(auction.getAuctionId());
+            offerDTO.setOfferDate(DateAndTimeRetriever.getCurrentDate());
+            offerDTO.setOfferTime(DateAndTimeRetriever.getCurrentTime());
+
+            Requester requester = new Requester(retrofitService);
+            requester.sendRegisterOfferRequest(offerDTO, new OfferRegistrationCallback() {
+                @Override
+                public boolean onOfferRegistrationSuccess() {
+                    // TODO: NOTIFICARE ALL'UTENTE IL SUCCESSO DELL'OFFERTA
+                    // TODO: AGGIORNARE LA PAGINA
+                    return true;
+                }
+
+                @Override
+                public boolean onOfferRegistrationFailure(String errorMessage) {
+                    // TODO: COSA FACCIO IN QUESTO CASO?
+                    return false;
+                }
+            });
+        });
+    }
+
+    private void setChoice(String choice) {
+        this.choice = choice;
+    }
+
+    private String getChoice() {
+        return choice;
     }
 }

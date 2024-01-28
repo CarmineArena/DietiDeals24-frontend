@@ -20,6 +20,7 @@ import com.example.dietideals24frontend.Retrofit.Callback.AuctionNotificationCal
 import com.example.dietideals24frontend.View.LogInFragment;
 import com.example.dietideals24frontend.View.SignUpFragment;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
+import com.example.dietideals24frontend.View.Notification.AuctionNotificationManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         startNotificationTask();
     }
 
-    // TODO: MOSTRARE LE NOTIFICHE ALL'UTENTE (NOTIFICATION MANAGER)
     private void startNotificationTask() {
         long interval = 20 * 1000; // 20 seconds
 
@@ -87,12 +87,18 @@ public class MainActivity extends AppCompatActivity {
             AuctionNotificationTask task = new AuctionNotificationTask(service, new AuctionNotificationCallback() {
                 @Override
                 public void onNotificationsReceived(List<String> notifications) {
-                    // TODO: STABILIRE COSA FARE
+                    if (notifications != null) {
+                        AuctionNotificationManager manager = new AuctionNotificationManager(getApplicationContext());
+
+                        for (String notification : notifications) {
+                            manager.showNotification(1, "Auction Expired", notification);
+                        }
+                    }
                 }
 
                 @Override
                 public void onApiError() {
-                    // TODO: STABILIRE COSA FARE
+                    // TODO: HANDLE ERROR CASE (IT SHOULD NOT HAPPEN)
                 }
             });
             task.execute();

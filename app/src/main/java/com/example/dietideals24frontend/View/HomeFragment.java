@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
 
         Button btnAuction = view.findViewById(R.id.allAuctionButton);
         btnAuction.setOnClickListener(v -> {
-            // TODO: PORTARE L'UTENTE ALLA VISUALIZZAZIONE DELLE ASTE
+            // TODO: PORTARE L'UTENTE ALLA VISUALIZZAZIONE DELLE SUE ASTE
         });
 
         Button btnSearch = view.findViewById(R.id.searchButton);

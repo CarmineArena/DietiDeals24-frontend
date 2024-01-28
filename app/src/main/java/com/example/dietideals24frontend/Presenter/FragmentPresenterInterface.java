@@ -12,5 +12,5 @@ public interface FragmentPresenterInterface {
     EnglishAuctionCreationFragment createEnglishAuctionFragment(User user);
     SearchAuctionFragment createSearchAuctionFragment(User user);
     HomeFragment createHomeFragment(User user);
-    SilentAuctionFragment createSilenAuctionFragment(Auction auction);
+    SilentAuctionFragment createSilenAuctionFragment(User loggedInUser, Auction auction);
 }

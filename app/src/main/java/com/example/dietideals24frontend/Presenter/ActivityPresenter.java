@@ -22,9 +22,10 @@ public class ActivityPresenter implements ActivityPresenterInterface {
     }
 
     @Override
-    public Intent createAuctionIntent(Context context, Item item) {
+    public Intent createAuctionIntent(Context context, User loggedInUser, Item item) {
         Intent intent = new Intent(context, AuctionActivity.class);
         intent.putExtra("selectedItem", item);
+        intent.putExtra("loggedInUser", loggedInUser);
         return intent;
     }
 }
