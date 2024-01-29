@@ -1,9 +1,11 @@
 package com.example.dietideals24frontend.Model.DTO;
 
 import com.example.dietideals24frontend.Model.User;
+
+import java.io.Serializable;
 // import com.example.dietideals24frontend.Model.Auction;
 
-public class OfferDTO {
+public class OfferDTO implements Serializable {
     private Long offerId;
     private Integer auctionId;
     private User user;

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 import java.text.DecimalFormat;
@@ -24,16 +26,15 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 import retrofit2.Retrofit;
-
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.Model.DTO.OfferDTO;
-import com.example.dietideals24frontend.Retrofit.Callback.OfferRegistrationCallback;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.Retrofit.Service.Requester;
 import com.example.dietideals24frontend.Utility.DateAndTimeRetriever;
+import com.example.dietideals24frontend.Retrofit.Callback.OfferRegistrationCallback;
 import com.example.dietideals24frontend.Retrofit.Callback.RetrieveBestOfferCallback;
 
 public class SilentAuctionFragment extends Fragment {
@@ -137,7 +138,7 @@ public class SilentAuctionFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedType = offer[position];
-                setChoice(choice);
+                setChoice(selectedType);
                 if (selectedType.equals("Rialzo personalizzato")) {
                     offerField.setVisibility(View.VISIBLE);
                 } else {
@@ -150,7 +151,6 @@ public class SilentAuctionFragment extends Fragment {
         });
 
         manageOffer();
-
         return view;
     }
 
@@ -158,10 +158,17 @@ public class SilentAuctionFragment extends Fragment {
 
     private void manageOffer() {
         Button offerBtn = view.findViewById(R.id.OfferButton);
-        offerBtn.setOnClickListener(v -> {
+        EditText offerText = view.findViewById(R.id.offertField);
+        float currentOfferValue = auction.getCurrentOfferValue();
 
+        offerBtn.setOnClickListener(v -> {
             float offerta = 0.0f;
-            float currentOfferValue = auction.getCurrentOfferValue();
+
+            OfferDTO offerDTO = new OfferDTO();
+            offerDTO.setUser(loggedInUser);
+            offerDTO.setAuctionId(auction.getAuctionId());
+            offerDTO.setOfferDate(DateAndTimeRetriever.getCurrentDate());
+            offerDTO.setOfferTime(DateAndTimeRetriever.getCurrentTime());
 
             switch(getChoice()) {
                 case "Rialza di 10€":
@@ -171,36 +178,38 @@ public class SilentAuctionFragment extends Fragment {
                     offerta = currentOfferValue + 20.0f;
                     break;
                 default:
-                    EditText offerText = view.findViewById(R.id.offertField);
-                    String offer = String.valueOf(offerText.getText());
+                    String offer = offerText.getText().toString();
 
-                    if (!(offer.isEmpty() || offer.isBlank())) {
-                        offerta = Float.parseFloat(offer);
+                    if (offer.isEmpty()) {
+                        // TODO: DARE ERRORE O ECCEZIONE
+                        Log.e("OFFER VALUE", "NOT VALID");
                     }
             }
 
-            OfferDTO offerDTO = new OfferDTO();
-            offerDTO.setUser(loggedInUser);
-            offerDTO.setOffer(offerta);
-            offerDTO.setAuctionId(auction.getAuctionId());
-            offerDTO.setOfferDate(DateAndTimeRetriever.getCurrentDate());
-            offerDTO.setOfferTime(DateAndTimeRetriever.getCurrentTime());
+            // TODO: IL VALORE DI OFFERTA VIENE LETTO NELLA MANIERA CORRETTA. CAPIRE PERCHE' IL SERVER REGISTRA VALORE DI OFFERTA ZERO.
+            // Log.i("OFFER", "VALUE: " + offerta);
+            if (offerta > 0.0f) {
+                offerDTO.setOffer(offerta);
+                // Log.i("OFFER 2", "VALUE: " + offerDTO.getOffer());
+                Requester requester = new Requester(retrofitService);
+                requester.sendRegisterOfferRequest(offerDTO, new OfferRegistrationCallback() {
+                    @Override
+                    public boolean onOfferRegistrationSuccess() {
+                        // TODO: NOTIFICARE ALL'UTENTE IL SUCCESSO DELL'OFFERTA
+                        // TODO: AGGIORNARE LA PAGINA
+                        return true;
+                    }
 
-            Requester requester = new Requester(retrofitService);
-            requester.sendRegisterOfferRequest(offerDTO, new OfferRegistrationCallback() {
-                @Override
-                public boolean onOfferRegistrationSuccess() {
-                    // TODO: NOTIFICARE ALL'UTENTE IL SUCCESSO DELL'OFFERTA
-                    // TODO: AGGIORNARE LA PAGINA
-                    return true;
-                }
-
-                @Override
-                public boolean onOfferRegistrationFailure(String errorMessage) {
-                    // TODO: COSA FACCIO IN QUESTO CASO?
-                    return false;
-                }
-            });
+                    @Override
+                    public boolean onOfferRegistrationFailure(String errorMessage) {
+                        // TODO: COSA FACCIO IN QUESTO CASO?
+                        return false;
+                    }
+                });
+            } else {
+                // TODO: DARE ERRORE
+                Log.e("OFFER VALUE", "NOT VALID <= 0");
+            }
         });
     }
 
