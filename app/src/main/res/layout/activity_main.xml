@@ -28,13 +28,10 @@
         android:id="@+id/frameLayout"
         android:layout_width="355dp"
         android:layout_height="406dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="26dp"
+        android:layout_marginTop="60dp"
         android:background="@android:color/transparent"
         android:elevation="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DietiDeals24">
 
@@ -42,17 +39,15 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSwitchLogInFragment"
-        android:layout_width="206dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginEnd="104dp"
+        android:layout_width="116dp"
+        android:layout_height="27dp"
         android:background="@android:color/transparent"
-        android:text="Registrati"
         android:fontFamily="@font/poppins_light"
+        android:text="Registrati"
         android:textColor="#2E3870"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextFragment" />
 
@@ -71,13 +66,12 @@
         android:id="@+id/TextFragment"
         android:layout_width="0dp"
         android:layout_height="27dp"
-        android:layout_marginStart="121dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="121dp"
-        android:text="Sei un nuovo utente?"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/poppins_light"
+        android:text="Sei un nuovo utente?"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 

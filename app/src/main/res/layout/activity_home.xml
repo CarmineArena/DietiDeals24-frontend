@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B9B9B9"
     tools:context=".View.Home">
 
     <View
@@ -57,10 +58,11 @@
 
     <FrameLayout
         android:id="@+id/frameGeneral"
-        android:layout_width="415dp"
-        android:layout_height="684dp"
+        android:layout_width="0dp"
+        android:layout_height="688dp"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

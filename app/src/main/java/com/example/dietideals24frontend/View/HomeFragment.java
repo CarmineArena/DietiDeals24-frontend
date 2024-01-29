@@ -1,5 +1,6 @@
 package com.example.dietideals24frontend.View;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.content.Context;
 import android.annotation.SuppressLint;
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment {
         Requester requester = new Requester(retrofitService);
 
         Button btnAuction = view.findViewById(R.id.allAuctionButton);
+        btnAuction.setPaintFlags(btnAuction.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         btnAuction.setOnClickListener(v -> {
             // TODO: PORTARE L'UTENTE ALLA VISUALIZZAZIONE DELLE SUE ASTE
         });
