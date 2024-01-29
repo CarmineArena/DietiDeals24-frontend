@@ -29,7 +29,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String BASE_URL = "http://192.168.1.37:8080/"; // ALWAYS REMEMBER NOT TO PUSH THIS
+    public static final String BASE_URL = ""; // ALWAYS REMEMBER NOT TO PUSH THIS
     public static Retrofit retrofitService;
     private Button btnFragment;
     private TextView TextFragment;
