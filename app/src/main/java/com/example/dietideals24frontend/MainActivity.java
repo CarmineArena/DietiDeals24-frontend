@@ -17,9 +17,9 @@ import com.example.dietideals24frontend.Retrofit.AuctionNotificationService;
 import com.example.dietideals24frontend.Utility.Task.AuctionNotificationTask;
 import com.example.dietideals24frontend.Retrofit.Callback.AuctionNotificationCallback;
 
-import com.example.dietideals24frontend.View.LogInFragment;
-import com.example.dietideals24frontend.View.SignUpFragment;
+import com.example.dietideals24frontend.View.Fragment.LogInFragment;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
+import com.example.dietideals24frontend.View.Fragment.SignUpFragment;
 import com.example.dietideals24frontend.View.Notification.AuctionNotificationManager;
 
 import com.google.gson.Gson;
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         startNotificationTask();
     }
 
+    // TODO: RISOLVERE ANCHE QUESTO (CREARE UN CONTROLLER APPROPRIATO)
     private void startNotificationTask() {
         long interval = 20 * 1000; // 20 seconds
 

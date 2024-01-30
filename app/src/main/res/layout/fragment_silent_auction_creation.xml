@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#B9B9B9"
-    tools:context=".View.SilentAuctionCreationFragment">
+    tools:context=".View.Fragment.SilentAuctionCreationFragment">
 
         <TextView
             android:id="@+id/imagetextview"

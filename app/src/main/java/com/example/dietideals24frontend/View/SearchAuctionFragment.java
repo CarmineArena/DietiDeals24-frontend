@@ -12,27 +12,27 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 
 import android.widget.Button;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ScrollView;
 import android.widget.RelativeLayout;
-import android.view.LayoutInflater;
 import android.view.inputmethod.EditorInfo;
+
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
-import com.example.dietideals24frontend.Retrofit.Service.Requester;
+import com.example.dietideals24frontend.Controller.ItemController.ItemController;
 import com.example.dietideals24frontend.Presenter.LinearLayoutForItemsPresenter;
-import com.example.dietideals24frontend.Retrofit.Callback.RetrieveFeaturedItemsCallback;
+import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveFeaturedItemsCallback;
 
 import java.util.List;
-import java.util.ArrayList;
-
 import retrofit2.Retrofit;
+import java.util.ArrayList;
 
 public class SearchAuctionFragment extends Fragment {
     private View view;
@@ -132,8 +132,8 @@ public class SearchAuctionFragment extends Fragment {
             Dialog dialog = new Dialog(getContext());
             dialog.showAlertDialog("FORM ERROR", "Devi digitare ciò che vuoi cercare!");
         } else {
-            Requester requester = new Requester(retrofitService);
-            requester.sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(searchTerm, selectedCategories, loggedInUser, new RetrieveFeaturedItemsCallback() {
+            ItemController controller = new ItemController(retrofitService);
+            controller.sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(searchTerm, selectedCategories, loggedInUser, new RetrieveFeaturedItemsCallback() {
                 @Override
                 public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
                     Context context = getContext();
@@ -143,7 +143,7 @@ public class SearchAuctionFragment extends Fragment {
                         dialog.showAlertDialog("ELEMENTS NOT FOUND", "Non ci sono oggetti all'asta che soddisfano la tua richiesta!");
                         searchTextField.setText("");
                     } else {
-                        LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, requester, getFragmentManager());
+                        LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(context, retrofitService, getFragmentManager());
 
                         ScrollView scrollView = view.findViewById(R.id.scrollView);
                         RelativeLayout layout = new RelativeLayout(context);

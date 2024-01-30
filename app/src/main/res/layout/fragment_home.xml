@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.HomeFragment">
+    tools:context=".View.Fragment.HomeFragment">
 
 
     <ScrollView
@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchButton">
+        app:layout_constraintTop_toBottomOf="@+id/searchButton">
 
         <LinearLayout
             android:layout_width="match_parent"

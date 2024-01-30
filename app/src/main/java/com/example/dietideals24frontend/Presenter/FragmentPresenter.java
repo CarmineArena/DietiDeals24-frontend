@@ -1,10 +1,15 @@
 package com.example.dietideals24frontend.Presenter;
 
 import android.os.Bundle;
-import com.example.dietideals24frontend.View.*;
+
 import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.Model.Auction;
+import com.example.dietideals24frontend.View.Fragment.EnglishAuctionCreationFragment;
+import com.example.dietideals24frontend.View.Fragment.HomeFragment;
+import com.example.dietideals24frontend.View.Fragment.LogInFragment;
+import com.example.dietideals24frontend.View.Fragment.SignUpFragment;
+import com.example.dietideals24frontend.View.Fragment.SilentAuctionCreationFragment;
+import com.example.dietideals24frontend.View.Fragment.SilentAuctionFragment;
 import com.example.dietideals24frontend.View.SearchAuctionFragment;
 
 public class FragmentPresenter implements FragmentPresenterInterface {

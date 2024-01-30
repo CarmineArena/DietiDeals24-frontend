@@ -1,51 +1,51 @@
 package com.example.dietideals24frontend.Presenter;
 
+import android.widget.*;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.content.Intent;
 import android.content.Context;
-import android.widget.ImageView;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.annotation.SuppressLint;
 
+import java.util.List;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.util.List;
+
+import com.example.dietideals24frontend.Controller.ItemController.ItemController;
+import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveFeaturedItemsCallback;
+
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
-import com.example.dietideals24frontend.Retrofit.Service.Requester;
 import com.example.dietideals24frontend.Utility.HomeConstantValues;
-import com.example.dietideals24frontend.Retrofit.Callback.ImageCallback;
-import com.example.dietideals24frontend.Retrofit.Callback.RetrieveUserItemsCallback;
-import com.example.dietideals24frontend.Retrofit.Callback.RetrieveFeaturedItemsCallback;
-import com.example.dietideals24frontend.Retrofit.Callback.RetrieveItemsWantedByUserService;
+import com.example.dietideals24frontend.Controller.ItemController.Callback.ImageCallback;
+import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveUserItemsCallback;
+import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveItemsWantedByUserCallback;
 
+import retrofit2.Retrofit;
 import com.example.dietideals24frontend.Utility.ItemUtils;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 
 public class LinearLayoutForItemsPresenter {
     private static final String TAG = "LinearLayoutForItemsPresenter";
     private final Context context;
-    private final Requester requester;
+    private final Retrofit retrofitService;
     private final FragmentManager manager;
 
-    public LinearLayoutForItemsPresenter(Context context, Requester requester, FragmentManager manager) {
-        this.context = context;
-        this.requester = requester;
-        this.manager = manager;
+    public LinearLayoutForItemsPresenter(Context context, Retrofit retrofitService, FragmentManager manager) {
+        this.context         = context;
+        this.retrofitService = retrofitService;
+        this.manager         = manager;
     }
 
     /* METHODS */
 
     public void createFeaturedItemsLinearLayout(LinearLayout layout, User loggedInUser) {
-        requester.sendFeaturedItemsUpForAuctionRequest(loggedInUser.getUserId(), loggedInUser.getEmail(), new RetrieveFeaturedItemsCallback() {
+        ItemController controller = new ItemController(this.retrofitService);
+        controller.sendFeaturedItemsUpForAuctionRequest(loggedInUser.getUserId(), loggedInUser.getEmail(), new RetrieveFeaturedItemsCallback() {
             @Override
             public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
                 List<Item> featuredItems = ItemUtils.createListOfItems(itemsRetrieved);
@@ -65,7 +65,7 @@ public class LinearLayoutForItemsPresenter {
                     }
                     for (int j = 0; j < steps; j++) {
                         final int pos = j;
-                        ItemUtils.assignImageToItem(featuredItems.get(pos), requester, new ImageCallback() {
+                        ItemUtils.assignImageToItem(featuredItems.get(pos), controller, new ImageCallback() {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 featuredItems.get(pos).setImage(imageContent);
@@ -98,7 +98,8 @@ public class LinearLayoutForItemsPresenter {
 
     public void createInternalLayoutWithFeaturedAuctions(RelativeLayout layout, User loggedInUser,
                                                          String searchTerm, List<String> categories) {
-        requester.sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(searchTerm, categories, loggedInUser, new RetrieveFeaturedItemsCallback() {
+        ItemController controller = new ItemController(this.retrofitService);
+        controller.sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(searchTerm, categories, loggedInUser, new RetrieveFeaturedItemsCallback() {
             @Override
             public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
                 List<Item> items = ItemUtils.createListOfItems(itemsRetrieved);
@@ -111,7 +112,7 @@ public class LinearLayoutForItemsPresenter {
                     int size = items.size();
                     for (int j = 0; j < size; j++) {
                         final int pos = j;
-                        ItemUtils.assignImageToItem(items.get(pos), requester, new ImageCallback() {
+                        ItemUtils.assignImageToItem(items.get(pos), controller, new ImageCallback() {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 items.get(pos).setImage(imageContent);
@@ -143,7 +144,8 @@ public class LinearLayoutForItemsPresenter {
     }
 
     public void createAuctionedByUserItemsLinearLayout(LinearLayout layout, User loggedInUser) {
-        requester.sendCreatedByUserItemsRequest(loggedInUser, new RetrieveUserItemsCallback() {
+        ItemController controller = new ItemController(this.retrofitService);
+        controller.sendCreatedByUserItemsRequest(loggedInUser, new RetrieveUserItemsCallback() {
             @Override
             public boolean onSearchCreatedByUserItemsSuccess(List<ItemDTO> itemsRetrieved) {
                 List<Item> auctionedByUserItems = ItemUtils.createListOfItems(itemsRetrieved);
@@ -157,7 +159,7 @@ public class LinearLayoutForItemsPresenter {
                     final int size = auctionedByUserItems.size();
                     for (int j = 0; j < size; j++) {
                         final int pos = j;
-                        ItemUtils.assignImageToItem(auctionedByUserItems.get(pos), requester, new ImageCallback() {
+                        ItemUtils.assignImageToItem(auctionedByUserItems.get(pos), controller, new ImageCallback() {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 auctionedByUserItems.get(pos).setImage(imageContent);
@@ -188,7 +190,8 @@ public class LinearLayoutForItemsPresenter {
     }
 
     public void createItemsWantedByUserLinearLayout(LinearLayout layout, User loggedInUser) {
-        requester.sendFindItemsWantedByUserRequest(loggedInUser.getUserId(), loggedInUser.getEmail(), loggedInUser.getPassword(), new RetrieveItemsWantedByUserService() {
+        ItemController controller = new ItemController(this.retrofitService);
+        controller.sendFindItemsWantedByUserRequest(loggedInUser.getUserId(), loggedInUser.getEmail(), loggedInUser.getPassword(), new RetrieveItemsWantedByUserCallback() {
             @Override
             public boolean onItemsFoundWithSuccess(List<ItemDTO> itemsRetrieved) {
                 List<Item> wantedByUserItems = ItemUtils.createListOfItems(itemsRetrieved);
@@ -202,7 +205,7 @@ public class LinearLayoutForItemsPresenter {
                     final int size = wantedByUserItems.size();
                     for (int j = 0; j < size; j++) {
                         final int pos = j;
-                        ItemUtils.assignImageToItem(wantedByUserItems.get(pos), requester, new ImageCallback() {
+                        ItemUtils.assignImageToItem(wantedByUserItems.get(pos), controller, new ImageCallback() {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 wantedByUserItems.get(pos).setImage(imageContent);
@@ -259,8 +262,6 @@ public class LinearLayoutForItemsPresenter {
         internal.setOrientation(LinearLayout.VERTICAL);
         internal.addView(imageView);
         internal.addView(button);
-
-        // internal.setOnClickListener(v -> handleClickOnItem(item, auctionType));
         return internal;
     }
 
