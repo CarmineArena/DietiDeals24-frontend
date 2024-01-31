@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Auction;
+import com.example.dietideals24frontend.UserProfileFragment;
 import com.example.dietideals24frontend.View.Fragment.EnglishAuctionCreationFragment;
 import com.example.dietideals24frontend.View.Fragment.HomeFragment;
 import com.example.dietideals24frontend.View.Fragment.LogInFragment;
@@ -62,6 +63,14 @@ public class FragmentPresenter implements FragmentPresenterInterface {
         bundle.putSerializable("loggedInUser", loggedInUser);
 
         SilentAuctionFragment fragment = new SilentAuctionFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public UserProfileFragment createUserProfileFragment(User user) {
+        Bundle bundle = createBundleWithLoggedInUser(user);
+        UserProfileFragment fragment = new UserProfileFragment();
         fragment.setArguments(bundle);
         return fragment;
     }

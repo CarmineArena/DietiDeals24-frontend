@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dietideals24frontend.Model.User;
+import com.example.dietideals24frontend.UserProfileFragment;
 import com.example.dietideals24frontend.View.Fragment.HomeFragment;
 import com.example.dietideals24frontend.View.SearchAuctionFragment;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
@@ -51,7 +52,8 @@ public class HomeActivity extends AppCompatActivity {
 
         Button btnProfile = findViewById(R.id.button3);
         btnProfile.setOnClickListener(v -> {
-            // TODO: GESTIRE IL PROFILO UTENTE
+            UserProfileFragment userProfileFragment = fragmentPresenter.createUserProfileFragment(loggedInUser);
+            replaceFragment(userProfileFragment);
         });
     }
 

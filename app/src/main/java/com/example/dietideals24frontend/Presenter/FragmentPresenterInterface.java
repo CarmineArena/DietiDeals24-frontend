@@ -2,6 +2,7 @@ package com.example.dietideals24frontend.Presenter;
 
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Auction;
+import com.example.dietideals24frontend.UserProfileFragment;
 import com.example.dietideals24frontend.View.Fragment.EnglishAuctionCreationFragment;
 import com.example.dietideals24frontend.View.Fragment.HomeFragment;
 import com.example.dietideals24frontend.View.Fragment.LogInFragment;
@@ -18,4 +19,5 @@ public interface FragmentPresenterInterface {
     SearchAuctionFragment createSearchAuctionFragment(User user);
     HomeFragment createHomeFragment(User user);
     SilentAuctionFragment createSilenAuctionFragment(User loggedInUser, Auction auction);
+    UserProfileFragment createUserProfileFragment(User loggedInUser);
 }
