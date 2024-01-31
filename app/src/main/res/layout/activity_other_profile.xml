@@ -10,20 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#B9B9B9"
-        tools:context=".View.Fragment.UserProfileFragment">
+        tools:context=".OtherProfileFragment">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="58dp"
+            android:layout_height="65dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Indietro"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/WelcomeView"
-            android:layout_width="376dp"
+            android:layout_width="321dp"
             android:layout_height="42dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins"
             android:gravity="bottom"
             android:text="Benvenuto nel tuo profilo"
             android:textColor="#000000"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/backButton"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -40,7 +49,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/WelcomeView" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextTextPersonName3"
             android:layout_width="300dp"
             android:layout_height="151dp"
@@ -49,8 +58,6 @@
             android:background="@drawable/inputtextbg"
             android:ems="10"
             android:gravity="top"
-            android:hint="  Dicci qualcosa di te..."
-            android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/WelcomeView" />
 
@@ -68,7 +75,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextTextPersonName4"
             android:layout_width="300dp"
             android:layout_height="100dp"
@@ -77,23 +84,21 @@
             android:background="@drawable/inputtextbg"
             android:ems="10"
             android:gravity="top"
-            android:hint="  Dacci qualche altro tuo contatto..."
-            android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
 
         <TextView
             android:id="@+id/valutationView"
-            android:layout_width="185dp"
-            android:layout_height="34dp"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/fenix"
-            android:text="Le tue recensioni"
+            android:text="Recensioni dell'utente"
             android:textColor="#000000"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ConfirmButton" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4" />
 
         <TextView
             android:id="@+id/InfoView"
@@ -107,30 +112,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/valutationView" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/LogOutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="44dp"
-            android:background="@drawable/button2bg"
-            android:text="Esci"
-            android:textColor="#DF0000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/InfoView" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/ConfirmButton"
-            android:layout_width="wrap_content"
-            android:layout_height="43dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/button2bg"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="Aggiorna il profilo"
-            android:textColor="#000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
