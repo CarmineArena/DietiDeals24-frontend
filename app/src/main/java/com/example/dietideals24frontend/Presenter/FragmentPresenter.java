@@ -4,14 +4,14 @@ import android.os.Bundle;
 
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Auction;
-import com.example.dietideals24frontend.UserProfileFragment;
-import com.example.dietideals24frontend.View.Fragment.EnglishAuctionCreationFragment;
+import com.example.dietideals24frontend.View.Fragment.UserProfileFragment;
+import com.example.dietideals24frontend.View.SearchAuctionFragment;
 import com.example.dietideals24frontend.View.Fragment.HomeFragment;
 import com.example.dietideals24frontend.View.Fragment.LogInFragment;
 import com.example.dietideals24frontend.View.Fragment.SignUpFragment;
-import com.example.dietideals24frontend.View.Fragment.SilentAuctionCreationFragment;
 import com.example.dietideals24frontend.View.Fragment.SilentAuctionFragment;
-import com.example.dietideals24frontend.View.SearchAuctionFragment;
+import com.example.dietideals24frontend.View.Fragment.SilentAuctionCreationFragment;
+import com.example.dietideals24frontend.View.EnglishAuctionCreationFragment;
 
 public class FragmentPresenter implements FragmentPresenterInterface {
     @Override

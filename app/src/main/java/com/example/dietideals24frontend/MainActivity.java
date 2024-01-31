@@ -8,19 +8,14 @@ import android.annotation.SuppressLint;
 import androidx.fragment.app.*;
 import androidx.appcompat.app.*;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import com.example.dietideals24frontend.Retrofit.AuctionNotificationService;
-import com.example.dietideals24frontend.Utility.Task.AuctionNotificationTask;
-import com.example.dietideals24frontend.Retrofit.Callback.AuctionNotificationCallback;
-
 import com.example.dietideals24frontend.View.Fragment.LogInFragment;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 import com.example.dietideals24frontend.View.Fragment.SignUpFragment;
-import com.example.dietideals24frontend.View.Notification.AuctionNotificationManager;
+import com.example.dietideals24frontend.Controller.AuctionNotificationController.AuctionNotificationController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -79,30 +74,12 @@ public class MainActivity extends AppCompatActivity {
         startNotificationTask();
     }
 
-    // TODO: RISOLVERE ANCHE QUESTO (CREARE UN CONTROLLER APPROPRIATO)
     private void startNotificationTask() {
         long interval = 20 * 1000; // 20 seconds
 
         scheduler.scheduleAtFixedRate(() -> {
-            AuctionNotificationService service = retrofitService.create(AuctionNotificationService.class);
-            AuctionNotificationTask task = new AuctionNotificationTask(service, new AuctionNotificationCallback() {
-                @Override
-                public void onNotificationsReceived(List<String> notifications) {
-                    if (notifications != null) {
-                        AuctionNotificationManager manager = new AuctionNotificationManager(getApplicationContext());
-
-                        for (String notification : notifications) {
-                            manager.showNotification(1, "Auction Expired", notification);
-                        }
-                    }
-                }
-
-                @Override
-                public void onApiError() {
-                    // TODO: HANDLE ERROR CASE (IT SHOULD NOT HAPPEN)
-                }
-            });
-            task.execute();
+            AuctionNotificationController controller = new AuctionNotificationController(retrofitService, getApplicationContext());
+            controller.notifyUser();
         }, 0, interval, TimeUnit.MILLISECONDS);
     }
 

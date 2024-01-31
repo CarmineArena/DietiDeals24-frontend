@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.View.Fragment;
+package com.example.dietideals24frontend.View;
 
 import android.os.Bundle;
 import android.app.TimePickerDialog;

@@ -2,6 +2,9 @@ package com.example.dietideals24frontend.View.Fragment;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.annotation.SuppressLint;
 
 import android.util.Log;
@@ -27,6 +30,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 import com.example.dietideals24frontend.View.Dialog.Dialog;
+import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 import com.example.dietideals24frontend.Controller.OfferController.OfferController;
 import com.example.dietideals24frontend.Controller.OfferController.Callback.RegisterOfferCallback;
 
@@ -34,6 +38,7 @@ import retrofit2.Retrofit;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.Model.DTO.OfferDTO;
 import com.example.dietideals24frontend.Utility.ImageUtils;
@@ -74,7 +79,7 @@ public class SilentAuctionFragment extends Fragment {
         Button btnUser = view.findViewById(R.id.NameBtn);
         btnUser.setText(auction.getItem().getUser().getName() + " " + auction.getItem().getUser().getSurname());
         btnUser.setOnClickListener(v -> {
-            // TODO: PORTARE AL PROFILO DELL'UTENTE
+            // TODO: PORTARE L'UTENTE ALLA SCHERMATA DI VISUALIZZAZIONE DATI DEL VENDITORE
         });
 
         TextView descriptionView = view.findViewById(R.id.DescriptionView);
@@ -108,7 +113,7 @@ public class SilentAuctionFragment extends Fragment {
 
                 bidderBtn.setText(offerDTO.getUser().getName() + " " + offerDTO.getUser().getSurname());
                 bidderBtn.setOnClickListener(v -> {
-                    // TODO: PORTARE AL PROFILO DELL'UTENTE
+                    // TODO: PORTARE L'UTENTE ALLA SCHERMATA DI VISUALIZZAZIONE DATI DELL'OFFERENTE
                 });
 
                 LastOfferView.setText("Ultima offerta: € " + offerDTO.getOffer());
@@ -196,14 +201,15 @@ public class SilentAuctionFragment extends Fragment {
                 controller.sendRegisterOfferRequest(offerDTO, new RegisterOfferCallback() {
                     @Override
                     public boolean onOfferRegistrationSuccess() {
-                        // TODO: NOTIFICARE ALL'UTENTE IL SUCCESSO DELL'OFFERTA
-                        // TODO: AGGIORNARE LA PAGINA
+                        Snackbar.make(view, "Offerta fatta con successo!", Snackbar.LENGTH_SHORT).show();
+                        FragmentPresenter presenter = new FragmentPresenter();
+                        replaceFragment(presenter.createSilenAuctionFragment(loggedInUser, auction));
                         return true;
                     }
 
                     @Override
                     public boolean onOfferRegistrationFailure(String errorMessage) {
-                        // TODO: inserire una SnackBar
+                        Snackbar.make(view, "Operazione fallita. Riprovare!", Snackbar.LENGTH_SHORT).show();
                         return false;
                     }
                 });
@@ -221,5 +227,12 @@ public class SilentAuctionFragment extends Fragment {
 
     private String getChoice() {
         return choice;
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.commit();
     }
 }

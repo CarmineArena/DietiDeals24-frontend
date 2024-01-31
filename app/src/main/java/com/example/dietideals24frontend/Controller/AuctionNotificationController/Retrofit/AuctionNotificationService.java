@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.Retrofit;
+package com.example.dietideals24frontend.Controller.AuctionNotificationController.Retrofit;
 
 import java.util.List;
 import retrofit2.Call;

@@ -48,6 +48,7 @@ import java.io.IOException;
 
 import retrofit2.Retrofit;
 import com.example.dietideals24frontend.MainActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 public class SilentAuctionCreationFragment extends Fragment {
     private User user;
@@ -257,8 +258,7 @@ public class SilentAuctionCreationFragment extends Fragment {
             @Override
             public boolean onAuctionRegistrationSuccess(AuctionDTO auctionDTO) {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
-
-                // TODO: NOTIFICARE ALL'UTENTE L'AVVENIMENTO DELLA CORRETTA CREAZIONE DELL'ASTA
+                Snackbar.make(view, "Asta creata con successo!", Snackbar.LENGTH_SHORT).show();
 
                 ActivityPresenter factory = new ActivityPresenter();
                 Intent intent = factory.createIntentForHome(getContext(), user); // Return Home with loggedIn user's informations
@@ -269,6 +269,7 @@ public class SilentAuctionCreationFragment extends Fragment {
             @Override
             public boolean onAuctionRegistrationFailure(String errorMessage) {
                 Log.i("AUCTION REGISTRATION REQUEST", "FAILED TO SEND");
+
                 Dialog dialog = new Dialog(getContext());
                 dialog.showAlertDialog("AUCTION ERROR", "Non è stato possibile registrare la creazione dell'asta. Errore: " + errorMessage);
                 return false;

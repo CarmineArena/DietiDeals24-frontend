@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.UserProfileFragment;
+import com.example.dietideals24frontend.View.Fragment.UserProfileFragment;
 import com.example.dietideals24frontend.View.Fragment.HomeFragment;
 import com.example.dietideals24frontend.View.SearchAuctionFragment;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;

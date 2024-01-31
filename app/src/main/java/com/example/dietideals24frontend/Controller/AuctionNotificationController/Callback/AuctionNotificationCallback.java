@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.Retrofit.Callback;
+package com.example.dietideals24frontend.Controller.AuctionNotificationController.Callback;
 
 import java.util.List;
 

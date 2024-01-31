@@ -4,8 +4,8 @@ import java.util.List;
 import java.io.IOException;
 import android.os.AsyncTask;
 
-import com.example.dietideals24frontend.Retrofit.AuctionNotificationService;
-import com.example.dietideals24frontend.Retrofit.Callback.AuctionNotificationCallback;
+import com.example.dietideals24frontend.Controller.AuctionNotificationController.Retrofit.AuctionNotificationService;
+import com.example.dietideals24frontend.Controller.AuctionNotificationController.Callback.AuctionNotificationCallback;
 
 public class AuctionNotificationTask extends AsyncTask<Void, Void, List<String>> {
     private final AuctionNotificationService notificationService;

@@ -15,7 +15,7 @@ import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 import com.example.dietideals24frontend.View.Fragment.SilentAuctionCreationFragment;
-import com.example.dietideals24frontend.View.Fragment.EnglishAuctionCreationFragment;
+import com.example.dietideals24frontend.View.EnglishAuctionCreationFragment;
 
 public class CreateAuctionActivity extends AppCompatActivity {
     String[] type = { "Asta Silenziosa", "Asta all'Inglese" };

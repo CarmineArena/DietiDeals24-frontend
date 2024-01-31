@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class User implements Serializable {
     private Integer userId;
-    private String name, surname, email, password;
+    private String name, surname, email, password, bio, webSiteUrl;
     private Set<Item> items;
     private Set<Offer> offers;
 
@@ -53,6 +53,22 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getWebSiteUrl() {
+        return webSiteUrl;
+    }
+
+    public void setWebSiteUrl(String webSiteUrl) {
+        this.webSiteUrl = webSiteUrl;
     }
 
     public Set<Item> getItems() {
