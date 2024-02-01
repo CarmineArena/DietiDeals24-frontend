@@ -8,14 +8,9 @@ import android.annotation.SuppressLint;
 import androidx.fragment.app.*;
 import androidx.appcompat.app.*;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
 import com.example.dietideals24frontend.View.Fragment.LogInFragment;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 import com.example.dietideals24frontend.View.Fragment.SignUpFragment;
-import com.example.dietideals24frontend.Controller.AuctionNotificationController.AuctionNotificationController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     public static Retrofit retrofitService;
     private Button btnFragment;
     private TextView TextFragment;
-    private ScheduledExecutorService scheduler;
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -69,23 +63,5 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(logInFragment);
             }
         });
-
-        scheduler = Executors.newSingleThreadScheduledExecutor();
-        startNotificationTask();
-    }
-
-    private void startNotificationTask() {
-        long interval = 20 * 1000; // 20 seconds
-
-        scheduler.scheduleAtFixedRate(() -> {
-            AuctionNotificationController controller = new AuctionNotificationController(retrofitService, getApplicationContext());
-            controller.notifyUser();
-        }, 0, interval, TimeUnit.MILLISECONDS);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (scheduler != null) scheduler.shutdown();
     }
 }

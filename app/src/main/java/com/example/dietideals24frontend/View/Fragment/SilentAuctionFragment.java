@@ -165,7 +165,7 @@ public class SilentAuctionFragment extends Fragment {
     /* PRIVATE */
 
     private void manageOffer() {
-        Button offerBtn = view.findViewById(R.id.OfferButton);
+        Button offerBtn    = view.findViewById(R.id.OfferButton);
         EditText offerText = view.findViewById(R.id.offertField);
         float currentOfferValue = auction.getCurrentOfferValue();
 
@@ -199,11 +199,14 @@ public class SilentAuctionFragment extends Fragment {
 
                 OfferController controller = new OfferController(retrofitService);
                 controller.sendRegisterOfferRequest(offerDTO, new RegisterOfferCallback() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public boolean onOfferRegistrationSuccess() {
                         Snackbar.make(view, "Offerta fatta con successo!", Snackbar.LENGTH_SHORT).show();
-                        FragmentPresenter presenter = new FragmentPresenter();
-                        replaceFragment(presenter.createSilenAuctionFragment(loggedInUser, auction));
+
+                        offerText.setText("Ultima offerta: € " + offerDTO.getOffer());
+                        Button bidderBtn = view.findViewById(R.id.Name2Btn);
+                        bidderBtn.setText(loggedInUser.getName() + " " + loggedInUser.getSurname());
                         return true;
                     }
 

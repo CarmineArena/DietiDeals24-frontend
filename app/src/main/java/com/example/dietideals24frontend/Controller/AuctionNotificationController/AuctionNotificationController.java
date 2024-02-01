@@ -13,24 +13,26 @@ import com.example.dietideals24frontend.Controller.AuctionNotificationController
 public class AuctionNotificationController implements AuctionNotificationInterface {
     private final Retrofit retrofitService;
     private final Context context;
+    private final Integer userId;
 
 
-    public AuctionNotificationController(Retrofit retrofitService, Context context) {
-        this.context = context;
+    public AuctionNotificationController(Integer userId, Retrofit retrofitService, Context context) {
+        this.userId          = userId;
+        this.context         = context;
         this.retrofitService = retrofitService;
     }
 
     @Override
     public void notifyUser() {
         AuctionNotificationService service = retrofitService.create(AuctionNotificationService.class);
-        AuctionNotificationTask task = new AuctionNotificationTask(service, new AuctionNotificationCallback() {
+        AuctionNotificationTask task = new AuctionNotificationTask(userId, service, new AuctionNotificationCallback() {
             @Override
             public void onNotificationsReceived(List<String> notifications) {
                 if (notifications != null) {
                     AuctionNotificationManager manager = new AuctionNotificationManager(context);
 
                     for (String notification : notifications) {
-                        manager.showNotification(1, "Auction Expired", notification);
+                        manager.showNotification(1, "Asta Terminata", notification);
                     }
                 }
             }

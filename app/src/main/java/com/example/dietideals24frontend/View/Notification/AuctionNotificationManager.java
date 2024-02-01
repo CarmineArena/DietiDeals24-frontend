@@ -22,9 +22,9 @@ public class AuctionNotificationManager {
     }
 
     private void createChannel() {
-        CharSequence name = "Auction Notification";
+        CharSequence name  = "Auction Notification";
         String description = "Used to notify the end user of a terminated auction and a possible win of an Item.";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        int importance     = NotificationManager.IMPORTANCE_DEFAULT;
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
         channel.setDescription(description);
 
