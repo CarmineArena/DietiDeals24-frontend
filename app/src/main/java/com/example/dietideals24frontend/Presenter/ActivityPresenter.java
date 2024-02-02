@@ -31,4 +31,11 @@ public class ActivityPresenter implements ActivityPresenterInterface {
         intent.putExtra("loggedInUser", loggedInUser);
         return intent;
     }
+
+    @Override
+    public Intent createProfileIntent(Context context, User user) {
+        Intent intent = new Intent(context, AuctionActivity.class);
+        intent.putExtra("user", user);
+        return intent;
+    }
 }

@@ -15,10 +15,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.View.Fragment.HomeFragment;
-import com.example.dietideals24frontend.View.SearchAuctionFragment;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 import com.example.dietideals24frontend.View.Fragment.UserProfileFragment;
+import com.example.dietideals24frontend.View.Fragment.SearchAuctionFragment;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;

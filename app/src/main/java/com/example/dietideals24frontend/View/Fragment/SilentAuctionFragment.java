@@ -1,6 +1,7 @@
 package com.example.dietideals24frontend.View.Fragment;
 
 import android.os.Bundle;
+import android.content.Intent;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,7 +31,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 import com.example.dietideals24frontend.View.Dialog.Dialog;
-import com.example.dietideals24frontend.Presenter.FragmentPresenter;
+import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Controller.OfferController.OfferController;
 import com.example.dietideals24frontend.Controller.OfferController.Callback.RegisterOfferCallback;
 
@@ -79,7 +80,8 @@ public class SilentAuctionFragment extends Fragment {
         Button btnUser = view.findViewById(R.id.NameBtn);
         btnUser.setText(auction.getItem().getUser().getName() + " " + auction.getItem().getUser().getSurname());
         btnUser.setOnClickListener(v -> {
-            // TODO: PORTARE L'UTENTE ALLA SCHERMATA DI VISUALIZZAZIONE DATI DEL VENDITORE
+            Intent intent = new ActivityPresenter().createProfileIntent(getContext(), auction.getItem().getUser());
+            startActivity(intent);
         });
 
         TextView descriptionView = view.findViewById(R.id.DescriptionView);
@@ -113,7 +115,8 @@ public class SilentAuctionFragment extends Fragment {
 
                 bidderBtn.setText(offerDTO.getUser().getName() + " " + offerDTO.getUser().getSurname());
                 bidderBtn.setOnClickListener(v -> {
-                    // TODO: PORTARE L'UTENTE ALLA SCHERMATA DI VISUALIZZAZIONE DATI DELL'OFFERENTE
+                    Intent intent = new ActivityPresenter().createProfileIntent(getContext(), offerDTO.getUser());
+                    startActivity(intent);
                 });
 
                 LastOfferView.setText("Ultima offerta: € " + offerDTO.getOffer());
@@ -158,7 +161,18 @@ public class SilentAuctionFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
-        manageOffer();
+        if (loggedInUser.getUserId().equals(auction.getItem().getUser().getUserId())) {
+            // THE USER CLICKED TO SEE THE STATUS OF HIS/HER AUCTIONS
+            spinnerType.setEnabled(false);
+            spinnerType.setVisibility(View.INVISIBLE);
+
+            Button offerBtn = view.findViewById(R.id.OfferButton);
+            offerBtn.setEnabled(false);
+            offerBtn.setVisibility(View.INVISIBLE);
+        } else {
+            manageOffer();
+        }
+
         return view;
     }
 

@@ -226,7 +226,7 @@ public class SilentAuctionCreationFragment extends Fragment {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            setImageContent(imageBytes);
+            this.setImageContent(imageBytes);
 
             ImageView imageView = view.findViewById(R.id.itemImage);
             Glide.with(this).load(imageBytes).into(imageView);

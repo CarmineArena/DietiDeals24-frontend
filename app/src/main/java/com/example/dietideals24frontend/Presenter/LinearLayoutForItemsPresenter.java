@@ -327,18 +327,8 @@ public class LinearLayoutForItemsPresenter {
     }
 
     private void handleClickOnItem(Item item, User loggedInUser, String auctionType) {
-        switch (auctionType) {
-            case HomeConstantValues.FEATURED:
-            case HomeConstantValues.WANTED:
-                Intent intent1 = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item);
-                this.context.startActivity(intent1);
-                break;
-            case HomeConstantValues.AUCTIONED:
-                // TODO: PORTARE L'UTENTE ALLA VISUALIZZAZIONE DELLO STATO DELLA SUA ASTA
-                break;
-            default:
-                Log.e(TAG, "handleClickOnItem() --> Unexpected auctionType: " + auctionType);
-        }
+        Intent intent1 = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item);
+        this.context.startActivity(intent1);
     }
 
     private Intent handleClickForCreateAuction(User loggedInUser) {

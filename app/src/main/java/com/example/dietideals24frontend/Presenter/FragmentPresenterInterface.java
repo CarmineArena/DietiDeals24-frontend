@@ -3,7 +3,7 @@ package com.example.dietideals24frontend.Presenter;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.View.Fragment.UserProfileFragment;
-import com.example.dietideals24frontend.View.SearchAuctionFragment;
+import com.example.dietideals24frontend.View.Fragment.SearchAuctionFragment;
 import com.example.dietideals24frontend.View.Fragment.HomeFragment;
 import com.example.dietideals24frontend.View.Fragment.LogInFragment;
 import com.example.dietideals24frontend.View.Fragment.SignUpFragment;

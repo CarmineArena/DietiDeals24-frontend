@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.View;
+package com.example.dietideals24frontend.View.Fragment;
 
 import android.util.Log;
 import android.view.View;
