@@ -64,17 +64,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextFragment" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/gitHubButton"
-        android:layout_width="51dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/circular_form"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSwitchLogInFragment" />
-
     <TextView
         android:id="@+id/TextFragment"
         android:layout_width="0dp"
