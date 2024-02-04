@@ -3,16 +3,16 @@ package com.example.dietideals24frontend.View.Fragment;
 import android.os.Bundle;
 import android.content.Intent;
 
-import android.util.Log;
-import android.widget.Button;
-
 import android.view.*;
+import android.widget.Button;
 import android.widget.EditText;
 import androidx.fragment.app.Fragment;
 
 import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.MainActivity;
+
+import com.example.dietideals24frontend.Model.User;
+import com.example.dietideals24frontend.Model.DTO.UserDTO;
 import com.example.dietideals24frontend.Utility.EmailValidator;
 import com.example.dietideals24frontend.Controller.UserController.UserController;
 import com.example.dietideals24frontend.Controller.UserController.Callback.LoginUserCallback;
@@ -45,23 +45,25 @@ public class LogInFragment extends Fragment {
             if (email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
                 dialog.showAlertDialog("FORM ERROR", "Controllare la correttezza delle credenziali e non lasciare campi vuoti.");
             } else {
-                User user = new User();
+                UserDTO user = new UserDTO();
                 user.setEmail(email);
                 user.setPassword(password);
 
                 UserController controller = new UserController(retrofitService);
                 controller.sendUserLoginRequest(user, new LoginUserCallback() {
                     @Override
-                    public boolean onLoginSuccess(User loggedInUser) {
+                    public boolean onLoginSuccess(UserDTO userDTO) {
+                        User loggedInUser = User.createUser(userDTO);
+
                         ActivityPresenter activityFactory = new ActivityPresenter();
                         Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
                         startActivity(intent);
+                        getActivity().finish();
                         return true;
                     }
 
                     @Override
                     public boolean onLoginFailure(String errorMessage) {
-                        Log.d("onLoginFailure", errorMessage);
                         dialog.showAlertDialog("LOGIN ERROR", "Non hai ancora creato un Account.");
                         return false;
                     }

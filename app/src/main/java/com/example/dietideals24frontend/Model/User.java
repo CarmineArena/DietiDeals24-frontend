@@ -1,7 +1,8 @@
 package com.example.dietideals24frontend.Model;
 
-import java.io.Serializable;
 import java.util.Set;
+import java.io.Serializable;
+import com.example.dietideals24frontend.Model.DTO.UserDTO;
 
 public class User implements Serializable {
     private Integer userId;
@@ -85,5 +86,18 @@ public class User implements Serializable {
 
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
+    }
+
+    public static User createUser(UserDTO userDTO) {
+        User loggedInUser = new User();
+        loggedInUser.setUserId(userDTO.getUserId());
+        loggedInUser.setName(userDTO.getName());
+        loggedInUser.setSurname(userDTO.getSurname());
+        loggedInUser.setEmail(userDTO.getEmail());
+        loggedInUser.setPassword(userDTO.getPassword());
+        loggedInUser.setBio(userDTO.getBio());
+        loggedInUser.setWebSiteUrl(userDTO.getWebSiteUrl());
+
+        return loggedInUser;
     }
 }

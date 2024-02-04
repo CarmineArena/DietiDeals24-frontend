@@ -162,36 +162,38 @@ public class SilentAuctionCreationFragment extends Fragment {
                 }
 
                 // Send to Server the Item's related image (its a byte[])
+                float finalItemStartPrize = itemStartPrize;
+                final Date finalSqlDate   = sqlDate;
                 controller.sendItemImageContent(getImageContent(), new ImageContentRegisterCallback() {
                     @Override
-                    public boolean onReceptionSuccess(byte[] itemImageContent) { return true; }
-                    @Override
-                    public boolean onReceptionFailure(String errorMessage) { return false; }
-                });
+                    public boolean onReceptionSuccess(byte[] itemImageContent) {
+                        ItemDTO requestedItem = new ItemDTO();
+                        requestedItem.setUser(user);
+                        requestedItem.setName(itemName);
+                        requestedItem.setCategory(itemCategory);
+                        requestedItem.setDescription(itemDescription);
+                        requestedItem.setBasePrize(finalItemStartPrize);
 
-                ItemDTO requestedItem = new ItemDTO();
-                requestedItem.setUser(user);
-                requestedItem.setName(itemName);
-                requestedItem.setCategory(itemCategory);
-                requestedItem.setDescription(itemDescription);
-                requestedItem.setBasePrize(itemStartPrize);
+                        final Integer[] savedItemId = new Integer[1];
 
-                final Date finalSqlDate = sqlDate;
-                float finalItemStartPrize = itemStartPrize;
-                final Integer[] savedItemId = new Integer[1];
+                        // Send to Server the Item's registration Request
+                        controller.sendRegisterItemRequest(requestedItem, new RegisterItemCallback() {
+                            @Override
+                            public boolean onItemRegistrationSuccess(Integer itemId) {
+                                savedItemId[0] = itemId;
 
-                // Send to Server the Item's registration Request
-                controller.sendRegisterItemRequest(requestedItem, new RegisterItemCallback() {
-                    @Override
-                    public boolean onItemRegistrationSuccess(Integer itemId) {
-                        savedItemId[0] = itemId;
+                                // Item and Auction registration must happen one after the other (that is why we do it like that)
+                                registerAuction(savedItemId[0], user.getUserId(), finalSqlDate, finalItemStartPrize, retrofitService);
+                                return true;
+                            }
+                            @Override
+                            public boolean onItemRegistrationFailure(String errorMessage) { return false; }
+                        });
 
-                        // Item and Auction registration must happen one after the other (that is why we do it like that)
-                        registerAuction(savedItemId[0], user.getUserId(), finalSqlDate, finalItemStartPrize, retrofitService);
                         return true;
                     }
                     @Override
-                    public boolean onItemRegistrationFailure(String errorMessage) { return false; }
+                    public boolean onReceptionFailure(String errorMessage) { return false; }
                 });
             }
         });

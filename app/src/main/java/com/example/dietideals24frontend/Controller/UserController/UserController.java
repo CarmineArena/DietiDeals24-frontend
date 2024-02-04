@@ -23,36 +23,26 @@ public class UserController implements UserRequestInterface {
     }
 
     @Override
-    public void sendUserLoginRequest(User user, final LoginUserCallback callback) {
+    public void sendUserLoginRequest(UserDTO user, final LoginUserCallback callback) {
         LoginUserService api = retrofitService.create(LoginUserService.class);
 
-        String email = user.getEmail();
-        String passw = user.getPassword();
-        api.login(email, passw).enqueue(new Callback<User>() {
+        api.loginUser(user).enqueue(new Callback<UserDTO>() {
             @Override
-            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                boolean returnValue;
-                if (response.isSuccessful()) {
-                    User loggedInUser = response.body();
-                    returnValue = callback.onLoginSuccess(loggedInUser);
-                } else {
-                    returnValue = callback.onLoginFailure(response.message());
-                }
-
-                if (returnValue)
+            public void onResponse(@NonNull Call<UserDTO> call, @NonNull Response<UserDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     Log.i("User Login", "User logged in correctly!");
-                else
+                    callback.onLoginSuccess(response.body());
+                } else {
+                    String message = response.errorBody() != null ? response.errorBody().toString() : "Received empty body as response!";
                     Log.e("User Login Error", "Could not login user!");
+                    callback.onLoginFailure(message);
+                }
             }
 
             @Override
-            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<UserDTO> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onLoginFailure(t.getMessage());
-
-                if (!returnValue) {
-                    Log.e("User Login Error", "Could not login user!");
-                    Log.e("User Login Error", Objects.requireNonNull(t.getMessage()));
-                }
+                Log.e("User Login Error", Objects.requireNonNull(t.getMessage()));
             }
         });
     }
@@ -63,28 +53,20 @@ public class UserController implements UserRequestInterface {
         api.save(user).enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                boolean returnValue;
                 if (response.isSuccessful()) {
                     User loggedInUser = response.body();
-                    returnValue = callback.onRegistrationSuccess(loggedInUser);
-                } else {
-                    returnValue = callback.onRegistrationFailure(response.message());
-                }
-
-                if (returnValue)
                     Log.i("User Register", "User registered correctly!");
-                else
+                    callback.onRegistrationSuccess(loggedInUser);
+                } else {
                     Log.e("User Register Error", "Could not register user!");
+                    callback.onRegistrationFailure(response.message());
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                boolean returnValue = callback.onRegistrationFailure(t.getMessage());
-
-                if (!returnValue) {
-                    Log.e("User Register Error", "Could not register user!");
-                    Log.e("User Register Error", Objects.requireNonNull(t.getMessage()));
-                }
+                Log.e("User Register Error", Objects.requireNonNull(t.getMessage()));
+                callback.onRegistrationFailure(t.getMessage());
             }
         });
     }
@@ -97,27 +79,19 @@ public class UserController implements UserRequestInterface {
         call.enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(@NonNull Call<UserDTO> call, @NonNull Response<UserDTO> response) {
-                boolean returnValue;
                 if (response.isSuccessful()) {
-                    returnValue = callback.onUserRetrievalSuccess(response.body());
-                } else {
-                    returnValue = callback.onUserRetrievalFailure(response.message());
-                }
-
-                if (returnValue)
                     Log.i("User Retrieval", "User data retrieved correctly!");
-                else
+                    callback.onUserRetrievalSuccess(response.body());
+                } else {
                     Log.e("User Retrieval Error", "Could not retrieve user data!");
+                    callback.onUserRetrievalFailure(response.message());
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call<UserDTO> call, @NonNull Throwable t) {
-                boolean returnValue = callback.onUserRetrievalFailure(t.getMessage());
-
-                if (!returnValue) {
-                    Log.e("User Retrieval Error", "Could not retrieve user data!");
-                    Log.e("User Retrieval Error", Objects.requireNonNull(t.getMessage()));
-                }
+                callback.onUserRetrievalFailure(t.getMessage());
+                Log.e("User Retrieval Error", Objects.requireNonNull(t.getMessage()));
             }
         });
     }
@@ -130,27 +104,19 @@ public class UserController implements UserRequestInterface {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                boolean returnValue;
                 if (response.isSuccessful()) {
-                    returnValue = callback.onUserUpdateSuccess();
-                } else {
-                    returnValue = callback.onUserUpdateFailure(response.message());
-                }
-
-                if (returnValue)
                     Log.i("User Update", "User data updated correctly!");
-                else
+                    callback.onUserUpdateSuccess();
+                } else {
                     Log.e("User Update Error", "Could not update user data!");
+                    callback.onUserUpdateFailure(response.message());
+                }
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                boolean returnValue = callback.onUserUpdateFailure(t.getMessage());
-
-                if (!returnValue) {
-                    Log.e("User Update Error", "Could not update user data!");
-                    Log.e("User Update Error", Objects.requireNonNull(t.getMessage()));
-                }
+                Log.e("User Update Error", Objects.requireNonNull(t.getMessage()));
+                callback.onUserUpdateFailure(t.getMessage());
             }
         });
     }
