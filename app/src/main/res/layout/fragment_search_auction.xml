@@ -9,10 +9,11 @@
 
     <EditText
         android:id="@+id/search_button"
-        android:layout_width="209dp"
+        android:layout_width="0dp"
         android:layout_height="38dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="39dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginBottom="3dp"
         android:background="@drawable/search_button_background"
         android:drawableEnd="@drawable/search_auction"
@@ -23,15 +24,16 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/selected_category_view"
+        app:layout_constraintEnd_toStartOf="@+id/filter_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/filter_button"
-        android:layout_width="wrap_content"
+        android:layout_width="116dp"
         android:layout_height="38dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="54dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:text="filtra"
         app:layout_constraintEnd_toEndOf="parent"

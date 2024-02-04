@@ -111,11 +111,12 @@
             android:id="@+id/LogOutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="100dp"
             android:layout_marginEnd="44dp"
             android:background="@drawable/button2bg"
             android:text="Esci"
             android:textColor="#DF0000"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/InfoView" />
 
