@@ -9,7 +9,7 @@
 
     <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -89,16 +89,18 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/searchButton"
-        android:layout_width="208dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/search_button_background"
         android:drawableEnd="@drawable/search_auction"
         android:gravity="start|center_vertical"
         android:hint="Cerca..."
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/allAuctionButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeView" />
 
@@ -119,8 +121,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/poppins_bold_italic"
-        android:text="Benvenuto"
+        android:text="La home di "
+        android:fontFamily="@font/poppins"
+        android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
