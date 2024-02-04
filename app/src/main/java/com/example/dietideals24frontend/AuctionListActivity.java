@@ -22,8 +22,7 @@ public class AuctionListActivity extends AppCompatActivity {
 
         LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(getApplicationContext(), MainActivity.retrofitService, getSupportFragmentManager());
 
-        RelativeLayout yourAuction = findViewById(R.id.yourAuction);
-        presenter.createAuctionedByUserItemsLayout(yourAuction, loggedInUser);
-
+        RelativeLayout layout = findViewById(R.id.yourAuction);
+        presenter.createAuctionedByUserItemsLayout(layout, loggedInUser);
     }
 }

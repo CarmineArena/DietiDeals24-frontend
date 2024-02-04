@@ -265,7 +265,7 @@ public class LinearLayoutForItemsPresenter {
         else
             button.setText("VISUALIZZA");
 
-        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser, auctionType));
+        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser));
 
         LinearLayout internal = new LinearLayout(context);
         internal.setOrientation(LinearLayout.VERTICAL);
@@ -294,7 +294,7 @@ public class LinearLayoutForItemsPresenter {
         btnParams.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
         btnParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser, HomeConstantValues.WANTED));
+        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser));
         layout.addView(button, btnParams);
     }
 
@@ -335,9 +335,10 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(button);
     }
 
-    private void handleClickOnItem(Item item, User loggedInUser, String auctionType) {
-        Intent intent1 = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item);
-        this.context.startActivity(intent1);
+    private void handleClickOnItem(Item item, User loggedInUser) {
+        Intent intent = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.context.startActivity(intent);
     }
 
     private Intent handleClickForCreateAuction(User loggedInUser) {
