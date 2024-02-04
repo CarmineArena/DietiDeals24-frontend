@@ -41,6 +41,7 @@
             android:ems="10"
             android:hint="Nome..."
             android:inputType="textPersonName"
+            android:paddingStart="3dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TitleView" />
 
@@ -121,6 +122,7 @@
             android:background="@drawable/inputtextbg"
             android:gravity="top"
             android:hint="Descrizione..."
+            android:paddingStart="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
