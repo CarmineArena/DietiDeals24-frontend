@@ -3,6 +3,8 @@ package com.example.dietideals24frontend.Presenter;
 import android.widget.*;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+
 import android.content.Intent;
 import android.content.Context;
 import android.annotation.SuppressLint;
@@ -10,7 +12,6 @@ import android.annotation.SuppressLint;
 import java.util.List;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 
 import com.example.dietideals24frontend.Controller.ItemController.ItemController;
 import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveFeaturedItemsCallback;
@@ -143,7 +144,7 @@ public class LinearLayoutForItemsPresenter {
         });
     }
 
-    public void createAuctionedByUserItemsLinearLayout(LinearLayout layout, User loggedInUser) {
+    public void createAuctionedByUserItemsLayout(ViewGroup layout, User loggedInUser) {
         ItemController controller = new ItemController(this.retrofitService);
         controller.sendCreatedByUserItemsRequest(loggedInUser, new RetrieveUserItemsCallback() {
             @Override
@@ -152,7 +153,11 @@ public class LinearLayoutForItemsPresenter {
 
                 if (auctionedByUserItems == null) {
                     Log.d("Home Fragment", "List<Item> createdByUserItems size: 0");
-                    addImageButtonToLinearLayout(layout, context, loggedInUser, HomeConstantValues.AUCTIONED);
+
+                    if (layout instanceof LinearLayout)
+                        addImageButtonToLinearLayout((LinearLayout) layout, context, loggedInUser, HomeConstantValues.AUCTIONED);
+                    else if (layout instanceof RelativeLayout)
+                        addImageButtonToRelativeLayout((RelativeLayout) layout, context, loggedInUser);
                 } else {
                     Log.d("Home Fragment", "List<Item> createdByUserItems size: " + auctionedByUserItems.size());
 
@@ -163,7 +168,11 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 auctionedByUserItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(auctionedByUserItems.get(pos), loggedInUser, HomeConstantValues.AUCTIONED));
+
+                                if (layout instanceof LinearLayout)
+                                    layout.addView(createInternalLayout(auctionedByUserItems.get(pos), loggedInUser, HomeConstantValues.AUCTIONED));
+                                else if (layout instanceof RelativeLayout)
+                                    createRelativeLayout((RelativeLayout) layout, loggedInUser, auctionedByUserItems.get(pos));
                             }
 
                             @Override

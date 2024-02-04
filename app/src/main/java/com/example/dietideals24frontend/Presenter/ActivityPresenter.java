@@ -3,6 +3,7 @@ package com.example.dietideals24frontend.Presenter;
 import android.content.Intent;
 import android.content.Context;
 
+import com.example.dietideals24frontend.AuctionListActivity;
 import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.View.Activity.AuctionActivity;
@@ -36,6 +37,13 @@ public class ActivityPresenter implements ActivityPresenterInterface {
     public Intent createProfileIntent(Context context, User user) {
         Intent intent = new Intent(context, AuctionActivity.class);
         intent.putExtra("user", user);
+        return intent;
+    }
+
+    @Override
+    public Intent createAuctionListIntent(Context context, User loggedInUser) {
+        Intent intent = new Intent(context, AuctionListActivity.class);
+        intent.putExtra("loggedInUser", loggedInUser);
         return intent;
     }
 }

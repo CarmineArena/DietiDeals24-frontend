@@ -1,20 +1,21 @@
 package com.example.dietideals24frontend.View.Fragment;
 
 import android.os.Bundle;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.content.Context;
 import android.annotation.SuppressLint;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.*;
 import android.widget.*;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import retrofit2.Retrofit;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.MainActivity;
+import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 import com.example.dietideals24frontend.Presenter.LinearLayoutForItemsPresenter;
 
@@ -44,7 +45,9 @@ public class HomeFragment extends Fragment {
         Button btnAuction = view.findViewById(R.id.allAuctionButton);
         btnAuction.setPaintFlags(btnAuction.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         btnAuction.setOnClickListener(v -> {
-            // TODO: PORTARE L'UTENTE ALLA VISUALIZZAZIONE DELLE SUE ASTE
+            Intent intent = new ActivityPresenter().createAuctionListIntent(getContext(), loggedInUser);
+            startActivity(intent);
+            getActivity().finish();
         });
 
         Button btnSearch = view.findViewById(R.id.searchButton);
@@ -60,7 +63,7 @@ public class HomeFragment extends Fragment {
         presenter.createFeaturedItemsLinearLayout(evidenceLayout, loggedInUser);
 
         LinearLayout createdLayout = view.findViewById(R.id.createdAuction);
-        presenter.createAuctionedByUserItemsLinearLayout(createdLayout, loggedInUser);
+        presenter.createAuctionedByUserItemsLayout(createdLayout, loggedInUser);
 
         LinearLayout joinedLayout = view.findViewById(R.id.joinedAuction);
         presenter.createItemsWantedByUserLinearLayout(joinedLayout, loggedInUser);
