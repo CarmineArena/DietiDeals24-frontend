@@ -9,11 +9,12 @@ import android.widget.EditText;
 
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
-
 import androidx.fragment.app.Fragment;
+
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.MainActivity;
+import com.example.dietideals24frontend.Model.DTO.UserDTO;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Controller.UserController.UserController;
 import com.example.dietideals24frontend.Controller.UserController.Callback.RegisterUserCallback;
@@ -49,14 +50,14 @@ public class SignUpFragment extends Fragment {
             if (name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty() || !validator.validate(email)) {
                 dialog.showAlertDialog("FORM ERROR", "Controllare la correttezza delle credenziali e non lasciare campi vuoti.");
             } else {
-                User user = new User();
-                user.setName(name);
-                user.setSurname(surname);
-                user.setEmail(email);
-                user.setPassword(password);
+                UserDTO userDTO = new UserDTO();
+                userDTO.setName(name);
+                userDTO.setSurname(surname);
+                userDTO.setEmail(email);
+                userDTO.setPassword(password);
 
                 UserController controller = new UserController(retrofitService);
-                controller.sendUserRegistrationRequest(user, new RegisterUserCallback() {
+                controller.sendUserRegistrationRequest(userDTO, new RegisterUserCallback() {
                     @Override
                     public boolean onRegistrationSuccess(User loggedInUser) {
                         ActivityPresenter activityFactory = new ActivityPresenter();

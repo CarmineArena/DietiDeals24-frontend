@@ -48,13 +48,19 @@ public class UserController implements UserRequestInterface {
     }
 
     @Override
-    public void sendUserRegistrationRequest(User user, final RegisterUserCallback callback) {
+    public void sendUserRegistrationRequest(UserDTO userDTO, final RegisterUserCallback callback) {
         RegisterUserService api = retrofitService.create(RegisterUserService.class);
-        api.save(user).enqueue(new Callback<User>() {
+        api.registerUser(userDTO).enqueue(new Callback<UserDTO>() {
             @Override
-            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+            public void onResponse(@NonNull Call<UserDTO> call, @NonNull Response<UserDTO> response) {
                 if (response.isSuccessful()) {
-                    User loggedInUser = response.body();
+                    User loggedInUser = new User();
+                    loggedInUser.setUserId(response.body().getUserId());
+                    loggedInUser.setName(response.body().getName());
+                    loggedInUser.setSurname(response.body().getSurname());
+                    loggedInUser.setEmail(response.body().getEmail());
+                    loggedInUser.setPassword(response.body().getPassword());
+
                     Log.i("User Register", "User registered correctly!");
                     callback.onRegistrationSuccess(loggedInUser);
                 } else {
@@ -64,7 +70,7 @@ public class UserController implements UserRequestInterface {
             }
 
             @Override
-            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<UserDTO> call, @NonNull Throwable t) {
                 Log.e("User Register Error", Objects.requireNonNull(t.getMessage()));
                 callback.onRegistrationFailure(t.getMessage());
             }
