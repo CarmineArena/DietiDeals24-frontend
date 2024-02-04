@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnFragment;
     private TextView TextFragment;
 
+
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
