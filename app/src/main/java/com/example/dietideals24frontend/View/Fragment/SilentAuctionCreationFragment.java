@@ -33,6 +33,7 @@ import com.example.dietideals24frontend.Controller.AuctionController.AuctionCont
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.*;
+import com.example.dietideals24frontend.ToastManager;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 
@@ -56,10 +57,13 @@ public class SilentAuctionCreationFragment extends Fragment {
     private View view;
     private byte[] imageContent;
     private String categoryChoice = null;
+    private ToastManager mToastManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_silent_auction_creation, container, false);
+
+        mToastManager = new ToastManager(getContext());
 
         Dialog dialog = new Dialog(getContext());
 
@@ -260,7 +264,8 @@ public class SilentAuctionCreationFragment extends Fragment {
             @Override
             public boolean onAuctionRegistrationSuccess(AuctionDTO auctionDTO) {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
-                Snackbar.make(view, "Asta creata con successo!", Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(view, "Asta creata con successo!", Snackbar.LENGTH_SHORT).show();
+                mToastManager.showToast("Asta creata con successo!");
 
                 ActivityPresenter factory = new ActivityPresenter();
                 Intent intent = factory.createIntentForHome(getContext(), user); // Return Home with loggedIn user's informations

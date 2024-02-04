@@ -14,16 +14,19 @@ import com.example.dietideals24frontend.Controller.UserController.Callback.Retri
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.dietideals24frontend.MainActivity;
+import com.example.dietideals24frontend.ToastManager;
 import com.google.android.material.snackbar.Snackbar;
 
 public class OtherProfileActivity extends AppCompatActivity {
     private User user;
+    private ToastManager mToastManager;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_profile);
+        mToastManager = new ToastManager(this);
 
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
@@ -49,13 +52,16 @@ public class OtherProfileActivity extends AppCompatActivity {
                 if (webSiteUrl != null && !webSiteUrl.isEmpty()) urlView.setText(webSiteUrl);
                 else urlView.setText("");
 
-                Snackbar.make(scrollView, "Dati utente recuperati!", Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(scrollView, "Dati utente recuperati!", Snackbar.LENGTH_SHORT).show();
+                mToastManager.showToast("Dati utente recuperati");
+
                 return true;
             }
 
             @Override
             public boolean onUserRetrievalFailure(String errorMessage) {
-                Snackbar.make(scrollView, errorMessage, Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(scrollView, errorMessage, Snackbar.LENGTH_SHORT).show();
+                mToastManager.showToastLong(errorMessage);
                 return false;
             }
         });

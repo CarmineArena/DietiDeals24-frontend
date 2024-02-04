@@ -34,6 +34,7 @@ import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Controller.OfferController.OfferController;
 import com.example.dietideals24frontend.Controller.OfferController.Callback.RegisterOfferCallback;
+import com.example.dietideals24frontend.ToastManager;
 
 import retrofit2.Retrofit;
 import com.example.dietideals24frontend.R;
@@ -55,11 +56,14 @@ public class SilentAuctionFragment extends Fragment {
     private float lastOfferValue; // The highest value among the current offers
     private Retrofit retrofitService;
     private String choice;
+    private ToastManager mToastManager;
 
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_silent_auction, container, false);
+
+        mToastManager = new ToastManager(getContext());
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -216,7 +220,8 @@ public class SilentAuctionFragment extends Fragment {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public boolean onOfferRegistrationSuccess() {
-                        Snackbar.make(view, "Offerta fatta con successo!", Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(view, "Offerta fatta con successo!", Snackbar.LENGTH_SHORT).show();
+                        mToastManager.showToast("Offerta fatta con successo!");
 
                         offerText.setText("Ultima offerta: € " + offerDTO.getOffer());
                         Button bidderBtn = view.findViewById(R.id.Name2Btn);
@@ -226,7 +231,8 @@ public class SilentAuctionFragment extends Fragment {
 
                     @Override
                     public boolean onOfferRegistrationFailure(String errorMessage) {
-                        Snackbar.make(view, "Operazione fallita. Riprovare!", Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(view, "Operazione fallita. Riprovare!", Snackbar.LENGTH_SHORT).show();
+                        mToastManager.showToast("Operazione fallita. Riprovare!");
                         return false;
                     }
                 });

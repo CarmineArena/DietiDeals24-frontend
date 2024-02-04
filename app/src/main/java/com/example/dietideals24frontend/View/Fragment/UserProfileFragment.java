@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import androidx.fragment.app.Fragment;
 
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.ToastManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Controller.UserController.Callback.UpdateUserCallback;
@@ -23,11 +24,14 @@ import com.example.dietideals24frontend.Controller.UserController.Callback.Retri
 public class UserProfileFragment extends Fragment {
     private View view;
     private User user;
+    private ToastManager mToastManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+
+        mToastManager = new ToastManager(getContext());
 
         // Retrieve LoggedIn User
         Bundle bundle = getArguments();
@@ -50,13 +54,15 @@ public class UserProfileFragment extends Fragment {
                 String webSiteUrl = userDTO.getWebSiteUrl();
                 if (webSiteUrl != null && !webSiteUrl.isEmpty()) WebSiteText.setText(webSiteUrl);
 
-                Snackbar.make(view, "Dati utente recuperati!", Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(view, "Dati utente recuperati!", Snackbar.LENGTH_SHORT).show();
+                mToastManager.showToast("Dati utente recuperati!");
                 return true;
             }
 
             @Override
             public boolean onUserRetrievalFailure(String errorMessage) {
-                Snackbar.make(view, errorMessage, Snackbar.LENGTH_LONG).show();
+                //Snackbar.make(view, errorMessage, Snackbar.LENGTH_LONG).show();
+                mToastManager.showToastLong(errorMessage);
                 return false;
             }
         });
@@ -67,7 +73,8 @@ public class UserProfileFragment extends Fragment {
             String webSiteUrl = WebSiteText.getText().toString();
 
             if (bio.isEmpty() && webSiteUrl.isEmpty()) {
-                Snackbar.make(view, "Almeno un campo deve essere riempito!", Snackbar.LENGTH_SHORT).show();
+                //Snackbar.make(view, "Almeno un campo deve essere riempito!", Snackbar.LENGTH_SHORT).show();
+                mToastManager.showToast("Almento un campo deve essere riempito!");
             } else {
                 UserDTO userDTO = new UserDTO();
                 userDTO.setUserId(user.getUserId());
@@ -83,7 +90,8 @@ public class UserProfileFragment extends Fragment {
                     public boolean onUserUpdateSuccess() {
                         bioText.setText(userDTO.getBio());
                         WebSiteText.setText(userDTO.getWebSiteUrl());
-                        Snackbar.make(view, "Dati utente aggiornati!", Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(view, "Dati utente aggiornati!", Snackbar.LENGTH_SHORT).show();
+                        mToastManager.showToast("Dati utente aggiornati con successo!");
                         return true;
                     }
 
