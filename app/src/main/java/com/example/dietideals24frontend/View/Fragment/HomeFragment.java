@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
         presenter.createAuctionedByUserItemsLayout(createdLayout, loggedInUser);
 
         LinearLayout joinedLayout = view.findViewById(R.id.joinedAuction);
-        presenter.createItemsWantedByUserLinearLayout(joinedLayout, loggedInUser);
+        presenter.createItemsWantedByUserLayout(joinedLayout, loggedInUser);
 
         return view;
     }
