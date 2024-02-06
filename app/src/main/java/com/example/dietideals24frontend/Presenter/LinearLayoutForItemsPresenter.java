@@ -2,6 +2,7 @@ package com.example.dietideals24frontend.Presenter;
 
 import android.widget.*;
 import android.util.Log;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -107,7 +108,7 @@ public class LinearLayoutForItemsPresenter {
 
                 if (items == null) { // It is impossible that something like this occurs, but we handle it anyway
                     Log.d("Home Fragment", "List<Item> Search Auction Activity size: 0");
-                    addImageButtonToRelativeLayout(layout, context, loggedInUser);
+                    addImageButtonToRelativeLayout(layout, context, loggedInUser, HomeConstantValues.WANTED);
                 } else {
                     Log.d("Home Fragment", "List<Item> Search Auction Activity size: " + items.size());
                     int size = items.size();
@@ -157,7 +158,7 @@ public class LinearLayoutForItemsPresenter {
                     if (layout instanceof LinearLayout)
                         addImageButtonToLinearLayout((LinearLayout) layout, context, loggedInUser, HomeConstantValues.AUCTIONED);
                     else if (layout instanceof RelativeLayout)
-                        addImageButtonToRelativeLayout((RelativeLayout) layout, context, loggedInUser);
+                        addImageButtonToRelativeLayout((RelativeLayout) layout, context, loggedInUser, HomeConstantValues.AUCTIONED);
                 } else {
                     Log.d("Home Fragment", "List<Item> createdByUserItems size: " + auctionedByUserItems.size());
 
@@ -198,7 +199,7 @@ public class LinearLayoutForItemsPresenter {
         });
     }
 
-    public void createItemsWantedByUserLinearLayout(LinearLayout layout, User loggedInUser) {
+    public void createItemsWantedByUserLayout(ViewGroup layout, User loggedInUser) {
         ItemController controller = new ItemController(this.retrofitService);
         controller.sendFindItemsWantedByUserRequest(loggedInUser.getUserId(), loggedInUser.getEmail(), loggedInUser.getPassword(), new RetrieveItemsWantedByUserCallback() {
             @Override
@@ -207,7 +208,11 @@ public class LinearLayoutForItemsPresenter {
 
                 if (wantedByUserItems == null) {
                     Log.d("Home Fragment", "List<Item> wantedByUserItems size: 0");
-                    addImageButtonToLinearLayout(layout, context, loggedInUser, HomeConstantValues.WANTED);
+
+                    if (layout instanceof LinearLayout)
+                        addImageButtonToLinearLayout((LinearLayout) layout, context, loggedInUser, HomeConstantValues.WANTED);
+                    else if (layout instanceof RelativeLayout)
+                        addImageButtonToRelativeLayout((RelativeLayout) layout, context, loggedInUser, HomeConstantValues.WANTED);
                 } else {
                     Log.d("Home Fragment", "List<Item> wantedByUserItems size: " + wantedByUserItems.size());
 
@@ -218,7 +223,12 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 wantedByUserItems.get(pos).setImage(imageContent);
-                                layout.addView(createInternalLayout(wantedByUserItems.get(pos), loggedInUser, HomeConstantValues.WANTED));
+
+                                if (layout instanceof LinearLayout)
+                                    layout.addView(createInternalLayout(wantedByUserItems.get(pos), loggedInUser, HomeConstantValues.WANTED));
+                                else if (layout instanceof RelativeLayout) {
+                                    createRelativeLayout((RelativeLayout) layout, loggedInUser, wantedByUserItems.get(pos));
+                                }
                             }
 
                             @Override
@@ -285,7 +295,7 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(imageView);
 
         Button button = new Button(context);
-        button.setText(item.getName()); // We show the name of the Item
+        button.setText(Html.fromHtml(item.getName() + "<br>", Html.FROM_HTML_MODE_LEGACY)); // TODO: INTRODURRE IL TIPO DI ASTA (RECUPERARE IL TIPO)
         button.setBackgroundResource(android.R.color.transparent); // background_light
         RelativeLayout.LayoutParams btnParams = new RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -322,10 +332,14 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(button);
     }
 
-    private void addImageButtonToRelativeLayout(RelativeLayout layout, Context context, User loggedInUser) {
+    private void addImageButtonToRelativeLayout(RelativeLayout layout, Context context, User loggedInUser, String auctionType) {
         ImageButton button = new ImageButton(context);
 
-        button.setBackgroundResource(R.drawable.search_auction);
+        if (auctionType.equals(HomeConstantValues.WANTED))
+            button.setBackgroundResource(R.drawable.search_auction);
+        else
+            button.setBackgroundResource(R.drawable.add_auction);
+
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 400, // Width in pixel
                 400        // Height in pixel
