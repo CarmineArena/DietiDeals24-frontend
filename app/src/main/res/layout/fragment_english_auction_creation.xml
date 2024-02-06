@@ -13,10 +13,11 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins_medium_italic"
         android:gravity="center_vertical"
         android:text="Foto dell'articolo"
-        android:textSize="15sp"
+        android:fontFamily="@font/fenix"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
@@ -27,6 +28,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/button2bg"
+        android:fontFamily="@font/poppins"
         android:text="Carica una foto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/itemImage" />
@@ -61,6 +63,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/button2bg"
+        android:fontFamily="@font/poppins"
         android:text="Imposta l'ora"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -71,10 +74,11 @@
         android:layout_height="35dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_medium_italic"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Importo minimo:"
-        android:textSize="15sp"
+        android:text="Importo minimo"
+        android:fontFamily="@font/fenix"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
@@ -99,6 +103,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/button2bg"
+        android:fontFamily="@font/poppins"
         android:text="avanti"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
@@ -132,9 +137,10 @@
         android:layout_height="28dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:fontFamily="@font/poppins_medium_italic"
         android:text="Nome dell'articolo"
-        android:textSize="15sp"
+        android:fontFamily="@font/fenix"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -144,10 +150,11 @@
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_medium_italic"
         android:gravity="center_vertical"
         android:text="Descrizione dell'articolo"
-        android:textSize="15sp"
+        android:fontFamily="@font/fenix"
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
@@ -157,10 +164,11 @@
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins_medium_italic"
         android:gravity="center_horizontal|center_vertical"
         android:text="Data di scadenza"
-        android:textSize="15sp"
+        android:fontFamily="@font/fenix"
+        android:textColor="#000000"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
