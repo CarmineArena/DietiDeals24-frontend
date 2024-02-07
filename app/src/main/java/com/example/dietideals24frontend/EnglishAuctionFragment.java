@@ -222,7 +222,6 @@ public class EnglishAuctionFragment extends Fragment {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public boolean onOfferRegistrationSuccess() {
-                        //Snackbar.make(view, "Offerta fatta con successo!", Snackbar.LENGTH_SHORT).show();
                         mToastManager.showToast("Offerta fatta con successo!");
 
                         offerText.setText("Ultima offerta: € " + offerDTO.getOffer());
@@ -233,7 +232,6 @@ public class EnglishAuctionFragment extends Fragment {
 
                     @Override
                     public boolean onOfferRegistrationFailure(String errorMessage) {
-                        //Snackbar.make(view, "Operazione fallita. Riprovare!", Snackbar.LENGTH_SHORT).show();
                         mToastManager.showToast("Operazione fallita. Riprovare!");
                         return false;
                     }

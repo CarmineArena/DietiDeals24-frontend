@@ -295,7 +295,7 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(imageView);
 
         Button button = new Button(context);
-        button.setText(Html.fromHtml(item.getName() + "<br>", Html.FROM_HTML_MODE_LEGACY)); // TODO: INTRODURRE IL TIPO DI ASTA (RECUPERARE IL TIPO)
+        button.setText(Html.fromHtml(item.getName() + "<br>", Html.FROM_HTML_MODE_LEGACY)); // TODO: INTRODURRE IL TIPO DI ASTA ?
         button.setBackgroundResource(android.R.color.transparent); // background_light
         RelativeLayout.LayoutParams btnParams = new RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.WRAP_CONTENT,
