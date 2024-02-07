@@ -1,9 +1,8 @@
 package com.example.dietideals24frontend.View.Fragment;
 
-import static android.app.Activity.RESULT_OK;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import static android.app.Activity.RESULT_OK;
 
 import android.util.Log;
 import android.os.Bundle;
@@ -16,10 +15,12 @@ import androidx.fragment.app.Fragment;
 
 import android.view.View;
 import android.widget.Button;
-import android.view.ViewGroup;
 import android.widget.EditText;
+
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.AdapterView;
+
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import android.provider.MediaStore;
@@ -49,7 +50,6 @@ import java.io.IOException;
 
 import retrofit2.Retrofit;
 import com.example.dietideals24frontend.MainActivity;
-import com.google.android.material.snackbar.Snackbar;
 
 public class SilentAuctionCreationFragment extends Fragment {
     private User user;
@@ -264,7 +264,6 @@ public class SilentAuctionCreationFragment extends Fragment {
             @Override
             public boolean onAuctionRegistrationSuccess(AuctionDTO auctionDTO) {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
-                //Snackbar.make(view, "Asta creata con successo!", Snackbar.LENGTH_SHORT).show();
                 mToastManager.showToast("Asta creata con successo!");
 
                 ActivityPresenter factory = new ActivityPresenter();
