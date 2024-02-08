@@ -11,8 +11,7 @@ import android.view.LayoutInflater;
 import androidx.fragment.app.Fragment;
 
 import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.ToastManager;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Controller.UserController.Callback.UpdateUserCallback;
 

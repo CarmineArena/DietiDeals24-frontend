@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void startNotificationTask() {
-        long interval = 20 * 1000; // 20 seconds
+        long interval = 10 * 1000; // 10 seconds
 
         scheduler.scheduleAtFixedRate(() -> {
             AuctionNotificationController controller = new AuctionNotificationController(loggedInUser.getUserId(),

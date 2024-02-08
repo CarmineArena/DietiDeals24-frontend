@@ -38,7 +38,7 @@ public class AuctionNotificationManager {
                 .setContentTitle(title)
                 .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        // .setSmallIcon(R.drawable.notification_icon) // TODO: CREIAMO UN'ICONA?
+        // .setSmallIcon(R.drawable.notification_icon) // TODO: METTERE L'ICONA DELL'APP
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(notificationId, builder.build());

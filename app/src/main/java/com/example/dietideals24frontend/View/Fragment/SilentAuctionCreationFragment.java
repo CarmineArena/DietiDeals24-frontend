@@ -34,7 +34,7 @@ import com.example.dietideals24frontend.Controller.AuctionController.AuctionCont
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.*;
-import com.example.dietideals24frontend.ToastManager;
+import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 

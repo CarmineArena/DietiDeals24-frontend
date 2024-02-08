@@ -34,18 +34,15 @@ import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Controller.OfferController.OfferController;
 import com.example.dietideals24frontend.Controller.OfferController.Callback.RegisterOfferCallback;
-import com.example.dietideals24frontend.ToastManager;
+import com.example.dietideals24frontend.View.ToastManager;
 
 import retrofit2.Retrofit;
-import com.example.dietideals24frontend.R;
+
 import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.MainActivity;
-import com.google.android.material.snackbar.Snackbar;
 import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.Model.DTO.OfferDTO;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.Utility.DateAndTimeRetriever;
-import com.example.dietideals24frontend.Controller.OfferController.Callback.RetrieveBestOfferCallback;
 
 
 public class EnglishAuctionFragment extends Fragment {

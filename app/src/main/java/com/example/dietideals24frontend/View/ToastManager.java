@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend;
+package com.example.dietideals24frontend.View;
 
 import android.content.Context;
 import android.widget.Toast;

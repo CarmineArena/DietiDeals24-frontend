@@ -14,8 +14,7 @@ import com.example.dietideals24frontend.Controller.UserController.Callback.Retri
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.dietideals24frontend.MainActivity;
-import com.example.dietideals24frontend.ToastManager;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.dietideals24frontend.View.ToastManager;
 
 public class OtherProfileActivity extends AppCompatActivity {
     private User user;

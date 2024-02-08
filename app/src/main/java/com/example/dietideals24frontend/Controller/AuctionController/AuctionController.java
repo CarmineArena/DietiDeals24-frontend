@@ -149,4 +149,30 @@ public class AuctionController implements AuctionRequestInterface {
             }
         });
     }
+
+    @Override
+    public void sendCloseAuctionRequest(Integer auctionId, final CloseAuctionCallback callback) {
+        CloseAuctionService api = retrofitService.create(CloseAuctionService.class);
+
+        Call<Void> call = api.closeAuction(auctionId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.i("Close Auction", "Auction closed correctly!");
+                    callback.onCloseSuccess();
+                } else {
+                    Log.e("Close Auction Error", "Could not close auction!");
+                    callback.onCloseFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onCloseFailure(t.getMessage());
+                Log.e("Close Auction Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
 }

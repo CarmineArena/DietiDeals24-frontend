@@ -25,7 +25,9 @@ import java.util.Locale;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import com.example.dietideals24frontend.ToastManager;
+import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
+import com.example.dietideals24frontend.Controller.AuctionController.Callback.CloseAuctionCallback;
+import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Controller.OfferController.Callback.*;
 import com.example.dietideals24frontend.Controller.OfferController.OfferController;
@@ -136,7 +138,26 @@ public class SilentAuctionFragment extends Fragment {
                             linearLayoutHorizontal.addView(userOffer);
 
                             Button button = new Button(getContext());
-                            button.setText("Conferma");
+                            button.setText("Accetta");
+
+                            // TODO: QUESTO VA FATTO SOLO DOPO AVER CLICCATO "OK" IN UN DIALOG
+                            button.setOnClickListener(v -> {
+                                AuctionController controller = new AuctionController(MainActivity.retrofitService);
+                                controller.sendCloseAuctionRequest(auction.getAuctionId(), new CloseAuctionCallback() {
+                                    @Override
+                                    public boolean onCloseSuccess() {
+                                        mToastManager.showToast("Hai accettato l'offerta!");
+                                        // TODO: ASPETTARE QUALCHE SECONDO E PORTARE L'UTENTE ALLA HOME
+                                        return true;
+                                    }
+
+                                    @Override
+                                    public boolean onCloseFailure(String errorMessage) {
+                                        // TODO: NOTIFICARE L'ERRORE
+                                        return false;
+                                    }
+                                });
+                            });
                             linearLayoutHorizontal.addView(button);
 
                             scrollViewLayout.addView(linearLayoutHorizontal);
@@ -153,10 +174,6 @@ public class SilentAuctionFragment extends Fragment {
                     return false;
                 }
             });
-
-            // TODO:
-            //  - LAVORARE ALLA SCROLLVIEW (MOSTRARE LE OFFERTE CON PULSANTE ACCETTA)
-            //  - MODIFICARE LA CHIAMATA AL SERVER PER LE OFFERTE + GESTIONE ACCETTAZIONE DELL'OFFERTA CON CHIUSURA DELL'ASTA
         } else {
             manageOffer();
         }
