@@ -11,16 +11,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.annotation.SuppressLint;
 
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ImageView;
 
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 
+import java.util.List;
 import java.util.Locale;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
+import com.example.dietideals24frontend.Controller.OfferController.Callback.RetrieveOffersCallback;
 import com.example.dietideals24frontend.ToastManager;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Controller.OfferController.OfferController;
@@ -46,6 +50,9 @@ public class SilentAuctionFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_silent_auction, container, false);
 
         mToastManager = new ToastManager(getContext());
+
+        ScrollView scrollView = view.findViewById(R.id.scrollView2);
+        LinearLayout scrollViewLayout = view.findViewById(R.id.scrollViewLayout);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -98,6 +105,63 @@ public class SilentAuctionFragment extends Fragment {
             Button offerBtn = view.findViewById(R.id.OfferButton);
             offerBtn.setEnabled(false);
             offerBtn.setVisibility(View.INVISIBLE);
+
+            OfferController controller = new OfferController(MainActivity.retrofitService);
+            controller.sendGetOffersRequest(auction.getItem().getItemId(), auction.getAuctionId(), new RetrieveOffersCallback() {
+                @Override
+                public boolean onRetrieveOffersSuccess(List<OfferDTO> offerDTOs) {
+                    if (offerDTOs == null || offerDTOs.isEmpty()) {
+
+
+
+                    } else {
+                        for (OfferDTO offer : offerDTOs) {
+                            LinearLayout linearLayoutHorizontal = new LinearLayout(getContext());
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT
+                            );
+                            linearLayoutHorizontal.setLayoutParams(layoutParams);
+                            linearLayoutHorizontal.setOrientation(LinearLayout.HORIZONTAL);
+
+                            TextView userName = new TextView(getContext());
+                            userName.setText(offer.getUser().getName());
+                            linearLayoutHorizontal.addView(userName);
+
+                            TextView userSurname = new TextView(getContext());
+                            userSurname.setText(offer.getUser().getSurname());
+                            linearLayoutHorizontal.addView(userSurname);
+
+                            TextView userOffer = new TextView(getContext());
+                            userOffer.setText(String.valueOf(offer.getOffer()));
+                            linearLayoutHorizontal.addView(userOffer);
+
+                            Button button = new Button(getContext());
+                            button.setText("Conferma");
+                            linearLayoutHorizontal.addView(button);
+
+                            scrollViewLayout.addView(linearLayoutHorizontal);
+                        }
+
+
+                        scrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
+                            //offer.getUser().getName();
+                            //String.valueOf(offer.getOffer());
+
+                    }
+                    return true;
+                }
+
+                @Override
+                public boolean onRetrieveOffersFailure(String errorMessage) {
+                    return false;
+                }
+            });
 
             // TODO:
             //  - LAVORARE ALLA SCROLLVIEW (MOSTRARE LE OFFERTE CON PULSANTE ACCETTA)

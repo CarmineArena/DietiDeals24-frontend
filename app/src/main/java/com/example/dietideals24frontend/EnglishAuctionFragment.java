@@ -116,7 +116,7 @@ public class EnglishAuctionFragment extends Fragment {
         Button bidderBtn = view.findViewById(R.id.Name2Btn);
 
         OfferController controller = new OfferController(retrofitService);
-        controller.sendFindBestOfferRequest(auction.getItem().getItemId(), auction.getAuctionId(), new RetrieveBestOfferCallback() {
+        /*controller.sendFindBestOfferRequest(auction.getItem().getItemId(), auction.getAuctionId(), new RetrieveBestOfferCallback() {
             @Override
             public boolean onBestOfferRetrievalSuccess(OfferDTO offerDTO) {
                 bidderView.setText("Fatta da: ");
@@ -141,7 +141,7 @@ public class EnglishAuctionFragment extends Fragment {
                 LastOfferView.setText("Ultima offerta: non ci sono ancora offerte.");
                 return false;
             }
-        });
+        });*/
 
         TextView offerField = view.findViewById(R.id.offertField);
         offerField.setVisibility(View.INVISIBLE);
