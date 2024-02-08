@@ -1,9 +1,8 @@
 package com.example.dietideals24frontend.Model.DTO;
 
-import com.example.dietideals24frontend.Model.Type;
-
 import java.sql.Time;
 import java.io.Serializable;
+import com.example.dietideals24frontend.Model.Type;
 
 /* [CLASS DESCRIPTION]
     - This object is used to make a post request to the server asking to save/register an Auction inside the database.

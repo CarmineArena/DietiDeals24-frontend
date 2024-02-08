@@ -1,6 +1,8 @@
 package com.example.dietideals24frontend.Model.DTO;
 
-public class UserDTO {
+import java.io.Serializable;
+
+public class UserDTO implements Serializable {
     private Integer userId;
     private String name, surname, email, password, bio, webSiteUrl;
 

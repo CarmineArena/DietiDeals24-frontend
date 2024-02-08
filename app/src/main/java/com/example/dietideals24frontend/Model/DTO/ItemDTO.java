@@ -1,8 +1,7 @@
 package com.example.dietideals24frontend.Model.DTO;
 
-import com.example.dietideals24frontend.Model.User;
-
 import java.io.Serializable;
+import com.example.dietideals24frontend.Model.User;
 
 /* [CLASS DESCRIPTION]
     - This object is used to make a post request to the server asking to save/register an Item inside the database.

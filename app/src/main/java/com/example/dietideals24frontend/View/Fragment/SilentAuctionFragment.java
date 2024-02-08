@@ -11,11 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.annotation.SuppressLint;
 
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.LinearLayout;
 
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 
@@ -24,11 +25,10 @@ import java.util.Locale;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import com.example.dietideals24frontend.Controller.OfferController.Callback.RetrieveOffersCallback;
 import com.example.dietideals24frontend.ToastManager;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
+import com.example.dietideals24frontend.Controller.OfferController.Callback.*;
 import com.example.dietideals24frontend.Controller.OfferController.OfferController;
-import com.example.dietideals24frontend.Controller.OfferController.Callback.RegisterOfferCallback;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
@@ -111,9 +111,8 @@ public class SilentAuctionFragment extends Fragment {
                 @Override
                 public boolean onRetrieveOffersSuccess(List<OfferDTO> offerDTOs) {
                     if (offerDTOs == null || offerDTOs.isEmpty()) {
-
-
-
+                        // TODO: SEGNALARE NELLA SCHERMATA
+                        Log.i("OFFERS", "NULL");
                     } else {
                         for (OfferDTO offer : offerDTOs) {
                             LinearLayout linearLayoutHorizontal = new LinearLayout(getContext());
@@ -143,22 +142,14 @@ public class SilentAuctionFragment extends Fragment {
                             scrollViewLayout.addView(linearLayoutHorizontal);
                         }
 
-
-                        scrollView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                            }
-                        });
-                            //offer.getUser().getName();
-                            //String.valueOf(offer.getOffer());
-
+                        scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
                     }
                     return true;
                 }
 
                 @Override
                 public boolean onRetrieveOffersFailure(String errorMessage) {
+                    // TODO: SEGNALARE ERRORE
                     return false;
                 }
             });

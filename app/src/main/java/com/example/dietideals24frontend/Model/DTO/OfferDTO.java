@@ -1,20 +1,18 @@
 package com.example.dietideals24frontend.Model.DTO;
 
-import com.example.dietideals24frontend.Model.User;
-
 import java.io.Serializable;
-// import com.example.dietideals24frontend.Model.Auction;
+import com.example.dietideals24frontend.Model.User;
 
 public class OfferDTO implements Serializable {
     private Long offerId;
     private Integer auctionId;
     private User user;
-
-    // private Auction auction; // We don't need the auction
-
     private float offer;
     private String offerDate;
     private String offerTime;
+
+    /* CONSTRUCTOR */
+    public OfferDTO() {}
 
     /* GETTERS AND SETTERS */
     public Long getOfferId() {
