@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface AuctionNotificationCallback {
     void onNotificationsReceived(List<String> notifications);
-    void onApiError();
+    void onApiError(String errorMessage);
 }

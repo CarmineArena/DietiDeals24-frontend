@@ -1,9 +1,12 @@
 package com.example.dietideals24frontend.View.Notification;
 
 import android.content.Context;
-import android.annotation.SuppressLint;
+import com.example.dietideals24frontend.R;
+
+import android.util.Log;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -13,34 +16,40 @@ public class AuctionNotificationManager {
         - I stated that auction related notifications are associated to channel 1.
     **/
     private static final String CHANNEL_ID = "1";
-
     private final Context context;
 
     public AuctionNotificationManager(Context context) {
         this.context = context;
-        createChannel();
+        createNotificationChannel();
     }
 
-    private void createChannel() {
-        CharSequence name  = "Auction Notification";
+    private void createNotificationChannel() {
+        CharSequence name = "Auction Notification";
         String description = "Used to notify the end user of a terminated auction and a possible win of an Item.";
         int importance     = NotificationManager.IMPORTANCE_DEFAULT;
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
         channel.setDescription(description);
 
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
+        if (notificationManager != null) {
+            notificationManager.createNotificationChannel(channel);
+        } else {
+            Log.e("NOTIFICATION CHANNEL", "Could not create notification channel!");
+        }
     }
 
-    @SuppressLint("MissingPermission")
-    public void showNotification(int notificationId, String title, String content) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setContentTitle(title)
-                .setContentText(content)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        // .setSmallIcon(R.drawable.notification_icon) // TODO: METTERE L'ICONA DELL'APP
+    public void showNotification(String title, String content) {
+        try {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setContentTitle(title)
+                    .setContentText(content)
+                    .setSmallIcon(R.drawable.dietideals24img) // TODO: METTERE UN'ICONA MIGLIORE
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(notificationId, builder.build());
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+            notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+        } catch (SecurityException e) {
+            Log.e("NotificationManager", "SecurityException: " + e.getMessage());
+        }
     }
 }

@@ -143,7 +143,7 @@ public class SilentAuctionFragment extends Fragment {
                             // TODO: QUESTO VA FATTO SOLO DOPO AVER CLICCATO "OK" IN UN DIALOG
                             button.setOnClickListener(v -> {
                                 AuctionController controller = new AuctionController(MainActivity.retrofitService);
-                                controller.sendCloseAuctionRequest(auction.getAuctionId(), new CloseAuctionCallback() {
+                                controller.sendCloseAuctionRequest(auction.getAuctionId(), offer.getUser().getUserId(), new CloseAuctionCallback() {
                                     @Override
                                     public boolean onCloseSuccess() {
                                         mToastManager.showToast("Hai accettato l'offerta!");

@@ -151,10 +151,10 @@ public class AuctionController implements AuctionRequestInterface {
     }
 
     @Override
-    public void sendCloseAuctionRequest(Integer auctionId, final CloseAuctionCallback callback) {
+    public void sendCloseAuctionRequest(Integer auctionId, Integer userId, final CloseAuctionCallback callback) {
         CloseAuctionService api = retrofitService.create(CloseAuctionService.class);
 
-        Call<Void> call = api.closeAuction(auctionId);
+        Call<Void> call = api.closeAuction(auctionId, userId);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {

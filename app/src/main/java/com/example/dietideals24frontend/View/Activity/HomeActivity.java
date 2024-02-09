@@ -1,15 +1,23 @@
 package com.example.dietideals24frontend.View.Activity;
 
+import android.Manifest;
+import android.os.Build;
+import android.util.Log;
+
 import android.os.Bundle;
 import android.widget.Button;
 import android.content.Intent;
-
+import android.content.pm.PackageManager;
 import com.example.dietideals24frontend.R;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Controller.AuctionNotificationController.AuctionNotificationController;
 
 import androidx.fragment.app.Fragment;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -66,8 +74,7 @@ public class HomeActivity extends AppCompatActivity {
             replaceFragment(userProfileFragment);
         });
 
-        scheduler = Executors.newSingleThreadScheduledExecutor();
-        startNotificationTask();
+        checkAndRequestNotificationPermission();
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -77,12 +84,37 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void startNotificationTask() {
-        long interval = 10 * 1000; // 10 seconds
+    private void checkAndRequestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            } else {
+                startNotificationTask();
+            }
+        } else {
+            startNotificationTask();
+        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 101) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startNotificationTask();
+            } else {
+                // TODO: GESTIRE IL PERMISSION DENIED
+                Log.e("PERMISSION DENIED", "NOTIFICATION PERMISSION DENIED");
+            }
+        }
+    }
+
+    private void startNotificationTask() {
+        long interval = 10 * 1000; // 10 secondi
+
+        scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(() -> {
-            AuctionNotificationController controller = new AuctionNotificationController(loggedInUser.getUserId(),
-                    MainActivity.retrofitService, getApplicationContext());
+            AuctionNotificationController controller = new AuctionNotificationController(loggedInUser.getUserId(), MainActivity.retrofitService, HomeActivity.this);
             controller.notifyUser();
         }, 0, interval, TimeUnit.MILLISECONDS);
     }
