@@ -56,17 +56,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/time_button"
-        android:layout_width="166dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/button2bg"
-        android:fontFamily="@font/poppins"
-        android:text="Imposta l'ora"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     <TextView
         android:id="@+id/textView2"
@@ -164,13 +153,25 @@
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Data di scadenza"
         android:fontFamily="@font/fenix"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Ore per la scadenza"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <NumberPicker
+        android:id="@+id/numberPicker"
+        android:layout_width="166dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:dividerHeight="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

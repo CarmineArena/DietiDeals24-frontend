@@ -1,7 +1,10 @@
 package com.example.dietideals24frontend.View.Fragment;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.content.Intent;
+
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -69,9 +72,9 @@ public class SilentAuctionFragment extends Fragment {
         TextView nameView = view.findViewById(R.id.ItemNameField);
         nameView.setText(auction.getItem().getName());
 
-        // TODO: AGGIUNGERE
-        // TextView categoryView = view.findViewById(R.id.categoryView);
-        // categoryView.setText("Categoria: " + auction.getItem().getCategory());
+
+         TextView categoryView = view.findViewById(R.id.categoryView);
+         categoryView.setText("Categoria: " + auction.getItem().getCategory());
 
         Button btnUser = view.findViewById(R.id.NameBtn);
         btnUser.setText(auction.getItem().getUser().getName() + " " + auction.getItem().getUser().getSurname());
@@ -110,6 +113,8 @@ public class SilentAuctionFragment extends Fragment {
             offerBtn.setEnabled(false);
             offerBtn.setVisibility(View.INVISIBLE);
 
+            Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.poppins_medium);
+
             OfferController controller = new OfferController(MainActivity.retrofitService);
             controller.sendGetOffersRequest(auction.getItem().getItemId(), auction.getAuctionId(), new RetrieveOffersCallback() {
                 @Override
@@ -129,18 +134,31 @@ public class SilentAuctionFragment extends Fragment {
 
                             TextView userName = new TextView(getContext());
                             userName.setText(offer.getUser().getName());
+                            userName.setTypeface(typeface);
                             linearLayoutHorizontal.addView(userName);
 
                             TextView userSurname = new TextView(getContext());
                             userSurname.setText(offer.getUser().getSurname());
+                            userName.setTypeface(typeface);
                             linearLayoutHorizontal.addView(userSurname);
 
                             TextView userOffer = new TextView(getContext());
                             userOffer.setText(String.valueOf(offer.getOffer()));
+                            userName.setTypeface(typeface);
                             linearLayoutHorizontal.addView(userOffer);
 
                             Button button = new Button(getContext());
                             button.setText("Accetta");
+
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ActivityPresenter activityFactory = new ActivityPresenter();
+                                    Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                            });
 
                             // TODO: QUESTO VA FATTO SOLO DOPO AVER CLICCATO "OK" IN UN DIALOG
                             button.setOnClickListener(v -> {

@@ -9,29 +9,46 @@
 
     <TextView
         android:id="@+id/ItemNameField"
-        android:layout_width="110dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
+        android:fontFamily="@font/inter"
+        android:textColor="#000000"
+        android:textSize="30sp"
         android:text="Nome Oggetto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/categoryView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Categoria:"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemImage" />
 
     <TextView
         android:id="@+id/AuctionTypeField"
         android:layout_width="0dp"
         android:layout_height="28dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_medium"
         android:text="Asta silenziosa"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemImage" />
+        app:layout_constraintTop_toBottomOf="@+id/categoryView" />
 
     <ImageView
         android:id="@+id/itemImage"
         android:layout_width="127dp"
         android:layout_height="128dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="22dp"
         android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +70,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins_medium"
         android:text="Asta creata da: "
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AuctionTypeField" />
 
@@ -61,10 +81,12 @@
         android:id="@+id/NameBtn"
         android:layout_width="0dp"
         android:layout_height="20dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
+        android:fontFamily="@font/poppins_medium"
         android:text="Nome persona"
         android:textAlignment="viewStart"
-        android:textSize="12sp"
+        android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/AuctionTypeField" />
 
@@ -72,18 +94,20 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
+        android:fontFamily="@font/poppins_medium"
         android:text="Prezzo iniziale: €"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="353dp"
-        android:layout_height="192dp"
+        android:layout_width="350dp"
+        android:layout_height="152dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -101,7 +125,6 @@
         android:id="@+id/OfferButton"
         android:layout_width="130dp"
         android:layout_height="49dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/buttonbg"
         android:text="Proponi offerta"
@@ -115,16 +138,20 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:text="Asta diponibile ancora per"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/NameBtn" />
 
     <TextView
         android:id="@+id/textView13"
-        android:layout_width="97dp"
+        android:layout_width="wrap_content"
         android:layout_height="33dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
-        android:text="La tua offerta:"
+        android:fontFamily="@font/poppins_medium"
+        android:text="La tua offerta: €"
+        android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -135,7 +162,7 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/inputtextbg"
         android:ems="10"
-        android:hint="€__,__"
+        android:hint="__,__"
         android:inputType="textPersonName"
         app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />

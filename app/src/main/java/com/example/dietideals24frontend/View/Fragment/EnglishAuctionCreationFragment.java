@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.view.LayoutInflater;
 
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -51,6 +52,7 @@ public class EnglishAuctionCreationFragment extends Fragment {
     private String categoryChoice = null;
     private static final int PICK_IMAGE_REQUEST = 2;
     private ToastManager mToastManager;
+    private NumberPicker numberPicker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +72,13 @@ public class EnglishAuctionCreationFragment extends Fragment {
         mToastManager = new ToastManager(getContext());
         Dialog dialog = new Dialog(getContext());
 
-        Button timeButton = view.findViewById(R.id.time_button);
+        numberPicker = view.findViewById(R.id.numberPicker);
+
+        // Impostazione dei limiti del NumberPicker
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(24);
+
+        /*Button timeButton = view.findViewById(R.id.time_button);
         timeButton.setText("01:00");
         timeButton.setOnClickListener(v -> {
             TimePickerDialog.OnTimeSetListener timeSetListener = (view, hourOfDay, minute) -> {
@@ -86,7 +94,7 @@ public class EnglishAuctionCreationFragment extends Fragment {
                     true  // Imposta true se desideri visualizzare il picker in modalità 24 ore
             );
             timePickerDialog.show();
-        });
+        }); */
 
         // Retrieve from strings.xml (list of options)
         Spinner categorySpinner = view.findViewById(R.id.spinner);
@@ -122,7 +130,7 @@ public class EnglishAuctionCreationFragment extends Fragment {
             String itemName           = String.valueOf(nameTextField.getText());
             String itemBasePrize      = String.valueOf(basePrizeField.getText());
             String itemDescription    = String.valueOf(descriptionField.getText());
-            String expirationTime     = (String) timeButton.getText();
+            String expirationTime     = String.valueOf(numberPicker.getValue());
             String itemCategory       = getCategoryChoice();
 
             if (itemName.isEmpty() || itemCategory.isEmpty() || itemCategory.equals("Scegli una categoria") || itemBasePrize.isEmpty()
@@ -221,15 +229,15 @@ public class EnglishAuctionCreationFragment extends Fragment {
         auctionDTO.setActive(true);
         auctionDTO.setExpirationDate(null); // NULL because its an English Auction
 
-        String[] parts = expirationTime.split(":");
+        /*String[] parts = expirationTime.split(":");
         int hours   = Integer.parseInt(parts[0]);
         int minutes = Integer.parseInt(parts[1]);
-        int seconds = Integer.parseInt(parts[2]);
+        int seconds = Integer.parseInt(parts[2]);*/
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime endTime = now.plusHours(hours).plusMinutes(minutes).plusSeconds(seconds);
+        LocalDateTime endTime = now.plusHours(Integer.parseInt(expirationTime));
         auctionDTO.setExpirationTime(endTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
-        auctionDTO.setAmountOfTimeToReset(hours);
+        auctionDTO.setAmountOfTimeToReset(Integer.parseInt(expirationTime));
         auctionDTO.setRequestedItemId(itemId);
         auctionDTO.setCurrentOfferValue(itemStartPrize);
 
