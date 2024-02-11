@@ -11,4 +11,5 @@ public interface AuctionRequestInterface {
     void sendRegisterAuctionRequest(AuctionDTO auctionDTO, final RegisterAuctionCallback callback);
     void sendFindAuctionRequest(Integer itemId, String name, String description, final RetrieveAuctionCallback callback) throws UnhandledOptionException;
     void sendCloseAuctionRequest(Integer auctionId, Integer userId, final CloseAuctionCallback callback);
+    void sendGetTimeRemainingRequest(Integer auctionId, Integer userId, final TimeRemainingCallback callback);
 }

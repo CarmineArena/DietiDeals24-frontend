@@ -2,19 +2,21 @@ package com.example.dietideals24frontend.Model;
 
 import java.util.Set;
 import java.sql.Date;
-import java.sql.Time;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 
 public class Auction implements Serializable {
     private Integer auctionId;
-    private int ownerId;
+    private int ownerId, amountOfTimeToReset;
     private Item item;
     private boolean active;
     private Type auctionType;
     private Set<Offer> offers;
-    private Date expirationDate;
-    private Time expirationTime;
+    private Date expirationDate = null;
+    private LocalDateTime expirationTime = null;
     private float currentOfferValue;
 
     /* CONSTRUCTOR */
@@ -27,9 +29,20 @@ public class Auction implements Serializable {
         this.item              = item;
         this.active            = auctionDTO.isActive();
         this.auctionType       = auctionDTO.getAuctionType();
-        this.expirationDate    = Date.valueOf(auctionDTO.getExpirationDate());
-        this.expirationTime    = auctionDTO.getExpirationTime();
         this.currentOfferValue = auctionDTO.getCurrentOfferValue();
+
+        if (auctionDTO.getExpirationDate() != null) {
+            this.expirationDate = Date.valueOf(auctionDTO.getExpirationDate());
+        }
+
+        if (auctionDTO.getExpirationTime() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            try {
+                this.expirationTime = LocalDateTime.parse(auctionDTO.getExpirationTime(), formatter);
+            } catch (DateTimeParseException e) {
+                this.expirationTime = null;
+            }
+        }
     }
 
     /* GETTERS AND SETTERS */
@@ -74,13 +87,22 @@ public class Auction implements Serializable {
         this.expirationDate = expirationDate;
     }
 
-    public Time getExpirationTime() {
+    public LocalDateTime getExpirationTime() {
         return expirationTime;
     }
 
-    public void setExpirationTime(Time expirationTime) {
+    public void setExpirationTime(LocalDateTime expirationTime) {
         this.expirationTime = expirationTime;
     }
+
+    public void setAmountOfTimeToReset(int timeToReset) {
+        this.amountOfTimeToReset = timeToReset;
+    }
+
+    public int getAmountOfTimeToReset() {
+        return amountOfTimeToReset;
+    }
+
 
     public Item getItem() {
         return item;

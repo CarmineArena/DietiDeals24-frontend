@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#B9B9B9"
-    tools:context=".EnglishAuctionFragment">
+    tools:context=".View.Fragment.EnglishAuctionFragment">
 
     <TextView
         android:id="@+id/ItemNameField"
@@ -27,7 +27,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="21dp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Asta Silenziosa"
+        android:text="Asta Inglese"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categoryView" />

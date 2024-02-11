@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend;
+package com.example.dietideals24frontend.View.Fragment;
 
 import android.os.Bundle;
 import android.content.Intent;
@@ -6,12 +6,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.annotation.SuppressLint;
+
+import android.os.Looper;
+import android.os.Handler;
 
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,52 +32,65 @@ import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+import com.example.dietideals24frontend.Model.Type;
+import com.example.dietideals24frontend.Model.DTO.AuctionStatusDTO;
+import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
+import com.example.dietideals24frontend.Controller.AuctionController.Callback.TimeRemainingCallback;
+
+import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.MainActivity;
+import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Controller.OfferController.OfferController;
 import com.example.dietideals24frontend.Controller.OfferController.Callback.RegisterOfferCallback;
-import com.example.dietideals24frontend.View.ToastManager;
+import com.example.dietideals24frontend.Controller.OfferController.Callback.RetrieveBestOfferCallback;
 
 import retrofit2.Retrofit;
-
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.Model.DTO.OfferDTO;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.Utility.DateAndTimeRetriever;
 
-
 public class EnglishAuctionFragment extends Fragment {
-
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable runnable = null;
     private Auction auction;
     private User loggedInUser;
     private View view;
+    private TextView textViewCountDown;
     private final String[] offer = { "Rialza di 10€", "Rialza di 20€", "Rialzo personalizzato" };
     private List<String> offerList;
     private float lastOfferValue; // The highest value among the current offers
     private Retrofit retrofitService;
     private String choice;
     private ToastManager mToastManager;
+    private Integer userId, auctionId;
 
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_silent_auction, container, false);
+        view = inflater.inflate(R.layout.fragment_english_auction, container, false);
 
+        retrofitService = MainActivity.retrofitService;
         mToastManager = new ToastManager(getContext());
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            auction = (Auction) bundle.getSerializable("selectedAuction");
+            auction      = (Auction) bundle.getSerializable("selectedAuction");
             loggedInUser = (User) bundle.getSerializable("loggedInUser");
+
+            auctionId = auction.getAuctionId();
+            userId    = loggedInUser.getUserId();
         } else {
-            auction = null;
+            auction      = null;
+            loggedInUser = null;
         }
 
-        retrofitService = MainActivity.retrofitService;
-
+        textViewCountDown = view.findViewById(R.id.textView10);
         TextView nameView = view.findViewById(R.id.ItemNameField);
         nameView.setText(auction.getItem().getName());
 
@@ -95,11 +110,7 @@ public class EnglishAuctionFragment extends Fragment {
         ImageView itemImageView = view.findViewById(R.id.itemImage);
         ImageUtils.fillImageView(itemImageView, auction.getItem().getImage());
 
-        TextView dateView = view.findViewById(R.id.textView10);
-        dateView.setText("Asta aperta fino al giorno: " + auction.getExpirationDate());
-
         TextView priceView = view.findViewById(R.id.textView11);
-
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ITALIAN);
         symbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("0.00", symbols);
@@ -113,7 +124,7 @@ public class EnglishAuctionFragment extends Fragment {
         Button bidderBtn = view.findViewById(R.id.Name2Btn);
 
         OfferController controller = new OfferController(retrofitService);
-        /*controller.sendFindBestOfferRequest(auction.getItem().getItemId(), auction.getAuctionId(), new RetrieveBestOfferCallback() {
+        controller.sendFindBestOfferRequest(auction.getItem().getItemId(), auction.getAuctionId(), new RetrieveBestOfferCallback() {
             @Override
             public boolean onBestOfferRetrievalSuccess(OfferDTO offerDTO) {
                 bidderView.setText("Fatta da: ");
@@ -138,7 +149,7 @@ public class EnglishAuctionFragment extends Fragment {
                 LastOfferView.setText("Ultima offerta: non ci sono ancora offerte.");
                 return false;
             }
-        });*/
+        });
 
         TextView offerField = view.findViewById(R.id.offertField);
         offerField.setVisibility(View.INVISIBLE);
@@ -192,6 +203,7 @@ public class EnglishAuctionFragment extends Fragment {
             OfferDTO offerDTO = new OfferDTO();
             offerDTO.setUser(loggedInUser);
             offerDTO.setAuctionId(auction.getAuctionId());
+            offerDTO.setAuctionType(Type.ENGLISH);
             offerDTO.setOfferDate(DateAndTimeRetriever.getCurrentDate());
             offerDTO.setOfferTime(DateAndTimeRetriever.getCurrentTime());
 
@@ -256,4 +268,55 @@ public class EnglishAuctionFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    public void startPollingTimeRemaining(Integer auctionId, Integer userId) {
+        if (runnable != null)
+            handler.removeCallbacks(runnable);
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                AuctionController controller = new AuctionController(MainActivity.retrofitService);
+                controller.sendGetTimeRemainingRequest(auctionId, userId, new TimeRemainingCallback() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public boolean onTimeRetrievedSuccessfull(AuctionStatusDTO auctionStatusDTO) {
+                        if (auctionStatusDTO.isActive()) {
+                            textViewCountDown.post(() -> textViewCountDown.setText("Tempo rimanente: " + DateAndTimeRetriever.formatTime(auctionStatusDTO.getTimeRemaining())));
+                        } else {
+                            textViewCountDown.post(() -> textViewCountDown.setText("Asta terminata!"));
+                            // TODO: MOSTRARE UN DIALOG PER AVVISARE IL TERMINE DELL'ASTA, REINDIRIZZARE POI ALLA HOME
+                        }
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onTimeRetrievedFailure(String errorMessage) {
+                        textViewCountDown.post(() -> textViewCountDown.setText(errorMessage));
+                        return false;
+                    }
+                });
+
+                handler.postDelayed(this, 60000); // Every 60 seconds
+            }
+        };
+
+        handler.post(runnable);
+    }
+
+    public void stopPollingTimeRemaining() {
+        if (runnable != null)
+            handler.removeCallbacks(runnable);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startPollingTimeRemaining(auctionId, userId);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopPollingTimeRemaining();
+    }
 }

@@ -20,8 +20,9 @@ import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
-import com.example.dietideals24frontend.Controller.AuctionController.Callback.RetrieveAuctionCallback;
 import com.example.dietideals24frontend.View.Fragment.SilentAuctionFragment;
+import com.example.dietideals24frontend.View.Fragment.EnglishAuctionFragment;
+import com.example.dietideals24frontend.Controller.AuctionController.Callback.RetrieveAuctionCallback;
 
 public class AuctionActivity extends AppCompatActivity {
     private Item item;
@@ -53,7 +54,8 @@ public class AuctionActivity extends AppCompatActivity {
                             replaceFragment(fragment);
                             break;
                         case "ENGLISH":
-                            // TODO: FALLA CREARE AL FRAGMENT_PRESENTER
+                            EnglishAuctionFragment fragment2 = presenter.createEnglishAuctionFragment(loggedInUser, auction);
+                            replaceFragment(fragment2);
                             break;
                         default:
                             throw new UnhandledOptionException("onRetrieveAuctionSucces: auction type not found, value: " + auctionType);
@@ -77,7 +79,7 @@ public class AuctionActivity extends AppCompatActivity {
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentAuction,fragment);
+        fragmentTransaction.replace(R.id.fragmentAuction, fragment);
         fragmentTransaction.commit();
     }
 }

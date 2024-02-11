@@ -25,12 +25,13 @@ import java.util.Locale;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
-import com.example.dietideals24frontend.Controller.AuctionController.Callback.CloseAuctionCallback;
+import com.example.dietideals24frontend.Model.Type;
 import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Controller.OfferController.Callback.*;
 import com.example.dietideals24frontend.Controller.OfferController.OfferController;
+import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
+import com.example.dietideals24frontend.Controller.AuctionController.Callback.CloseAuctionCallback;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
@@ -58,10 +59,11 @@ public class SilentAuctionFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            auction = (Auction) bundle.getSerializable("selectedAuction");
+            auction      = (Auction) bundle.getSerializable("selectedAuction");
             loggedInUser = (User) bundle.getSerializable("loggedInUser");
         } else {
-            auction = null;
+            auction      = null;
+            loggedInUser = null;
         }
 
         TextView nameView = view.findViewById(R.id.ItemNameField);
@@ -198,6 +200,7 @@ public class SilentAuctionFragment extends Fragment {
                 OfferDTO offerDTO = new OfferDTO();
                 offerDTO.setUser(loggedInUser);
                 offerDTO.setAuctionId(auction.getAuctionId());
+                offerDTO.setAuctionType(Type.SILENT);
                 offerDTO.setOfferDate(DateAndTimeRetriever.getCurrentDate());
                 offerDTO.setOfferTime(DateAndTimeRetriever.getCurrentTime());
 

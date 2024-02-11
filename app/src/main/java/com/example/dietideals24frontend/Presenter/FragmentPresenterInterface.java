@@ -2,22 +2,16 @@ package com.example.dietideals24frontend.Presenter;
 
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Auction;
-import com.example.dietideals24frontend.View.Fragment.UserProfileFragment;
-import com.example.dietideals24frontend.View.Fragment.SearchAuctionFragment;
-import com.example.dietideals24frontend.View.Fragment.HomeFragment;
-import com.example.dietideals24frontend.View.Fragment.LogInFragment;
-import com.example.dietideals24frontend.View.Fragment.SignUpFragment;
-import com.example.dietideals24frontend.View.EnglishAuctionCreationFragment;
-import com.example.dietideals24frontend.View.Fragment.SilentAuctionFragment;
-import com.example.dietideals24frontend.View.Fragment.SilentAuctionCreationFragment;
+import com.example.dietideals24frontend.View.Fragment.*;
 
 public interface FragmentPresenterInterface {
     LogInFragment createLoginFragment();
     SignUpFragment createSignUpFragment();
-    SilentAuctionCreationFragment createSilentAuctionFragment(User user);
-    EnglishAuctionCreationFragment createEnglishAuctionFragment(User user);
+    SilentAuctionCreationFragment createSilentAuctionCreationFragment(User user);
+    EnglishAuctionCreationFragment createEnglishAuctionCreationFragment(User user);
     SearchAuctionFragment createSearchAuctionFragment(User user);
     HomeFragment createHomeFragment(User user);
     SilentAuctionFragment createSilenAuctionFragment(User loggedInUser, Auction auction);
+    EnglishAuctionFragment createEnglishAuctionFragment(User loggedInUser, Auction auction);
     UserProfileFragment createUserProfileFragment(User loggedInUser);
 }

@@ -1,87 +1,96 @@
 package com.example.dietideals24frontend.View.Fragment;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import static android.app.Activity.RESULT_OK;
-
-import android.util.Log;
+import android.net.Uri;
 import android.os.Bundle;
 import android.content.Intent;
-import android.app.DatePickerDialog;
-import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
+import static android.app.Activity.RESULT_OK;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.AdapterView;
-
-import android.view.LayoutInflater;
-import android.widget.ArrayAdapter;
+import android.util.Log;
 import android.provider.MediaStore;
+import android.widget.ArrayAdapter;
 
-import com.bumptech.glide.Glide;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.view.LayoutInflater;
+
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.EditText;
+import android.widget.ImageView;
+import com.example.dietideals24frontend.View.Dialog.Dialog;
+
+import com.example.dietideals24frontend.Model.Type;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.Controller.AuctionController.Callback.*;
-import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
-
-import com.example.dietideals24frontend.R;
-import com.example.dietideals24frontend.Model.*;
-import com.example.dietideals24frontend.View.ToastManager;
-import com.example.dietideals24frontend.Utility.ImageUtils;
-import com.example.dietideals24frontend.View.Dialog.Dialog;
-
-import android.net.Uri;
-import android.widget.Spinner;
-
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
-import java.util.Calendar;
-import java.io.IOException;
 
 import retrofit2.Retrofit;
+import com.bumptech.glide.Glide;
+import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.MainActivity;
+import com.example.dietideals24frontend.View.ToastManager;
+import com.example.dietideals24frontend.Utility.ImageUtils;
+import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
 
-public class SilentAuctionCreationFragment extends Fragment {
+import java.util.Locale;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class EnglishAuctionCreationFragment extends Fragment {
     private User user;
-    private static final int PICK_IMAGE_REQUEST = 1;
     private View view;
     private byte[] imageContent;
     private String categoryChoice = null;
+    private static final int PICK_IMAGE_REQUEST = 2;
     private ToastManager mToastManager;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_silent_auction_creation, container, false);
-
-        mToastManager = new ToastManager(getContext());
-
-        Dialog dialog = new Dialog(getContext());
-
-        // Retrieve Retrofit instance
-        Retrofit retrofitService = MainActivity.retrofitService;
-        AuctionController controller = new AuctionController(retrofitService);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_english_auction_creation, container, false);
 
         // Retrieve LoggedIn User
         Bundle bundle = getArguments();
         if (bundle != null) {
             user = (User) bundle.getSerializable("loggedInUser");
-        } else {
-            user = null;
         }
 
-        Spinner categorySpinner = view.findViewById(R.id.spinner);
+        // Retrieve Retrofit instance
+        Retrofit retrofitService = MainActivity.retrofitService;
+        AuctionController controller = new AuctionController(retrofitService);
+
+        mToastManager = new ToastManager(getContext());
+        Dialog dialog = new Dialog(getContext());
+
+        Button timeButton = view.findViewById(R.id.time_button);
+        timeButton.setText("01:00");
+        timeButton.setOnClickListener(v -> {
+            TimePickerDialog.OnTimeSetListener timeSetListener = (view, hourOfDay, minute) -> {
+                int hour = Math.max(hourOfDay, 1);
+                String selectedTime = String.format(Locale.getDefault(), "%02d:00:00", hour);
+                timeButton.setText(selectedTime);
+            };
+            TimePickerDialog timePickerDialog = new TimePickerDialog(
+                    requireContext(),
+                    timeSetListener,
+                    1,
+                    0,
+                    true  // Imposta true se desideri visualizzare il picker in modalità 24 ore
+            );
+            timePickerDialog.show();
+        });
 
         // Retrieve from strings.xml (list of options)
+        Spinner categorySpinner = view.findViewById(R.id.spinner);
+
         String[] arrayItems = getResources().getStringArray(R.array.categories_array);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, arrayItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -101,42 +110,23 @@ public class SilentAuctionCreationFragment extends Fragment {
             }
         });
 
-        Button dataButton = view.findViewById(R.id.data_button);
-        dataButton.setOnClickListener(v -> {
-            final Calendar c = Calendar.getInstance();
-            int mYear        = c.get(Calendar.YEAR);
-            int mMonth       = c.get(Calendar.MONTH);
-            int mDay         = c.get(Calendar.DAY_OF_MONTH);
+        Button imageButton = view.findViewById(R.id.button);
+        imageButton.setOnClickListener(view -> openGallery());
 
-            // ExpirationDate error checking: It cannot be a day <= current day.
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                    (view, year, monthOfYear, dayOfMonth) -> {
-                        String selectedDate = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-
-                        LocalDate currentDate = LocalDate.now();
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                        String currentDateString = currentDate.format(formatter);
-
-                        if (currentDateString.compareTo(selectedDate) < 0) {
-                            dataButton.setText(selectedDate);
-                        }
-                    }, mYear, mMonth, mDay);
-            datePickerDialog.show();
-        });
-
-        Button createAuctionButton  = view.findViewById(R.id.next_button);
-        createAuctionButton.setOnClickListener(v -> {
+        Button createAuctionBtn = view.findViewById(R.id.next_button);
+        createAuctionBtn.setOnClickListener(v -> {
             EditText nameTextField    = view.findViewById(R.id.editTextTextPersonName);
-            EditText basePrizeField   = view.findViewById(R.id.editTextTextPersonName2);
             EditText descriptionField = view.findViewById(R.id.description_field);
-            String expirationDate     = (String) dataButton.getText();
+            EditText basePrizeField   = view.findViewById(R.id.editTextTextPersonName2);
+
             String itemName           = String.valueOf(nameTextField.getText());
-            String itemCategory       = getCategoryChoice();
             String itemBasePrize      = String.valueOf(basePrizeField.getText());
             String itemDescription    = String.valueOf(descriptionField.getText());
+            String expirationTime     = (String) timeButton.getText();
+            String itemCategory       = getCategoryChoice();
 
             if (itemName.isEmpty() || itemCategory.isEmpty() || itemCategory.equals("Scegli una categoria") || itemBasePrize.isEmpty()
-                    || expirationDate.isEmpty() || getImageContent() == null || itemDescription.isEmpty()) {
+                    || expirationTime.isEmpty() || getImageContent() == null || itemDescription.isEmpty()) {
                 String title, message;
                 title = "FORM ERROR";
                 message = "Assicurarsi di aver eseguito correttamente la procedura di creazione dell'asta!";
@@ -154,20 +144,8 @@ public class SilentAuctionCreationFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                @SuppressLint("SimpleDateFormat")
-                SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd");
-
-                Date sqlDate = null;
-                try {
-                    java.util.Date parsed = inputDate.parse(expirationDate);
-                    sqlDate = new Date(parsed.getTime()); // This is java.sql.Date now
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
                 // Send to Server the Item's related image (its a byte[])
                 float finalItemStartPrize = itemStartPrize;
-                final Date finalSqlDate   = sqlDate;
                 controller.sendItemImageContent(getImageContent(), new ImageContentRegisterCallback() {
                     @Override
                     public boolean onReceptionSuccess(byte[] itemImageContent) {
@@ -187,7 +165,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                                 savedItemId[0] = itemId;
 
                                 // Item and Auction registration must happen one after the other (that is why we do it like that)
-                                registerAuction(savedItemId[0], user.getUserId(), finalSqlDate, finalItemStartPrize, retrofitService);
+                                registerAuction(savedItemId[0], user.getUserId(), expirationTime, finalItemStartPrize, retrofitService);
                                 return true;
                             }
                             @Override
@@ -201,9 +179,6 @@ public class SilentAuctionCreationFragment extends Fragment {
                 });
             }
         });
-
-        Button imageButton = view.findViewById(R.id.button);
-        imageButton.setOnClickListener(view -> openGallery());
 
         return view;
     }
@@ -239,26 +214,24 @@ public class SilentAuctionCreationFragment extends Fragment {
         }
     }
 
-    private void setImageContent(byte[] content) {
-        this.imageContent = content;
-    }
-
-    private byte[] getImageContent() {
-        return imageContent;
-    }
-
-    private void registerAuction(Integer itemId, Integer userId, Date sqlDate, float itemStartPrize, Retrofit retrofitService) {
+    private void registerAuction(Integer itemId, Integer userId, String expirationTime, float itemStartPrize, Retrofit retrofitService) {
         AuctionDTO auctionDTO = new AuctionDTO();
         auctionDTO.setOwnerId(userId);
-        auctionDTO.setAuctionType(Type.SILENT);
-
-        String date = sqlDate.toString();
+        auctionDTO.setAuctionType(Type.ENGLISH);
         auctionDTO.setActive(true);
-        auctionDTO.setExpirationDate(date);
-        auctionDTO.setExpirationTime(null); // NULL because its a Silent Auction
+        auctionDTO.setExpirationDate(null); // NULL because its an English Auction
+
+        String[] parts = expirationTime.split(":");
+        int hours   = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[1]);
+        int seconds = Integer.parseInt(parts[2]);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime endTime = now.plusHours(hours).plusMinutes(minutes).plusSeconds(seconds);
+        auctionDTO.setExpirationTime(endTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+
+        auctionDTO.setAmountOfTimeToReset(hours);
         auctionDTO.setRequestedItemId(itemId);
         auctionDTO.setCurrentOfferValue(itemStartPrize);
-        auctionDTO.setAmountOfTimeToReset(null);
 
         // Send to Server the Auction's registration Request
         new AuctionController(retrofitService).sendRegisterAuctionRequest(auctionDTO, new RegisterAuctionCallback() {
@@ -278,7 +251,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                 Log.i("AUCTION REGISTRATION REQUEST", "FAILED TO SEND");
 
                 Dialog dialog = new Dialog(getContext());
-                dialog.showAlertDialog("AUCTION ERROR", "Non è stato possibile registrare la creazione dell'asta. Errore: " + errorMessage);
+                dialog.showAlertDialog("AUCTION ERROR", "Non è stato possibile registrare la creazione dell'asta.");
                 return false;
             }
         });
@@ -290,5 +263,13 @@ public class SilentAuctionCreationFragment extends Fragment {
 
     private String getCategoryChoice() {
         return categoryChoice;
+    }
+
+    private void setImageContent(byte[] content) {
+        this.imageContent = content;
+    }
+
+    private byte[] getImageContent() {
+        return imageContent;
     }
 }

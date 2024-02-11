@@ -11,6 +11,7 @@ import retrofit2.Retrofit;
 import java.util.Objects;
 import com.example.dietideals24frontend.Model.DTO.ItemDTO;
 import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
+import com.example.dietideals24frontend.Model.DTO.AuctionStatusDTO;
 import com.example.dietideals24frontend.Controller.AuctionController.Callback.*;
 import com.example.dietideals24frontend.Controller.AuctionController.Retrofit.*;
 import com.example.dietideals24frontend.Utility.Exception.UnhandledOptionException;
@@ -171,6 +172,32 @@ public class AuctionController implements AuctionRequestInterface {
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onCloseFailure(t.getMessage());
                 Log.e("Close Auction Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendGetTimeRemainingRequest(Integer auctionId, Integer userId, final TimeRemainingCallback callback) {
+        GetTimeRemainingService api = retrofitService.create(GetTimeRemainingService.class);
+
+        Call<AuctionStatusDTO> call = api.getTimeRemaining(auctionId, userId);
+        call.enqueue(new Callback<AuctionStatusDTO>() {
+            @Override
+            public void onResponse(@NonNull Call<AuctionStatusDTO> call, @NonNull Response<AuctionStatusDTO> response) {
+                if (response.isSuccessful()) {
+                    Log.i("Retrieve Time Remaining", "Time Remaining retrieved correctly!");
+                    callback.onTimeRetrievedSuccessfull(response.body());
+                } else {
+                    Log.e("Retrieve Time Remaining Error", "Could not retrieve time remaining for the Auction!");
+                    callback.onTimeRetrievedFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AuctionStatusDTO> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onTimeRetrievedFailure(t.getMessage());
+                Log.e("Retrieve Time Remaining Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();
             }
         });

@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
-import com.example.dietideals24frontend.View.EnglishAuctionCreationFragment;
+import com.example.dietideals24frontend.View.Fragment.EnglishAuctionCreationFragment;
 import com.example.dietideals24frontend.View.Fragment.SilentAuctionCreationFragment;
 
 public class CreateAuctionActivity extends AppCompatActivity {
@@ -29,8 +29,8 @@ public class CreateAuctionActivity extends AppCompatActivity {
         User user = (User) intent.getSerializableExtra("loggedInUser");
 
         FragmentPresenter presenter = new FragmentPresenter();
-        SilentAuctionCreationFragment silentFragment   = presenter.createSilentAuctionFragment(user);
-        EnglishAuctionCreationFragment englishFragment = presenter.createEnglishAuctionFragment(user);
+        SilentAuctionCreationFragment silentFragment   = presenter.createSilentAuctionCreationFragment(user);
+        EnglishAuctionCreationFragment englishFragment = presenter.createEnglishAuctionCreationFragment(user);
 
         Spinner spinnerType = findViewById(R.id.spinnerTypeAuction);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, type);

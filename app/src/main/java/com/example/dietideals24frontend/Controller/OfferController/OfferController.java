@@ -22,38 +22,36 @@ public class OfferController implements OfferRequestInterface {
         this.retrofitService = retrofitService;
     }
 
-    /*
-        @Override
-        public void sendFindBestOfferRequest(Integer itemId, Integer auctionId, final RetrieveBestOfferCallback callback) {
-            RequestBestOfferService api = retrofitService.create(RequestBestOfferService.class);
+    @Override
+    public void sendFindBestOfferRequest(Integer itemId, Integer auctionId, final RetrieveBestOfferCallback callback) {
+        RequestBestOfferService api = retrofitService.create(RequestBestOfferService.class);
 
-            Call<OfferDTO> call = api.getBestOffer(itemId, auctionId);
-            call.enqueue(new Callback<OfferDTO>() {
-                @Override
-                public void onResponse(@NonNull Call<OfferDTO> call, @NonNull Response<OfferDTO> response) {
-                    boolean returnValue;
-                    if(response.isSuccessful()) {
-                        returnValue = callback.onBestOfferRetrievalSuccess(response.body());
-                    } else {
-                        returnValue = callback.onBestOfferRetrievalFailure(response.message());
-                    }
-
-                    if (returnValue) {
-                        Log.i("Search Best Offer", "Best Offer retrieved correctly!");
-                    } else {
-                        Log.e("Search Best Offer Error", "Could not find the offer requested. Error code: " + response.code());
-                    }
+        Call<OfferDTO> call = api.getBestOffer(itemId, auctionId);
+        call.enqueue(new Callback<OfferDTO>() {
+            @Override
+            public void onResponse(@NonNull Call<OfferDTO> call, @NonNull Response<OfferDTO> response) {
+                boolean returnValue;
+                if(response.isSuccessful()) {
+                    returnValue = callback.onBestOfferRetrievalSuccess(response.body());
+                } else {
+                    returnValue = callback.onBestOfferRetrievalFailure(response.message());
                 }
 
-                @Override
-                public void onFailure(@NonNull Call<OfferDTO> call, @NonNull Throwable t) {
-                    boolean returnValue = callback.onBestOfferRetrievalFailure(t.getMessage());
-                    Log.e("Search Best Offer Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
-                    t.printStackTrace();
+                if (returnValue) {
+                    Log.i("Search Best Offer", "Best Offer retrieved correctly!");
+                } else {
+                    Log.e("Search Best Offer Error", "Could not find the offer requested. Error code: " + response.code());
                 }
-            });
-        }
-    */
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<OfferDTO> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onBestOfferRetrievalFailure(t.getMessage());
+                Log.e("Search Best Offer Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
 
     @Override
     public void sendRegisterOfferRequest(OfferDTO offerDTO, final RegisterOfferCallback callback) {

@@ -41,7 +41,7 @@ public class AuctionNotificationController implements AuctionNotificationInterfa
                         manager.showNotification("Asta Terminata", notification);
                     }
                 } else {
-                    Log.d("NotificationController", "Notification Received: 0 or error");
+                    Log.d("NotificationController", "Notification Received: 0");
                 }
             }
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Model.Auction;
+import com.example.dietideals24frontend.View.Fragment.EnglishAuctionFragment;
 import com.example.dietideals24frontend.View.Fragment.UserProfileFragment;
 import com.example.dietideals24frontend.View.Fragment.SearchAuctionFragment;
 import com.example.dietideals24frontend.View.Fragment.HomeFragment;
@@ -11,7 +12,7 @@ import com.example.dietideals24frontend.View.Fragment.LogInFragment;
 import com.example.dietideals24frontend.View.Fragment.SignUpFragment;
 import com.example.dietideals24frontend.View.Fragment.SilentAuctionFragment;
 import com.example.dietideals24frontend.View.Fragment.SilentAuctionCreationFragment;
-import com.example.dietideals24frontend.View.EnglishAuctionCreationFragment;
+import com.example.dietideals24frontend.View.Fragment.EnglishAuctionCreationFragment;
 
 public class FragmentPresenter implements FragmentPresenterInterface {
     @Override
@@ -25,7 +26,7 @@ public class FragmentPresenter implements FragmentPresenterInterface {
     }
 
     @Override
-    public SilentAuctionCreationFragment createSilentAuctionFragment(User user) {
+    public SilentAuctionCreationFragment createSilentAuctionCreationFragment(User user) {
         Bundle bundle = createBundleWithLoggedInUser(user);
         SilentAuctionCreationFragment fragment = new SilentAuctionCreationFragment();
         fragment.setArguments(bundle);
@@ -33,7 +34,7 @@ public class FragmentPresenter implements FragmentPresenterInterface {
     }
 
     @Override
-    public EnglishAuctionCreationFragment createEnglishAuctionFragment(User user) {
+    public EnglishAuctionCreationFragment createEnglishAuctionCreationFragment(User user) {
         Bundle bundle = createBundleWithLoggedInUser(user);
         EnglishAuctionCreationFragment fragment = new EnglishAuctionCreationFragment();
         fragment.setArguments(bundle);
@@ -63,6 +64,17 @@ public class FragmentPresenter implements FragmentPresenterInterface {
         bundle.putSerializable("loggedInUser", loggedInUser);
 
         SilentAuctionFragment fragment = new SilentAuctionFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public EnglishAuctionFragment createEnglishAuctionFragment(User loggedInUser, Auction auction) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("selectedAuction", auction);
+        bundle.putSerializable("loggedInUser", loggedInUser);
+
+        EnglishAuctionFragment fragment = new EnglishAuctionFragment();
         fragment.setArguments(bundle);
         return fragment;
     }

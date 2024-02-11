@@ -1,6 +1,5 @@
 package com.example.dietideals24frontend.Model.DTO;
 
-import java.sql.Time;
 import java.io.Serializable;
 import com.example.dietideals24frontend.Model.Type;
 
@@ -11,12 +10,12 @@ import com.example.dietideals24frontend.Model.Type;
 public class AuctionDTO implements Serializable {
     private int ownerId;
     private boolean active;
-    private Type auctionType;
-    private Time expirationTime;
+    private Type auctionType;     // dd/MM/yyyy HH:mm:ss
+    private String expirationTime;
     private String expirationDate; // This corresponds to the java.sql.Data attribute stored inside the Db (The String makes easier data transfer)
     private float currentOfferValue;
     private ItemDTO itemDTO;
-    private Integer auctionId, requestedItemId;
+    private Integer auctionId, requestedItemId, amountOfTimeToReset;
 
     public AuctionDTO() {}
 
@@ -76,12 +75,20 @@ public class AuctionDTO implements Serializable {
         this.expirationDate = expirationDate;
     }
 
-    public Time getExpirationTime() {
+    public String getExpirationTime() {
         return expirationTime;
     }
 
-    public void setExpirationTime(Time expirationTime) {
+    public void setExpirationTime(String expirationTime) {
         this.expirationTime = expirationTime;
+    }
+
+    public void setAmountOfTimeToReset(Integer timeToReset) {
+        this.amountOfTimeToReset = timeToReset;
+    }
+
+    public int getAmountOfTimeToReset() {
+        return amountOfTimeToReset;
     }
 
     public ItemDTO getRequestedItemDTO() {

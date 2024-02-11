@@ -1,6 +1,7 @@
 package com.example.dietideals24frontend.Model.DTO;
 
 import java.io.Serializable;
+import com.example.dietideals24frontend.Model.Type;
 import com.example.dietideals24frontend.Model.User;
 
 public class OfferDTO implements Serializable {
@@ -10,6 +11,7 @@ public class OfferDTO implements Serializable {
     private float offer;
     private String offerDate;
     private String offerTime;
+    private Type auctionType;
 
     /* CONSTRUCTOR */
     public OfferDTO() {}
@@ -61,5 +63,13 @@ public class OfferDTO implements Serializable {
 
     public void setOfferTime(String offerTime) {
         this.offerTime = offerTime;
+    }
+
+    public void setAuctionType(Type auctionType) {
+        this.auctionType = auctionType;
+    }
+
+    public Type getAuctionType() {
+        return auctionType;
     }
 }
