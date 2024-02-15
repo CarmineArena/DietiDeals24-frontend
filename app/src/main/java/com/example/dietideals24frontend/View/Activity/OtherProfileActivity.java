@@ -30,7 +30,6 @@ public class OtherProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user");
 
-        // TODO: FACCIO COSI PERCHE NON MI PIACE LA SCRITTA "BENVENUTO NEL TUO PROFILO"
         TextView WelcomeView = findViewById(R.id.WelcomeView);
         WelcomeView.setText(user.getName() + " " + user.getSurname());
 

@@ -218,7 +218,8 @@ public class EnglishAuctionFragment extends Fragment {
                     String offer = offerText.getText().toString();
 
                     if (offer.isEmpty()) {
-                        // TODO: DARE ERRORE O ECCEZIONE
+                        Dialog dialog = new Dialog(getContext());
+                        dialog.showAlertDialog("OFFER NOT VALID", "Specificare di quanto si vuole rialzare l'offerta.");
                         Log.e("OFFER VALUE", "NOT VALID");
                     }
             }

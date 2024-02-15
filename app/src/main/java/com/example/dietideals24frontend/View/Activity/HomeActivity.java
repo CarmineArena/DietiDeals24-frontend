@@ -1,8 +1,10 @@
 package com.example.dietideals24frontend.View.Activity;
 
-import android.Manifest;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.Manifest;
+import android.provider.Settings;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,6 +13,7 @@ import android.content.pm.PackageManager;
 import com.example.dietideals24frontend.R;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Controller.AuctionNotificationController.AuctionNotificationController;
@@ -34,7 +37,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class HomeActivity extends AppCompatActivity {
     private User loggedInUser;
-    private ScheduledExecutorService scheduler;
+    private ScheduledExecutorService silentAuctionScheduler, englishAuctionScheduler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +106,28 @@ public class HomeActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startNotificationTask();
             } else {
-                // TODO: GESTIRE IL PERMISSION DENIED
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
+                    // Permission Denied: Show Alert Dialog
+                    new AlertDialog.Builder(this)
+                            .setTitle("Permesso richiesto")
+                            .setMessage("Questa app richiede il permesso di notifica per funzionare correttamente.")
+                            .setPositiveButton("OK", (dialog, which) -> ActivityCompat.requestPermissions(HomeActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101))
+                            .setNegativeButton("Annulla", (dialog, which) -> dialog.dismiss())
+                            .create().show();
+                } else {
+                    // User denied permissions with "Don't ask again". Guide User to settings
+                    new AlertDialog.Builder(this)
+                            .setTitle("Permesso negato")
+                            .setMessage("Il permesso è stato negato definitivamente. Per favore, abilitalo dalle impostazioni dell'app.")
+                            .setPositiveButton("Impostazioni", (dialog, which) -> {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                intent.setData(uri);
+                                startActivity(intent);
+                            })
+                            .setNegativeButton("Annulla", (dialog, which) -> dialog.dismiss())
+                            .create().show();
+                }
                 Log.e("PERMISSION DENIED", "NOTIFICATION PERMISSION DENIED");
             }
         }
@@ -112,16 +136,25 @@ public class HomeActivity extends AppCompatActivity {
     private void startNotificationTask() {
         long interval = 10 * 1000; // 10 secondi
 
-        scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(() -> {
+        // ENGLISH AUCTION NOTIFICATIONS
+        englishAuctionScheduler = Executors.newSingleThreadScheduledExecutor();
+        englishAuctionScheduler.scheduleAtFixedRate(() -> {
             AuctionNotificationController controller = new AuctionNotificationController(loggedInUser.getUserId(), MainActivity.retrofitService, HomeActivity.this);
-            controller.notifyUser();
+            controller.getEnglishAuctionNotifications();
+        }, 0, interval, TimeUnit.MILLISECONDS);
+
+        // SILENT AUCTION NOTIFICATIONS
+        silentAuctionScheduler = Executors.newSingleThreadScheduledExecutor();
+        silentAuctionScheduler.scheduleAtFixedRate(() -> {
+            AuctionNotificationController controller = new AuctionNotificationController(loggedInUser.getUserId(), MainActivity.retrofitService, HomeActivity.this);
+            controller.getSilentAuctionNotifications();
         }, 0, interval, TimeUnit.MILLISECONDS);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (scheduler != null) scheduler.shutdown();
+        if (englishAuctionScheduler != null) englishAuctionScheduler.shutdown();
+        if (silentAuctionScheduler  != null) silentAuctionScheduler.shutdown();
     }
 }

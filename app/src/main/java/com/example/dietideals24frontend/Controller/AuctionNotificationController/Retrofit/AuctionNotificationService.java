@@ -6,6 +6,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface AuctionNotificationService {
-    @GET("/auction/notificationsForUser/pending")
-    Call<List<String>> getPendingNotificationsForUser(@Query("userId") Integer userId);
+    @GET("/auction/english/notificationsForUser/pending")
+    Call<List<String>> getEnglishAuctionPendingNotificationsForUser(@Query("userId") Integer userId);
+
+    @GET("/auction/silent/notificationsForUser/pending")
+    Call<List<String>> getSilentAuctionPendingNotificationsForUser(@Query("userId") Integer userId);
 }

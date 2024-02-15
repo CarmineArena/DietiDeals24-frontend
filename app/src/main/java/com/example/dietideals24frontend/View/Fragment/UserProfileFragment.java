@@ -96,7 +96,7 @@ public class UserProfileFragment extends Fragment {
 
                     @Override
                     public boolean onUserUpdateFailure(String errorMessage) {
-                        // TODO: COSA FACCIAMO IN CASO DI ERRORE
+                        mToastManager.showToast("Non è stato possibile aggiornare i dati. Riprovare!");
                         return false;
                     }
                 });

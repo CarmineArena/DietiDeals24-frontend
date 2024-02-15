@@ -23,8 +23,8 @@ public class DateAndTimeRetriever {
     public static String formatTime(long seconds) {
         long hours   = seconds / 3600;
         long minutes = (seconds % 3600) / 60;
-        long sec     = seconds % 60;
+        // long sec = seconds % 60;
 
-        return String.format("%02d ore %02d minuti %02d secondi", hours, minutes, sec);
+        return String.format("%02d ore %02d minuti", hours, minutes);
     }
 }

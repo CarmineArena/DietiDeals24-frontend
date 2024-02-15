@@ -27,9 +27,9 @@ public class AuctionNotificationController implements AuctionNotificationInterfa
     }
 
     @Override
-    public void notifyUser() {
+    public void getEnglishAuctionNotifications() {
         AuctionNotificationService service = retrofitService.create(AuctionNotificationService.class);
-        service.getPendingNotificationsForUser(userId).enqueue(new Callback<List<String>>() {
+        service.getEnglishAuctionPendingNotificationsForUser(userId).enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(@NonNull Call<List<String>> call, @NonNull Response<List<String>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -37,7 +37,34 @@ public class AuctionNotificationController implements AuctionNotificationInterfa
 
                     AuctionNotificationManager manager = new AuctionNotificationManager(context);
                     for (String notification : response.body()) {
-                        Log.i("NOTIFICATION RECEIVED", notification);
+                        Log.i("ENGLISH AUCTION NOTIFICATION RECEIVED", notification);
+                        manager.showNotification("Asta Terminata", notification);
+                    }
+                } else {
+                    Log.d("NotificationController", "Notification Received: 0");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<String>> call, @NonNull Throwable t) {
+                Log.e("Notify User", "Something went wrong!");
+                Log.e("Notify User Error", t.toString());
+            }
+        });
+    }
+
+    @Override
+    public void getSilentAuctionNotifications() {
+        AuctionNotificationService service = retrofitService.create(AuctionNotificationService.class);
+        service.getSilentAuctionPendingNotificationsForUser(userId).enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<String>> call, @NonNull Response<List<String>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("NotificationController", "Notification Received: " + response.body().size());
+
+                    AuctionNotificationManager manager = new AuctionNotificationManager(context);
+                    for (String notification : response.body()) {
+                        Log.i("SILENT AUCTION NOTIFICATION RECEIVED", notification);
                         manager.showNotification("Asta Terminata", notification);
                     }
                 } else {
