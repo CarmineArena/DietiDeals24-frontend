@@ -1,42 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B9B9B9">
+    android:background="#B9B9B9"
+    tools:context=".AuctionListActivity">
 
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="63dp"
+        android:layout_height="55dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_24" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <ScrollView
+        android:layout_width="413dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/fenix"
-            android:textSize="24sp"
-            android:text="Le tue aste" />
-
-        <RelativeLayout
-            android:id="@+id/yourAuction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/fenix"
-            android:textSize="24sp"
-            android:text="Aste a cui partecipi" />
-
-        <RelativeLayout
-            android:id="@+id/joinedAuction"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" />
+            android:orientation="vertical" >
 
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/yourAuction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fenix"
+                android:textColor="#474343"
+                android:textSize="24sp"
+                android:text="Le tue aste" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
+
+                <LinearLayout
+                    android:id="@+id/yourAuctionLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/TerminatedAuction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fenix"
+                android:textColor="#474343"
+                android:textSize="24sp"
+                android:text="Aste Terminate" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
+
+                <LinearLayout
+                    android:id="@+id/terminatedAuctionLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/joinedAuction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fenix"
+                android:textColor="#474343"
+                android:textSize="24sp"
+                android:text="Aste a cui partecipi" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
+
+                <LinearLayout
+                    android:id="@+id/joinedAuctionLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/winnedAuction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/fenix"
+                android:textColor="#474343"
+                android:textSize="24sp"
+                android:text="Aste Vinte" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
+
+                <LinearLayout
+                    android:id="@+id/winnedAuctionLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

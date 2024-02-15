@@ -1,4 +1,4 @@
-package com.example.dietideals24frontend.View.Activity;
+package com.example.dietideals24frontend;
 
 import android.os.Bundle;
 import android.content.Intent;
