@@ -178,4 +178,30 @@ public class ItemController implements ItemRequestInterface {
             }
         });
     }
+
+    @Override
+    public void sendFindItemsWithNoWinnerRequest(Integer userId, final RetrieveItemsWithNoWinnerCallback callback) {
+        SearchItemsWithNoWinnerService service = retrofitService.create(SearchItemsWithNoWinnerService.class);
+
+        Call<List<ItemDTO>> call = service.searchItemsWithNoWinner(userId);
+        call.enqueue(new Callback<List<ItemDTO>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
+                if(response.isSuccessful()) {
+                    Log.i("Search Items With No Winner", "Image retrieved correctly!");
+                    callback.onItemsWithNoWinnerRetrievalSuccess(response.body());
+                } else {
+                    Log.e("Search Items With No Winner Error", "Could not the list of items requested. Error code: " + response.code());
+                    callback.onItemsWithNoWinnerRetrievalFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onItemsWithNoWinnerRetrievalFailure(t.getMessage());
+                Log.e("Search Items With No Winner Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
 }

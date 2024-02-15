@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.dietideals24frontend.Controller.ItemController.ItemController;
 import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveFeaturedItemsCallback;
+import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveItemsWithNoWinnerCallback;
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.Item;
@@ -118,7 +119,7 @@ public class LinearLayoutForItemsPresenter {
                             @Override
                             public void onImageAvailable(byte[] imageContent) {
                                 items.get(pos).setImage(imageContent);
-                                createRelativeLayout(layout, loggedInUser, items.get(pos));
+                                createRelativeLayout(layout, loggedInUser, items.get(pos), HomeConstantValues.WANTED);
                             }
 
                             @Override
@@ -173,7 +174,7 @@ public class LinearLayoutForItemsPresenter {
                                 if (layout instanceof LinearLayout)
                                     layout.addView(createInternalLayout(auctionedByUserItems.get(pos), loggedInUser, HomeConstantValues.AUCTIONED));
                                 else if (layout instanceof RelativeLayout)
-                                    createRelativeLayout((RelativeLayout) layout, loggedInUser, auctionedByUserItems.get(pos));
+                                    createRelativeLayout((RelativeLayout) layout, loggedInUser, auctionedByUserItems.get(pos), HomeConstantValues.AUCTIONED);
                             }
 
                             @Override
@@ -227,7 +228,7 @@ public class LinearLayoutForItemsPresenter {
                                 if (layout instanceof LinearLayout)
                                     layout.addView(createInternalLayout(wantedByUserItems.get(pos), loggedInUser, HomeConstantValues.WANTED));
                                 else if (layout instanceof RelativeLayout) {
-                                    createRelativeLayout((RelativeLayout) layout, loggedInUser, wantedByUserItems.get(pos));
+                                    createRelativeLayout((RelativeLayout) layout, loggedInUser, wantedByUserItems.get(pos), HomeConstantValues.WANTED);
                                 }
                             }
 
@@ -255,6 +256,57 @@ public class LinearLayoutForItemsPresenter {
         });
     }
 
+    public void createItemsWithNoWinnerLayout(ViewGroup layout, User loggedInUser) {
+        ItemController controller = new ItemController(this.retrofitService);
+        controller.sendFindItemsWithNoWinnerRequest(loggedInUser.getUserId(), new RetrieveItemsWithNoWinnerCallback() {
+            @Override
+            public boolean onItemsWithNoWinnerRetrievalSuccess(List<ItemDTO> itemsRetrieved) {
+                List<Item> itemsWithNoWinner = ItemUtils.createListOfItems(itemsRetrieved);
+                if (itemsWithNoWinner == null) {
+                    Log.d("Home Fragment", "List<Item> itemsWithNoWinner size: 0");
+
+                    if (layout instanceof LinearLayout)
+                        addImageButtonToLinearLayout((LinearLayout) layout, context, loggedInUser, HomeConstantValues.AUCTIONED);
+                    else if (layout instanceof RelativeLayout)
+                        addImageButtonToRelativeLayout((RelativeLayout) layout, context, loggedInUser, HomeConstantValues.AUCTIONED);
+                } else {
+                    Log.d("Home Fragment", "List<Item> itemsWithNoWinner size: " + itemsWithNoWinner.size());
+
+                    final int size = itemsWithNoWinner.size();
+                    for (int j = 0; j < size; j++) {
+                        final int pos = j;
+                        ItemUtils.assignImageToItem(itemsWithNoWinner.get(pos), controller, new ImageCallback() {
+                            @Override
+                            public void onImageAvailable(byte[] imageContent) {
+                                itemsWithNoWinner.get(pos).setImage(imageContent);
+
+                                if (layout instanceof LinearLayout)
+                                    layout.addView(createInternalLayout(itemsWithNoWinner.get(pos), loggedInUser, HomeConstantValues.ITEM_WITH_NO_WINNER));
+                                else if (layout instanceof RelativeLayout) {
+                                    createRelativeLayout((RelativeLayout) layout, loggedInUser, itemsWithNoWinner.get(pos), HomeConstantValues.ITEM_WITH_NO_WINNER);
+                                }
+                            }
+
+                            @Override
+                            public void onImageNotAvailable(String errorMessage) {
+                                Log.e("ERROR", "createItemsWithNoWinnerLayout, List<Items> with no winners is not available: " + errorMessage);
+                            }
+                        });
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onItemsWithNoWinnerRetrievalFailure(String errorMessage) {
+                /* [MOTIVATION: BAD REQUEST] */
+                Log.d("onItemsWithNoWinnerRetrievalFailure", errorMessage);
+                showPopUpError("Could not retrieve the list of items auctioned by you (with no winner). " + errorMessage);
+                return false;
+            }
+        });
+    }
+
     /* PRIVATE METHODS */
 
     @SuppressLint("SetTextI18n")
@@ -268,14 +320,22 @@ public class LinearLayoutForItemsPresenter {
         ImageUtils.fillImageView(imageView, item.getImage());
 
         Button button = new Button(context);
-        if (auctionType.equals(HomeConstantValues.FEATURED))
-            button.setText("ACQUISTA");
-        else if (auctionType.equals(HomeConstantValues.FEATURED_SEARCH_AUCTION))
-            button.setText(item.getDescription());
-        else
-            button.setText("VISUALIZZA");
+        switch (auctionType) {
+            case HomeConstantValues.FEATURED:
+                button.setText("ACQUISTA");
+                break;
+            case HomeConstantValues.FEATURED_SEARCH_AUCTION:
+                button.setText(item.getDescription());
+                break;
+            case HomeConstantValues.ITEM_WITH_NO_WINNER:
+                button.setText("SELEZIONA");
+                break;
+            default:
+                button.setText("VISUALIZZA");
+                break;
+        }
 
-        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser));
+        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser, auctionType));
 
         LinearLayout internal = new LinearLayout(context);
         internal.setOrientation(LinearLayout.VERTICAL);
@@ -284,7 +344,7 @@ public class LinearLayoutForItemsPresenter {
         return internal;
     }
 
-    private void createRelativeLayout(RelativeLayout layout, User loggedInUser, Item item) {
+    private void createRelativeLayout(RelativeLayout layout, User loggedInUser, Item item, String auctionType) {
         ImageView imageView = new ImageView(context);
         imageView.setId(View.generateViewId());
         imageView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -304,7 +364,7 @@ public class LinearLayoutForItemsPresenter {
         btnParams.addRule(RelativeLayout.RIGHT_OF, imageView.getId());
         btnParams.addRule(RelativeLayout.CENTER_VERTICAL);
 
-        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser));
+        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser, auctionType));
         layout.addView(button, btnParams);
     }
 
@@ -349,10 +409,15 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(button);
     }
 
-    private void handleClickOnItem(Item item, User loggedInUser) {
-        Intent intent = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.context.startActivity(intent);
+    private void handleClickOnItem(Item item, User loggedInUser, String flag) {
+        if (flag.equals(HomeConstantValues.ITEM_WITH_NO_WINNER)) {
+            // TODO: PORTARE L'UTENTE NELLA SCHERMATA IN CUI DEVE VISUALIZZARE LE OFFERTE (FARE RICHIESTA ALL'ENDPOINT AUCTION_NOTIFICATION_CONTROLLER)
+                //  E SCEGLIERE LA VINCENTE
+        } else {
+            Intent intent = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.context.startActivity(intent);
+        }
     }
 
     private Intent handleClickForCreateAuction(User loggedInUser) {
@@ -367,7 +432,6 @@ public class LinearLayoutForItemsPresenter {
 
     private void createSearchAuctionFragment(User loggedInUser) {
         FragmentTransaction fr = this.manager.beginTransaction();
-
         FragmentPresenter presenter = new FragmentPresenter();
         fr.replace(R.id.frameGeneral, presenter.createSearchAuctionFragment(loggedInUser));
         fr.commit();

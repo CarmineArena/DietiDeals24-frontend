@@ -10,4 +10,5 @@ public interface ItemRequestInterface {
     void sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(String searchTerm, List<String> categories, User loggedInUser, final RetrieveFeaturedItemsCallback callback);
     void sendCreatedByUserItemsRequest(User loggedInUser, final RetrieveUserItemsCallback callback);
     void sendFindItemsWantedByUserRequest(Integer userId, String email, String password, final RetrieveItemsWantedByUserCallback callback);
+    void sendFindItemsWithNoWinnerRequest(Integer userId, final RetrieveItemsWithNoWinnerCallback callback);
 }
