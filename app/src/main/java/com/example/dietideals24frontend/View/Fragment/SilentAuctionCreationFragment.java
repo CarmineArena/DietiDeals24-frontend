@@ -127,15 +127,13 @@ public class SilentAuctionCreationFragment extends Fragment {
         Button createAuctionButton  = view.findViewById(R.id.next_button);
         createAuctionButton.setOnClickListener(v -> {
             EditText nameTextField    = view.findViewById(R.id.editTextTextPersonName);
-            EditText basePrizeField   = view.findViewById(R.id.editTextTextPersonName2);
             EditText descriptionField = view.findViewById(R.id.description_field);
             String expirationDate     = (String) dataButton.getText();
             String itemName           = String.valueOf(nameTextField.getText());
             String itemCategory       = getCategoryChoice();
-            String itemBasePrize      = String.valueOf(basePrizeField.getText());
             String itemDescription    = String.valueOf(descriptionField.getText());
 
-            if (itemName.isEmpty() || itemCategory.isEmpty() || itemCategory.equals("Scegli una categoria") || itemBasePrize.isEmpty()
+            if (itemName.isEmpty() || itemCategory.isEmpty() || itemCategory.equals("Scegli una categoria")
                     || expirationDate.isEmpty() || getImageContent() == null || itemDescription.isEmpty()) {
                 String title, message;
                 title = "FORM ERROR";
@@ -148,11 +146,6 @@ public class SilentAuctionCreationFragment extends Fragment {
                 dialog.showAlertDialog(title, message);
             } else {
                 float itemStartPrize = 0.0f;
-                try {
-                    itemStartPrize = Float.parseFloat(itemBasePrize);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
 
                 @SuppressLint("SimpleDateFormat")
                 SimpleDateFormat inputDate = new SimpleDateFormat("yyyy-MM-dd");

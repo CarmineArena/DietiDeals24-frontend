@@ -56,57 +56,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button" />
 
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/data_button"
             android:layout_width="166dp"
             android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/button2bg"
-            android:fontFamily="@font/poppins"
-            android:text="Imposta la data"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="166dp"
-            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Importo minimo"
-            android:fontFamily="@font/fenix"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName2"
-            android:layout_width="166dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
             android:background="@drawable/inputtextbg"
-            android:ems="10"
-            android:gravity="center_horizontal|center_vertical"
-            android:hint="€0,00"
-            android:inputType="numberDecimal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            android:fontFamily="@font/poppins"
+            android:gravity="start|center_vertical"
+            android:hint="Imposta la data"
+            android:paddingStart="5dp"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/next_button"
             android:layout_width="94dp"
             android:layout_height="42dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/button2bg"
             android:fontFamily="@font/poppins"
             android:text="avanti"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+            app:layout_constraintTop_toBottomOf="@+id/data_button" />
 
         <ImageView
             android:id="@+id/itemImage"
@@ -166,7 +141,7 @@
             android:layout_marginTop="20dp"
             android:fontFamily="@font/fenix"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Data di scadenza"
+            android:text="Data di scadenza:"
             android:textColor="#000000"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
