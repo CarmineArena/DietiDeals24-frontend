@@ -172,7 +172,6 @@ public class SilentAuctionCreationFragment extends Fragment {
                         requestedItem.setBasePrize(finalItemStartPrize);
 
                         final Integer[] savedItemId = new Integer[1];
-
                         // Send to Server the Item's registration Request
                         controller.sendRegisterItemRequest(requestedItem, new RegisterItemCallback() {
                             @Override
