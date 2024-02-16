@@ -103,8 +103,8 @@ public class SilentAuctionFragment extends Fragment {
         symbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("0.00", symbols);
 
-        TextView priceView = view.findViewById(R.id.textView11);
-        priceView.setText("Prezzo iniziale: € " + df.format(auction.getCurrentOfferValue()));
+        //TextView priceView = view.findViewById(R.id.textView11);
+        //priceView.setText("Prezzo iniziale: € " + df.format(auction.getCurrentOfferValue()));
 
         EditText offerText = view.findViewById(R.id.editTextTextPersonName5);
 
