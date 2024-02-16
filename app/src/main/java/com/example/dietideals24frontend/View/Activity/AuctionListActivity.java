@@ -1,11 +1,14 @@
-package com.example.dietideals24frontend;
+package com.example.dietideals24frontend.View.Activity;
 
 import android.os.Bundle;
 import android.content.Intent;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.Presenter.LinearLayoutForItemsPresenter;
+import com.example.dietideals24frontend.R;
 
 public class AuctionListActivity extends AppCompatActivity {
 

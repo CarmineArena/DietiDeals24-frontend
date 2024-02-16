@@ -58,10 +58,11 @@ public class FragmentPresenter implements FragmentPresenterInterface {
     }
 
     @Override
-    public SilentAuctionFragment createSilenAuctionFragment(User loggedInUser, Auction auction) {
+    public SilentAuctionFragment createSilenAuctionFragment(User loggedInUser, Auction auction, boolean hasAuctionEnded) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("selectedAuction", auction);
         bundle.putSerializable("loggedInUser", loggedInUser);
+        bundle.putSerializable("hasAuctionEnded", hasAuctionEnded);
 
         SilentAuctionFragment fragment = new SilentAuctionFragment();
         fragment.setArguments(bundle);

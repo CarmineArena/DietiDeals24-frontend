@@ -2,8 +2,9 @@ package com.example.dietideals24frontend.View.Dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Handler;
+
 import android.os.Looper;
+import android.os.Handler;
 
 public class Dialog {
     private final Context context;

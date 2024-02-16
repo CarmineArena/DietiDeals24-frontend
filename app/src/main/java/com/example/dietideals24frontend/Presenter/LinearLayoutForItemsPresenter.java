@@ -410,14 +410,14 @@ public class LinearLayoutForItemsPresenter {
     }
 
     private void handleClickOnItem(Item item, User loggedInUser, String flag) {
+        Intent intent;
         if (flag.equals(HomeConstantValues.ITEM_WITH_NO_WINNER)) {
-            // TODO: PORTARE L'UTENTE NELLA SCHERMATA IN CUI DEVE VISUALIZZARE LE OFFERTE (FARE RICHIESTA ALL'ENDPOINT AUCTION_NOTIFICATION_CONTROLLER)
-                //  E SCEGLIERE LA VINCENTE
+            intent = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item, true);
         } else {
-            Intent intent = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            this.context.startActivity(intent);
+            intent = new ActivityPresenter().createAuctionIntent(context, loggedInUser, item, false);
         }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.context.startActivity(intent);
     }
 
     private Intent handleClickForCreateAuction(User loggedInUser) {

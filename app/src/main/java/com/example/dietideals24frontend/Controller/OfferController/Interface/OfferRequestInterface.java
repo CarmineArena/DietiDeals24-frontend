@@ -7,4 +7,5 @@ public interface OfferRequestInterface {
     void sendFindBestOfferRequest(Integer itemId, Integer auctionId, final RetrieveBestOfferCallback callback);
     void sendRegisterOfferRequest(OfferDTO offerDTO, final RegisterOfferCallback callback);
     void sendGetOffersRequest(Integer itemId, Integer auctionId, final RetrieveOffersCallback callback);
+    void sendGetOffersEndedAuctionRequest(Integer itemId, final RetrieveOffersCallback callback);
 }

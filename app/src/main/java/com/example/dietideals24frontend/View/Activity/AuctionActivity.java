@@ -35,8 +35,9 @@ public class AuctionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auction);
 
         Intent intent = getIntent();
-        item = (Item) intent.getSerializableExtra("selectedItem");
+        item         = (Item) intent.getSerializableExtra("selectedItem");
         loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
+        boolean hasAuctionEnded = (boolean) intent.getSerializableExtra("hasAuctionEnded");
 
         retrofitService = MainActivity.retrofitService;
         try {
@@ -50,7 +51,7 @@ public class AuctionActivity extends AppCompatActivity {
 
                     switch (auctionType) {
                         case "SILENT":
-                            SilentAuctionFragment fragment = presenter.createSilenAuctionFragment(loggedInUser, auction);
+                            SilentAuctionFragment fragment = presenter.createSilenAuctionFragment(loggedInUser, auction, hasAuctionEnded);
                             replaceFragment(fragment);
                             break;
                         case "ENGLISH":

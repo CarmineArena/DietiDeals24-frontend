@@ -1,15 +1,17 @@
 package com.example.dietideals24frontend.View.Fragment;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.res.ResourcesCompat;
 
+import android.os.Looper;
 import android.view.View;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.annotation.SuppressLint;
@@ -47,8 +49,12 @@ import com.example.dietideals24frontend.Utility.DateAndTimeRetriever;
 public class SilentAuctionFragment extends Fragment {
     private Auction auction;
     private User loggedInUser;
+    private boolean hasAuctionEnded;
     private View view;
     private ToastManager mToastManager;
+    private Typeface typeface;
+    private LinearLayout scrollViewLayout;
+    private ScrollView scrollView;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -57,13 +63,14 @@ public class SilentAuctionFragment extends Fragment {
 
         mToastManager = new ToastManager(getContext());
 
-        ScrollView scrollView = view.findViewById(R.id.scrollView2);
-        LinearLayout scrollViewLayout = view.findViewById(R.id.scrollViewLayout);
+        scrollView       = view.findViewById(R.id.scrollView2);
+        scrollViewLayout = view.findViewById(R.id.scrollViewLayout);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            auction      = (Auction) bundle.getSerializable("selectedAuction");
-            loggedInUser = (User) bundle.getSerializable("loggedInUser");
+            auction         = (Auction) bundle.getSerializable("selectedAuction");
+            loggedInUser    = (User)    bundle.getSerializable("loggedInUser");
+            hasAuctionEnded = (boolean) bundle.getSerializable("hasAuctionEnded");
         } else {
             auction      = null;
             loggedInUser = null;
@@ -102,7 +109,7 @@ public class SilentAuctionFragment extends Fragment {
         EditText offerText = view.findViewById(R.id.editTextTextPersonName5);
 
         if (loggedInUser.getUserId().equals(auction.getItem().getUser().getUserId())) {
-            // THE USER CLICKED TO SEE THE STATUS OF HIS/HER AUCTIONS
+            // THE USER CLICKED TO SEE THE STATUS OF HIS/HER AUCTIONS (BUT CAN'T ACCEPT OFFERS UNLESS AUCTION HAS ENDED)
             view.findViewById(R.id.textView13).setVisibility(View.INVISIBLE);
             view.findViewById(R.id.textView13).setEnabled(false);
 
@@ -113,87 +120,8 @@ public class SilentAuctionFragment extends Fragment {
             offerBtn.setEnabled(false);
             offerBtn.setVisibility(View.INVISIBLE);
 
-            Typeface typeface = ResourcesCompat.getFont(getContext(), R.font.poppins_medium);
-
-            OfferController controller = new OfferController(MainActivity.retrofitService);
-            controller.sendGetOffersRequest(auction.getItem().getItemId(), auction.getAuctionId(), new RetrieveOffersCallback() {
-                @Override
-                public boolean onRetrieveOffersSuccess(List<OfferDTO> offerDTOs) {
-                    if (offerDTOs == null || offerDTOs.isEmpty()) {
-                        // TODO: SEGNALARE NELLA SCHERMATA
-                        Log.i("OFFERS", "NULL");
-                    } else {
-                        for (OfferDTO offer : offerDTOs) {
-                            LinearLayout linearLayoutHorizontal = new LinearLayout(getContext());
-                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT
-                            );
-                            linearLayoutHorizontal.setLayoutParams(layoutParams);
-                            linearLayoutHorizontal.setOrientation(LinearLayout.HORIZONTAL);
-
-                            TextView userName = new TextView(getContext());
-                            userName.setText(offer.getUser().getName());
-                            userName.setTypeface(typeface);
-                            linearLayoutHorizontal.addView(userName);
-
-                            TextView userSurname = new TextView(getContext());
-                            userSurname.setText(offer.getUser().getSurname());
-                            userName.setTypeface(typeface);
-                            linearLayoutHorizontal.addView(userSurname);
-
-                            TextView userOffer = new TextView(getContext());
-                            userOffer.setText(String.valueOf(offer.getOffer()));
-                            userName.setTypeface(typeface);
-                            linearLayoutHorizontal.addView(userOffer);
-
-                            Button button = new Button(getContext());
-                            button.setText("Accetta");
-
-                            button.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    ActivityPresenter activityFactory = new ActivityPresenter();
-                                    Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
-                                    startActivity(intent);
-                                    getActivity().finish();
-                                }
-                            });
-
-                            // TODO: QUESTO VA FATTO SOLO DOPO AVER CLICCATO "OK" IN UN DIALOG
-                            button.setOnClickListener(v -> {
-                                AuctionController controller = new AuctionController(MainActivity.retrofitService);
-                                controller.sendCloseAuctionRequest(auction.getAuctionId(), offer.getUser().getUserId(), new CloseAuctionCallback() {
-                                    @Override
-                                    public boolean onCloseSuccess() {
-                                        mToastManager.showToast("Hai accettato l'offerta!");
-                                        // TODO: ASPETTARE QUALCHE SECONDO E PORTARE L'UTENTE ALLA HOME
-                                        return true;
-                                    }
-
-                                    @Override
-                                    public boolean onCloseFailure(String errorMessage) {
-                                        // TODO: NOTIFICARE L'ERRORE
-                                        return false;
-                                    }
-                                });
-                            });
-                            linearLayoutHorizontal.addView(button);
-
-                            scrollViewLayout.addView(linearLayoutHorizontal);
-                        }
-
-                        scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
-                    }
-                    return true;
-                }
-
-                @Override
-                public boolean onRetrieveOffersFailure(String errorMessage) {
-                    // TODO: SEGNALARE ERRORE
-                    return false;
-                }
-            });
+            typeface = ResourcesCompat.getFont(getContext(), R.font.poppins_medium);
+            manageGetOffersRequest(hasAuctionEnded);
         } else {
             manageOffer();
         }
@@ -247,10 +175,133 @@ public class SilentAuctionFragment extends Fragment {
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, fragment);
-        fragmentTransaction.commit();
+    private void manageGetOffersRequest(boolean hasAuctionEnded) {
+        OfferController controller = new OfferController(MainActivity.retrofitService);
+        Integer itemId = auction.getItem().getItemId();
+
+        if (hasAuctionEnded) {
+            controller.sendGetOffersEndedAuctionRequest(itemId, new RetrieveOffersCallback() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public boolean onRetrieveOffersSuccess(List<OfferDTO> offerDTOs) {
+                    if (offerDTOs == null || offerDTOs.isEmpty()) {
+                        Log.i("LIST OF OFFERS", "NULL");
+                        mToastManager.showToast("Non ci sono offerte per l'Item!");
+                    } else {
+                        for (OfferDTO offer : offerDTOs) {
+                            LinearLayout linearLayoutHorizontal = createLinearLayoutHorizontal(offer);
+
+                            Button button = new Button(getContext());
+                            button.setText("Accetta");
+                            button.setOnClickListener(v -> showDialogToAcceptOffer(auction.getAuctionId(), offer.getUser().getUserId()));
+                            linearLayoutHorizontal.addView(button);
+
+                            scrollViewLayout.addView(linearLayoutHorizontal);
+                        }
+                        scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
+                    }
+                    return true;
+                }
+
+                @Override
+                public boolean onRetrieveOffersFailure(String errorMessage) {
+                    /* BAD REQUEST [SHOULD NOT HAPPEN] */
+                    return false;
+                }
+            });
+        } else {
+            controller.sendGetOffersRequest(itemId, auction.getAuctionId(), new RetrieveOffersCallback() {
+                @Override
+                public boolean onRetrieveOffersSuccess(List<OfferDTO> offerDTOs) {
+                    if (offerDTOs == null || offerDTOs.isEmpty()) {
+                        Log.i("LIST OF OFFERS", "NULL");
+                        mToastManager.showToast("Non ci sono offerte per l'Item!");
+                    } else {
+                        for (OfferDTO offer : offerDTOs) {
+                            LinearLayout linearLayoutHorizontal = createLinearLayoutHorizontal(offer);
+                            scrollViewLayout.addView(linearLayoutHorizontal);
+                        }
+                        scrollView.post(() -> scrollView.fullScroll(ScrollView.FOCUS_DOWN));
+                    }
+                    return true;
+                }
+
+                @Override
+                public boolean onRetrieveOffersFailure(String errorMessage) {
+                    /* BAD REQUEST [SHOULD NOT HAPPEN] */
+                    return false;
+                }
+            });
+        }
+    }
+
+    private void showDialogToAcceptOffer(Integer auctionId, Integer userId) {
+        Context context = getContext();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("CONFIRM OFFER");
+        builder.setMessage("Sei sicuro di voler accettare l'offerta?");
+        builder.setIcon(android.R.drawable.ic_dialog_info);
+
+        builder.setPositiveButton("Si", (dialog, which) -> new AuctionController(MainActivity.retrofitService).sendCloseAuctionRequest(auctionId, userId, new CloseAuctionCallback() {
+            @Override
+            public boolean onCloseSuccess() {
+                ToastManager mToastManager = new ToastManager(context);
+                mToastManager.showToast("Hai accettato l'offerta!");
+
+                // Redirect User to HomePage
+                ActivityPresenter activityFactory = new ActivityPresenter();
+                Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
+                startActivity(intent);
+                getActivity().finish();
+                return true;
+            }
+
+            @Override
+            public boolean onCloseFailure(String errorMessage) {
+                // TODO: NOTIFICARE L'ERRORE
+                return false;
+            }
+        }));
+
+        builder.setNegativeButton("No", null);
+
+        new Handler(Looper.getMainLooper()).post(() -> {
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
+    }
+
+    private void addTextViewToLayout(LinearLayout layout, String text, Typeface typeface) {
+        TextView textView = new TextView(getContext());
+        textView.setText(text);
+        textView.setTypeface(typeface);
+        layout.addView(textView);
+    }
+
+    private LinearLayout createLinearLayoutHorizontal(OfferDTO offer) {
+        LinearLayout linearLayoutHorizontal = new LinearLayout(getContext());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        linearLayoutHorizontal.setLayoutParams(layoutParams);
+        linearLayoutHorizontal.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView userName = new TextView(getContext());
+        userName.setText(offer.getUser().getName());
+        userName.setTypeface(typeface);
+        linearLayoutHorizontal.addView(userName);
+
+        TextView userSurname = new TextView(getContext());
+        userSurname.setText(offer.getUser().getSurname());
+        userName.setTypeface(typeface);
+        linearLayoutHorizontal.addView(userSurname);
+
+        TextView userOffer = new TextView(getContext());
+        userOffer.setText(String.valueOf(offer.getOffer()));
+        userName.setTypeface(typeface);
+        linearLayoutHorizontal.addView(userOffer);
+
+        return linearLayoutHorizontal;
     }
 }

@@ -109,4 +109,30 @@ public class OfferController implements OfferRequestInterface {
             }
         });
     }
+
+    @Override
+    public void sendGetOffersEndedAuctionRequest(Integer itemId, final RetrieveOffersCallback callback) {
+        RequestOffersAuctionEndedService service = retrofitService.create(RequestOffersAuctionEndedService.class);
+
+        Call<List<OfferDTO>> call = service.getOfferList(itemId);
+        call.enqueue(new Callback<List<OfferDTO>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<OfferDTO>> call, @NonNull Response<List<OfferDTO>> response) {
+                if (response.isSuccessful()) {
+                    Log.i("Retrieve Offers Auction Ended", "List<Offers> retrieved correctly!");
+                    callback.onRetrieveOffersSuccess(response.body());
+                } else {
+                    Log.e("Retrieve Offers Auction Ended Error", "Could not find List<Offers>. Error code: " + response.code());
+                    callback.onRetrieveOffersFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<OfferDTO>> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onRetrieveOffersFailure(t.getMessage());
+                Log.e("Retrieve Offers Auction Ended Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
 }
