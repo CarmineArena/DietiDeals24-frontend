@@ -9,6 +9,7 @@ import com.example.dietideals24frontend.Model.User;
 import com.example.dietideals24frontend.View.Activity.AuctionActivity;
 import com.example.dietideals24frontend.View.Activity.CreateAuctionActivity;
 import com.example.dietideals24frontend.View.Activity.HomeActivity;
+import com.example.dietideals24frontend.View.Activity.OtherProfileActivity;
 
 public class ActivityPresenter implements ActivityPresenterInterface {
     @Override
@@ -36,7 +37,7 @@ public class ActivityPresenter implements ActivityPresenterInterface {
 
     @Override
     public Intent createProfileIntent(Context context, User user) {
-        Intent intent = new Intent(context, AuctionActivity.class);
+        Intent intent = new Intent(context, OtherProfileActivity.class);
         intent.putExtra("user", user);
         return intent;
     }

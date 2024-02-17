@@ -80,9 +80,8 @@ public class SilentAuctionFragment extends Fragment {
         TextView nameView = view.findViewById(R.id.ItemNameField);
         nameView.setText(auction.getItem().getName());
 
-
-         TextView categoryView = view.findViewById(R.id.categoryView);
-         categoryView.setText("Categoria: " + auction.getItem().getCategory());
+        TextView categoryView = view.findViewById(R.id.categoryView);
+        categoryView.setText("Categoria: " + auction.getItem().getCategory());
 
         ImageButton backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> requireActivity().onBackPressed());
