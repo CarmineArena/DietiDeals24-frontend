@@ -2,6 +2,7 @@ package com.example.dietideals24frontend.View.Activity;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +21,9 @@ public class AuctionListActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         loggedInUser = (User) intent.getSerializableExtra("loggedInUser");
+
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
 
         LinearLayoutForItemsPresenter presenter = new LinearLayoutForItemsPresenter(getApplicationContext(), MainActivity.retrofitService, getSupportFragmentManager());
 

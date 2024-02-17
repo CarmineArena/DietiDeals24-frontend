@@ -11,12 +11,22 @@
         android:id="@+id/ItemNameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/inter"
         android:text="Nome Oggetto"
         android:textColor="#000000"
         android:textSize="30sp"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="45dp"
+        android:layout_height="65dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Indietro"
+        android:src="@drawable/baseline_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

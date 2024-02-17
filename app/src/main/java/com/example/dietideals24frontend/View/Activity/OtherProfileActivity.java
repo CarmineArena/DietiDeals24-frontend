@@ -2,6 +2,9 @@ package com.example.dietideals24frontend.View.Activity;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
@@ -36,6 +39,8 @@ public class OtherProfileActivity extends AppCompatActivity {
         TextView bioView = findViewById(R.id.editTextTextPersonName3);
         TextView urlView = findViewById(R.id.editTextTextPersonName4);
         ScrollView scrollView = findViewById(R.id.scrollView);
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
 
         UserController controller = new UserController(MainActivity.retrofitService);
         controller.sendRetrieveUserDataRequest(user.getUserId(), user.getEmail(), new RetrieveUserCallback() {

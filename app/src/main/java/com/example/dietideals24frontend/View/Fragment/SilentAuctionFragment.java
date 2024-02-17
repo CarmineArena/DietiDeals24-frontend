@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.annotation.SuppressLint;
 
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -82,6 +83,9 @@ public class SilentAuctionFragment extends Fragment {
 
          TextView categoryView = view.findViewById(R.id.categoryView);
          categoryView.setText("Categoria: " + auction.getItem().getCategory());
+
+        ImageButton backButton = view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> requireActivity().onBackPressed());
 
         Button btnUser = view.findViewById(R.id.NameBtn);
         btnUser.setText(auction.getItem().getUser().getName() + " " + auction.getItem().getUser().getSurname());

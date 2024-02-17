@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.os.Looper;
 import android.os.Handler;
 
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ImageView;
@@ -106,6 +107,9 @@ public class EnglishAuctionFragment extends Fragment {
 
         TextView descriptionView = view.findViewById(R.id.DescriptionView);
         descriptionView.setText(auction.getItem().getDescription());
+
+        ImageButton backButton = view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> requireActivity().onBackPressed());
 
         ImageView itemImageView = view.findViewById(R.id.itemImage);
         ImageUtils.fillImageView(itemImageView, auction.getItem().getImage());

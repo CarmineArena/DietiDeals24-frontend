@@ -11,12 +11,22 @@
         android:id="@+id/ItemNameField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/inter"
+        android:text="Nome Oggetto"
         android:textColor="#000000"
         android:textSize="30sp"
-        android:text="Nome Oggetto"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="45dp"
+        android:layout_height="65dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Indietro"
+        android:src="@drawable/baseline_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -137,22 +147,24 @@
         android:layout_width="wrap_content"
         android:layout_height="33dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_medium"
         android:text="La tua offerta: €"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="382dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <EditText
         android:id="@+id/editTextTextPersonName5"
         android:layout_width="113dp"
         android:layout_height="30dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/inputtextbg"
         android:ems="10"
         android:hint="__,__"
         android:inputType="numberDecimal"
         app:layout_constraintStart_toEndOf="@+id/textView13"
-        tools:layout_editor_absoluteY="382dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

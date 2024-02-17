@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.content.Intent;
 import android.widget.AdapterView;
@@ -51,6 +52,10 @@ public class CreateAuctionActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
+
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> finish());
+
     }
 
     private void replaceFragment(Fragment fragment) {

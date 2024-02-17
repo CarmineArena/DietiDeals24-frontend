@@ -47,7 +47,6 @@ public class HomeFragment extends Fragment {
         btnAuction.setOnClickListener(v -> {
             Intent intent = new ActivityPresenter().createAuctionListIntent(getContext(), loggedInUser);
             startActivity(intent);
-            getActivity().finish();
         });
 
         Button btnSearch = view.findViewById(R.id.searchButton);

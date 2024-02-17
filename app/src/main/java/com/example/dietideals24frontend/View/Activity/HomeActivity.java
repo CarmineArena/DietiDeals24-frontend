@@ -39,6 +39,8 @@ public class HomeActivity extends AppCompatActivity {
     private User loggedInUser;
     private ScheduledExecutorService silentAuctionScheduler, englishAuctionScheduler;
 
+    //TODO METTI BACK BUTTON IN SEARCH FRAGMENT E IN USERPROFILEFRAGMENT METTI EXIT
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
