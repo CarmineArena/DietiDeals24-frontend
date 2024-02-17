@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
@@ -258,7 +259,8 @@ public class SilentAuctionFragment extends Fragment {
 
             @Override
             public boolean onCloseFailure(String errorMessage) {
-                // TODO: NOTIFICARE L'ERRORE
+                ToastManager mToastManager = new ToastManager(context);
+                mToastManager.showToastLong("Errore durante l'accettazione dell'offerta, riprovare");
                 return false;
             }
         }));

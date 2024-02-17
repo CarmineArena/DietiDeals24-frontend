@@ -259,8 +259,8 @@ public class SilentAuctionCreationFragment extends Fragment {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
                 mToastManager.showToast("Asta creata con successo!");
 
-                ActivityPresenter factory = new ActivityPresenter();
-                Intent intent = factory.createIntentForHome(getContext(), user); // Return Home with loggedIn user's informations
+                ActivityPresenter presenter = new ActivityPresenter();
+                Intent intent = presenter.createIntentForHome(getContext(), user); // Return Home with loggedIn user's informations
                 startActivity(intent);
                 return true;
             }

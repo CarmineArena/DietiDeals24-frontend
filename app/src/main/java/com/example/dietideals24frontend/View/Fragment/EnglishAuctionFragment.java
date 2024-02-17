@@ -1,5 +1,7 @@
 package com.example.dietideals24frontend.View.Fragment;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.content.Intent;
 import androidx.fragment.app.Fragment;
@@ -40,6 +42,7 @@ import com.example.dietideals24frontend.Controller.AuctionController.Callback.Ti
 
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.MainActivity;
+import com.example.dietideals24frontend.View.Activity.HomeActivity;
 import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
@@ -289,7 +292,20 @@ public class EnglishAuctionFragment extends Fragment {
                             textViewCountDown.post(() -> textViewCountDown.setText("Tempo rimanente: " + DateAndTimeRetriever.formatTime(auctionStatusDTO.getTimeRemaining())));
                         } else {
                             textViewCountDown.post(() -> textViewCountDown.setText("Asta terminata!"));
-                            // TODO: MOSTRARE UN DIALOG PER AVVISARE IL TERMINE DELL'ASTA, REINDIRIZZARE POI ALLA HOME
+                            Context context = getContext();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("TERMINATED AUCTION");
+                            builder.setMessage("L'asta è terminata, verrai reindirizzato alla tua home.");
+                            builder.setIcon(android.R.drawable.ic_dialog_info);
+                            builder.setPositiveButton("Ok", ((dialog, which) -> {
+                                ActivityPresenter presenter = new ActivityPresenter();
+                                Intent intent = presenter.createIntentForHome(getContext(), loggedInUser); // Return Home with loggedIn user's informations
+                                startActivity(intent);
+                            }));
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            });
                         }
                         return true;
                     }
