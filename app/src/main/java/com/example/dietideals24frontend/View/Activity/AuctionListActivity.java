@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dietideals24frontend.MainActivity;
-import com.example.dietideals24frontend.Model.User;
-import com.example.dietideals24frontend.Presenter.LinearLayoutForItemsPresenter;
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.Model.User;
+import com.example.dietideals24frontend.MainActivity;
+import com.example.dietideals24frontend.Presenter.LinearLayoutForItemsPresenter;
 
 public class AuctionListActivity extends AppCompatActivity {
-
     private User loggedInUser;
 
     @Override
@@ -34,6 +33,8 @@ public class AuctionListActivity extends AppCompatActivity {
         LinearLayout layout3 = findViewById(R.id.terminatedAuctionLayout);
         presenter.createItemsWithNoWinnerLayout(layout3, loggedInUser);
 
-        // TODO: DEFINIRE SEZIONE VISIBILE PER ASTE VINTE NOTIFICATE
+        // LinearLayout for Auctions won by the User (notification)
+        LinearLayout layout4 = findViewById(R.id.wonAuctionLayout);
+        presenter.createItemsWonByUserLayout(layout4, loggedInUser);
     }
 }

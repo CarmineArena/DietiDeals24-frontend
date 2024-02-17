@@ -152,10 +152,10 @@ public class AuctionController implements AuctionRequestInterface {
     }
 
     @Override
-    public void sendCloseAuctionRequest(Integer auctionId, Integer userId, final CloseAuctionCallback callback) {
+    public void sendCloseAuctionRequest(Integer auctionId, Integer userId, Float winningBid, final CloseAuctionCallback callback) {
         CloseAuctionService api = retrofitService.create(CloseAuctionService.class);
 
-        Call<Void> call = api.closeAuction(auctionId, userId);
+        Call<Void> call = api.closeAuction(auctionId, userId, winningBid);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
@@ -198,6 +198,32 @@ public class AuctionController implements AuctionRequestInterface {
             public void onFailure(@NonNull Call<AuctionStatusDTO> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onTimeRetrievedFailure(t.getMessage());
                 Log.e("Retrieve Time Remaining Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendGetWinningBidRequest(Integer itemId, final RetrieveWinningBidCallback callback) {
+        GetWinningBidService service = retrofitService.create(GetWinningBidService.class);
+
+        Call<Float> call = service.getWinningBid(itemId);
+        call.enqueue(new Callback<Float>() {
+            @Override
+            public void onResponse(@NonNull Call<Float> call, @NonNull Response<Float> response) {
+                if (response.isSuccessful()) {
+                    Log.i("Get Winning Bid", "Winning Bid retrieved correctly!");
+                    callback.onWinningBidRetrievalSuccess(response.body());
+                } else {
+                    Log.e("Get Winning Bid Error", "Could not retrieve the Winning Bid for the Auction!");
+                    callback.onWinningBidRetrievalFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Float> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onWinningBidRetrievalFailure(t.getMessage());
+                Log.e("Get Winning Bid Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();
             }
         });

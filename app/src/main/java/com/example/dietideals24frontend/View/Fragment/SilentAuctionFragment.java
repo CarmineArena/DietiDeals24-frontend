@@ -103,9 +103,6 @@ public class SilentAuctionFragment extends Fragment {
         symbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("0.00", symbols);
 
-        //TextView priceView = view.findViewById(R.id.textView11);
-        //priceView.setText("Prezzo iniziale: € " + df.format(auction.getCurrentOfferValue()));
-
         EditText offerText = view.findViewById(R.id.editTextTextPersonName5);
 
         if (loggedInUser.getUserId().equals(auction.getItem().getUser().getUserId())) {
@@ -193,7 +190,7 @@ public class SilentAuctionFragment extends Fragment {
 
                             Button button = new Button(getContext());
                             button.setText("Accetta");
-                            button.setOnClickListener(v -> showDialogToAcceptOffer(auction.getAuctionId(), offer.getUser().getUserId()));
+                            button.setOnClickListener(v -> showDialogToAcceptOffer(auction.getAuctionId(), offer.getUser().getUserId(), offer.getOffer()));
                             linearLayoutHorizontal.addView(button);
 
                             scrollViewLayout.addView(linearLayoutHorizontal);
@@ -235,14 +232,14 @@ public class SilentAuctionFragment extends Fragment {
         }
     }
 
-    private void showDialogToAcceptOffer(Integer auctionId, Integer userId) {
+    private void showDialogToAcceptOffer(Integer auctionId, Integer userId, Float winningBid) {
         Context context = getContext();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("CONFIRM OFFER");
         builder.setMessage("Sei sicuro di voler accettare l'offerta?");
         builder.setIcon(android.R.drawable.ic_dialog_info);
 
-        builder.setPositiveButton("Si", (dialog, which) -> new AuctionController(MainActivity.retrofitService).sendCloseAuctionRequest(auctionId, userId, new CloseAuctionCallback() {
+        builder.setPositiveButton("Si", (dialog, which) -> new AuctionController(MainActivity.retrofitService).sendCloseAuctionRequest(auctionId, userId, winningBid, new CloseAuctionCallback() {
             @Override
             public boolean onCloseSuccess() {
                 ToastManager mToastManager = new ToastManager(context);

@@ -11,4 +11,5 @@ public interface ItemRequestInterface {
     void sendCreatedByUserItemsRequest(User loggedInUser, final RetrieveUserItemsCallback callback);
     void sendFindItemsWantedByUserRequest(Integer userId, String email, String password, final RetrieveItemsWantedByUserCallback callback);
     void sendFindItemsWithNoWinnerRequest(Integer userId, final RetrieveItemsWithNoWinnerCallback callback);
+    void sendFindItemsWonByUserRequest(Integer userId, final RetrieveItemsWonByUserCallback callback);
 }

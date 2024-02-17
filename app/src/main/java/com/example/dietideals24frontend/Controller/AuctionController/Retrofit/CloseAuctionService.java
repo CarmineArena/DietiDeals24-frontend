@@ -6,5 +6,5 @@ import retrofit2.http.Query;
 
 public interface CloseAuctionService {
     @POST("/auction/endAuction")
-    Call<Void> closeAuction(@Query("auctionId") Integer auctionId, @Query("userId") Integer userId);
+    Call<Void> closeAuction(@Query("auctionId") Integer auctionId, @Query("userId") Integer userId, @Query("winningBid") Float winningBid);
 }

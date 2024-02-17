@@ -150,7 +150,7 @@ public class ItemController implements ItemRequestInterface {
 
     @Override
     public void sendFindItemImageRequest(Integer itemId, String name, final ImageContentRequestCallback callback) {
-        RequestItemImage api = retrofitService.create(RequestItemImage.class);
+        RequestItemImageService api = retrofitService.create(RequestItemImageService.class);
 
         Call<byte[]> call = api.fetchItemImage(itemId, name);
         call.enqueue(new Callback<byte[]>() {
@@ -188,7 +188,7 @@ public class ItemController implements ItemRequestInterface {
             @Override
             public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
                 if(response.isSuccessful()) {
-                    Log.i("Search Items With No Winner", "Image retrieved correctly!");
+                    Log.i("Search Items With No Winner", "Items retrieved correctly!");
                     callback.onItemsWithNoWinnerRetrievalSuccess(response.body());
                 } else {
                     Log.e("Search Items With No Winner Error", "Could not the list of items requested. Error code: " + response.code());
@@ -200,6 +200,32 @@ public class ItemController implements ItemRequestInterface {
             public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
                 boolean returnValue = callback.onItemsWithNoWinnerRetrievalFailure(t.getMessage());
                 Log.e("Search Items With No Winner Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void sendFindItemsWonByUserRequest(Integer userId, final RetrieveItemsWonByUserCallback callback) {
+        SearchItemsWonByUserService service = retrofitService.create(SearchItemsWonByUserService.class);
+
+        Call<List<ItemDTO>> call = service.findItemsWonByUser(userId);
+        call.enqueue(new Callback<List<ItemDTO>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ItemDTO>> call, @NonNull Response<List<ItemDTO>> response) {
+                if(response.isSuccessful()) {
+                    Log.i("Search Items Won By User", "Items retrieved correctly!");
+                    callback.onItemsWonByUserRetrievalSuccess(response.body());
+                } else {
+                    Log.e("Search Items Won By User Error", "Could not the list of items requested. Error code: " + response.code());
+                    callback.onItemsWonByUserRetrievalFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<ItemDTO>> call, @NonNull Throwable t) {
+                boolean returnValue = callback.onItemsWonByUserRetrievalFailure(t.getMessage());
+                Log.e("Search Items Won By User Error", Objects.requireNonNull(t.getMessage()) + ", Cause: " + t.getCause());
                 t.printStackTrace();
             }
         });

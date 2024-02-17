@@ -17,7 +17,7 @@ public class Auction implements Serializable {
     private Set<Offer> offers;
     private Date expirationDate = null;
     private LocalDateTime expirationTime = null;
-    private float currentOfferValue;
+    private float currentOfferValue, winningBid;
 
     /* CONSTRUCTOR */
 
@@ -103,6 +103,13 @@ public class Auction implements Serializable {
         return amountOfTimeToReset;
     }
 
+    public float getWinningBid() {
+        return winningBid;
+    }
+
+    public void setWinningBid(float winningBid) {
+        this.winningBid = winningBid;
+    }
 
     public Item getItem() {
         return item;

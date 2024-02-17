@@ -1,5 +1,6 @@
 package com.example.dietideals24frontend.Presenter;
 
+import android.app.AlertDialog;
 import android.widget.*;
 import android.util.Log;
 import android.text.Html;
@@ -14,6 +15,9 @@ import java.util.List;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
+import com.example.dietideals24frontend.Controller.AuctionController.Callback.RetrieveWinningBidCallback;
+import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveItemsWonByUserCallback;
 import com.example.dietideals24frontend.Controller.ItemController.ItemController;
 import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveFeaturedItemsCallback;
 import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveItemsWithNoWinnerCallback;
@@ -307,6 +311,57 @@ public class LinearLayoutForItemsPresenter {
         });
     }
 
+    public void createItemsWonByUserLayout(ViewGroup layout, User loggedInUser) {
+        ItemController controller = new ItemController(retrofitService);
+        controller.sendFindItemsWonByUserRequest(loggedInUser.getUserId(), new RetrieveItemsWonByUserCallback() {
+            @Override
+            public boolean onItemsWonByUserRetrievalSuccess(List<ItemDTO> itemsRetrieved) {
+                List<Item> itemsWon = ItemUtils.createListOfItems(itemsRetrieved);
+                if (itemsWon == null) {
+                    Log.d("Home Fragment", "List<Item> itemsWon size: 0");
+
+                    if (layout instanceof LinearLayout)
+                        addImageButtonToLinearLayout((LinearLayout) layout, context, loggedInUser, HomeConstantValues.WANTED);
+                    else if (layout instanceof RelativeLayout)
+                        addImageButtonToRelativeLayout((RelativeLayout) layout, context, loggedInUser, HomeConstantValues.WANTED);
+                } else {
+                    Log.d("Home Fragment", "List<Item> itemsWon size: " + itemsWon.size());
+
+                    final int size = itemsWon.size();
+                    for (int j = 0; j < size; j++) {
+                        final int pos = j;
+                        ItemUtils.assignImageToItem(itemsWon.get(pos), controller, new ImageCallback() {
+                            @Override
+                            public void onImageAvailable(byte[] imageContent) {
+                                itemsWon.get(pos).setImage(imageContent);
+
+                                if (layout instanceof LinearLayout)
+                                    layout.addView(createInternalLayout(itemsWon.get(pos), loggedInUser, HomeConstantValues.ITEM_WON_BY_USER));
+                                else if (layout instanceof RelativeLayout) {
+                                    createRelativeLayout((RelativeLayout) layout, loggedInUser, itemsWon.get(pos), HomeConstantValues.ITEM_WON_BY_USER);
+                                }
+                            }
+
+                            @Override
+                            public void onImageNotAvailable(String errorMessage) {
+                                Log.e("ERROR", "createItemsWithNoWinnerLayout, List<Items> with no winners is not available: " + errorMessage);
+                            }
+                        });
+                    }
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onItemsWonByUserRetrievalFailure(String errorMessage) {
+                /* [MOTIVATION: BAD REQUEST] */
+                Log.d("onItemsWonByUserRetrievalFailure", errorMessage);
+                showPopUpError("Could not retrieve the list of items won by the User. " + errorMessage);
+                return false;
+            }
+        });
+    }
+
     /* PRIVATE METHODS */
 
     @SuppressLint("SetTextI18n")
@@ -335,7 +390,11 @@ public class LinearLayoutForItemsPresenter {
                 break;
         }
 
-        button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser, auctionType));
+        if (auctionType.equals(HomeConstantValues.ITEM_WON_BY_USER)) {
+            button.setOnClickListener(v -> showInformationDialog(item.getItemId()));
+        } else {
+            button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser, auctionType));
+        }
 
         LinearLayout internal = new LinearLayout(context);
         internal.setOrientation(LinearLayout.VERTICAL);
@@ -428,6 +487,28 @@ public class LinearLayoutForItemsPresenter {
     private void showPopUpError(String message) {
         Dialog dialog = new Dialog(context);
         dialog.showAlertDialog("ITEM RETRIEVAL ERROR", message);
+    }
+
+    private void showInformationDialog(Integer itemId) {
+        AuctionController controller = new AuctionController(retrofitService);
+        controller.sendGetWinningBidRequest(itemId, new RetrieveWinningBidCallback() {
+            @Override
+            public boolean onWinningBidRetrievalSuccess(Float winningBid) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("AUCTION INFORMATION");
+                builder.setMessage("Congratulazioni! Ti sei aggiudicato l'Item per " + winningBid + "€ !");
+                builder.setIcon(android.R.drawable.ic_dialog_info);
+                builder.setPositiveButton("Ok", ((dialog, which) -> {}));
+                return true;
+            }
+
+            @Override
+            public boolean onWinningBidRetrievalFailure(String errorMessage) {
+                /* BAD REQUEST [SHOULD NOT HAPPEN] */
+                Log.e("Dialog for Winning Bid", "An Error occurred: " + errorMessage);
+                return false;
+            }
+        });
     }
 
     private void createSearchAuctionFragment(User loggedInUser) {
