@@ -1,5 +1,6 @@
 package com.example.dietideals24frontend.View.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import android.widget.EditText;
 import android.view.LayoutInflater;
 import androidx.fragment.app.Fragment;
 
+import com.example.dietideals24frontend.Presenter.ActivityPresenter;
 import com.example.dietideals24frontend.R;
+import com.example.dietideals24frontend.View.Activity.HomeActivity;
 import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.Controller.UserController.Callback.UpdateUserCallback;
@@ -101,6 +104,12 @@ public class UserProfileFragment extends Fragment {
                     }
                 });
             }
+        });
+
+        Button logOutButton = view.findViewById(R.id.LogOutButton);
+        logOutButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
         });
 
         return view;

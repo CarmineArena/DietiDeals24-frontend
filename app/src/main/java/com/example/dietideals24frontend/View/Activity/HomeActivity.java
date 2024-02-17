@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
     private User loggedInUser;
     private ScheduledExecutorService silentAuctionScheduler, englishAuctionScheduler;
 
-    //TODO METTI BACK BUTTON IN SEARCH FRAGMENT E IN USERPROFILEFRAGMENT METTI EXIT
+    //TODO MIGLIORA LE SCRITTE DINAMICHE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
