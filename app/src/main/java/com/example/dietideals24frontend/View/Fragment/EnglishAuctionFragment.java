@@ -148,12 +148,12 @@ public class EnglishAuctionFragment extends Fragment {
 
             @Override
             public boolean onBestOfferRetrievalFailure(String errorMessage) {
-                bidderView.setText("Fatta da: ");
+                bidderView.setText(" ");
 
                 bidderBtn.setEnabled(false);
                 bidderBtn.setVisibility(View.INVISIBLE);
 
-                LastOfferView.setText("Ultima offerta: non ci sono ancora offerte.");
+                LastOfferView.setText("Non ci sono ancora offerte.");
                 return false;
             }
         });
@@ -164,7 +164,7 @@ public class EnglishAuctionFragment extends Fragment {
         Spinner spinnerType = view.findViewById(R.id.offerSpinner);
 
         offerList = new ArrayList<>(Arrays.asList(offer));
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, offerList);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.custom_spinner_item, offerList);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerType.setAdapter(adapter);

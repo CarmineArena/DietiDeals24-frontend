@@ -195,7 +195,7 @@ public class SilentAuctionFragment extends Fragment {
                             Button button = new Button(getContext());
                             button.setText("Accetta");
                             button.setTypeface(typeface);
-                            button.setTextSize(15);
+                            button.setTextSize(20);
                             button.setOnClickListener(v -> showDialogToAcceptOffer(auction.getAuctionId(), offer.getUser().getUserId(), offer.getOffer()));
                             linearLayoutHorizontal.addView(button);
 
@@ -208,7 +208,8 @@ public class SilentAuctionFragment extends Fragment {
 
                 @Override
                 public boolean onRetrieveOffersFailure(String errorMessage) {
-                    /* BAD REQUEST [SHOULD NOT HAPPEN] */
+                    ToastManager mToastManager = new ToastManager(getContext());
+                    mToastManager.showToastLong("Errore durante la ricerca delle offerte, riprovare");
                     return false;
                 }
             });
@@ -231,7 +232,8 @@ public class SilentAuctionFragment extends Fragment {
 
                 @Override
                 public boolean onRetrieveOffersFailure(String errorMessage) {
-                    /* BAD REQUEST [SHOULD NOT HAPPEN] */
+                    ToastManager mToastManager = new ToastManager(getContext());
+                    mToastManager.showToastLong("Errore durante la ricerca delle offerte, riprovare");
                     return false;
                 }
             });
@@ -292,20 +294,20 @@ public class SilentAuctionFragment extends Fragment {
         linearLayoutHorizontal.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView userName = new TextView(getContext());
-        userName.setText(offer.getUser().getName() + " ");
-        userName.setTextSize(15);
+        userName.setText("Offerta ricevuta da: " + offer.getUser().getName() + " ");
+        userName.setTextSize(17);
         userName.setTypeface(typeface);
         linearLayoutHorizontal.addView(userName);
 
         TextView userSurname = new TextView(getContext());
         userSurname.setText(offer.getUser().getSurname() + " ");
-        userSurname.setTextSize(15);
+        userSurname.setTextSize(17);
         userSurname.setTypeface(typeface);
         linearLayoutHorizontal.addView(userSurname);
 
         TextView userOffer = new TextView(getContext());
-        userOffer.setText(String.valueOf(offer.getOffer()));
-        userOffer.setTextSize(15);
+        userOffer.setText("€" + String.valueOf(offer.getOffer()));
+        userOffer.setTextSize(17);
         userOffer.setTypeface(typeface);
         linearLayoutHorizontal.addView(userOffer);
 

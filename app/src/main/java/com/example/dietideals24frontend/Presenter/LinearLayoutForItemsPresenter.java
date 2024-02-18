@@ -375,6 +375,7 @@ public class LinearLayoutForItemsPresenter {
         ImageUtils.fillImageView(imageView, item.getImage());
 
         Button button = new Button(context);
+        button.setBackgroundResource(R.drawable.button2bg);
         switch (auctionType) {
             case HomeConstantValues.FEATURED:
                 button.setText("ACQUISTA");
@@ -395,6 +396,17 @@ public class LinearLayoutForItemsPresenter {
         } else {
             button.setOnClickListener(v -> handleClickOnItem(item, loggedInUser, auctionType));
         }
+
+        LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        // Imposta i margini per il Button
+        buttonLayoutParams.setMargins(0, 20, 0, 0); // Margine superiore di 20 pixel
+
+        // Applica i parametri di layout al Button
+        button.setLayoutParams(buttonLayoutParams);
 
         LinearLayout internal = new LinearLayout(context);
         internal.setOrientation(LinearLayout.VERTICAL);

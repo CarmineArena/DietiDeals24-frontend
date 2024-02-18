@@ -39,8 +39,6 @@ public class HomeActivity extends AppCompatActivity {
     private User loggedInUser;
     private ScheduledExecutorService silentAuctionScheduler, englishAuctionScheduler;
 
-    //TODO MIGLIORA LE SCRITTE DINAMICHE
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
