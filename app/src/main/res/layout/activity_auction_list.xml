@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/fenix"
-                android:text="Aste Terminate"
+                android:text="Aste Senza un Vincitore"
                 android:textColor="#474343"
                 android:textSize="24sp" />
 
