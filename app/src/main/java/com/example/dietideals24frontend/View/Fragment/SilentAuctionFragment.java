@@ -195,7 +195,7 @@ public class SilentAuctionFragment extends Fragment {
                             Button button = new Button(getContext());
                             button.setText("Accetta");
                             button.setTypeface(typeface);
-                            button.setTextSize(20);
+                            button.setTextSize(16);
                             button.setOnClickListener(v -> showDialogToAcceptOffer(auction.getAuctionId(), offer.getUser().getUserId(), offer.getOffer()));
                             linearLayoutHorizontal.addView(button);
 
@@ -294,7 +294,7 @@ public class SilentAuctionFragment extends Fragment {
         linearLayoutHorizontal.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView userName = new TextView(getContext());
-        userName.setText("Offerta ricevuta da: " + offer.getUser().getName() + " ");
+        userName.setText("Offerta da: " + offer.getUser().getName() + " ");
         userName.setTextSize(17);
         userName.setTypeface(typeface);
         linearLayoutHorizontal.addView(userName);
