@@ -1,6 +1,8 @@
 package com.example.dietideals24frontend.Presenter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.os.Looper;
 import android.widget.*;
 import android.util.Log;
 import android.text.Html;
@@ -12,6 +14,9 @@ import android.content.Context;
 import android.annotation.SuppressLint;
 
 import java.util.List;
+import java.util.logging.Handler;
+
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -41,6 +46,7 @@ public class LinearLayoutForItemsPresenter {
     private final Context context;
     private final Retrofit retrofitService;
     private final FragmentManager manager;
+    private Activity dialogActivity;
 
     public LinearLayoutForItemsPresenter(Context context, Retrofit retrofitService, FragmentManager manager) {
         this.context         = context;
@@ -311,7 +317,9 @@ public class LinearLayoutForItemsPresenter {
         });
     }
 
-    public void createItemsWonByUserLayout(ViewGroup layout, User loggedInUser) {
+    public void createItemsWonByUserLayout(ViewGroup layout, User loggedInUser, Activity dialogActivity) {
+        this.dialogActivity = dialogActivity;
+
         ItemController controller = new ItemController(retrofitService);
         controller.sendFindItemsWonByUserRequest(loggedInUser.getUserId(), new RetrieveItemsWonByUserCallback() {
             @Override
@@ -384,7 +392,7 @@ public class LinearLayoutForItemsPresenter {
                 button.setText(item.getDescription());
                 break;
             case HomeConstantValues.ITEM_WITH_NO_WINNER:
-                button.setText("SELEZIONA");
+                button.setText("ACCETTA");
                 break;
             default:
                 button.setText("VISUALIZZA");
@@ -506,11 +514,16 @@ public class LinearLayoutForItemsPresenter {
         controller.sendGetWinningBidRequest(itemId, new RetrieveWinningBidCallback() {
             @Override
             public boolean onWinningBidRetrievalSuccess(Float winningBid) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("AUCTION INFORMATION");
-                builder.setMessage("Congratulazioni! Ti sei aggiudicato l'Item per " + winningBid + "€ !");
-                builder.setIcon(android.R.drawable.ic_dialog_info);
-                builder.setPositiveButton("Ok", ((dialog, which) -> {}));
+                if (dialogActivity instanceof Activity) {
+                    ((Activity) dialogActivity).runOnUiThread(() -> {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(dialogActivity);
+                        builder.setTitle("AUCTION INFORMATION");
+                        builder.setMessage("Congratulazioni! Ti sei aggiudicato l'Item per " + winningBid + "€ !");
+                        builder.setIcon(android.R.drawable.ic_dialog_info);
+                        builder.setPositiveButton("Ok", (dialog, which) -> {});
+                        builder.show();
+                    });
+                }
                 return true;
             }
 

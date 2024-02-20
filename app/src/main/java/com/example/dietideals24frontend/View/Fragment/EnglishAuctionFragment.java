@@ -181,7 +181,9 @@ public class EnglishAuctionFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {}
+            public void onNothingSelected(AdapterView<?> parentView) {
+                setChoice("Rialza di 10€");
+            }
         });
 
         if (loggedInUser.getUserId().equals(auction.getItem().getUser().getUserId())) {

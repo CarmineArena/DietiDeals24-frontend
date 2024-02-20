@@ -39,6 +39,6 @@ public class AuctionListActivity extends AppCompatActivity {
 
         // LinearLayout for Auctions won by the User (notification)
         LinearLayout layout4 = findViewById(R.id.wonAuctionLayout);
-        presenter.createItemsWonByUserLayout(layout4, loggedInUser);
+        presenter.createItemsWonByUserLayout(layout4, loggedInUser, this);
     }
 }
