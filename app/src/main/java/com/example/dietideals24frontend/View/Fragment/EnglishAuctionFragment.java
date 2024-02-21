@@ -237,7 +237,7 @@ public class EnglishAuctionFragment extends Fragment {
                         dialog.showAlertDialog("OFFER NOT VALID", "Specificare di quanto si vuole rialzare l'offerta.");
                         Log.e("OFFER VALUE", "NOT VALID");
                     } else {
-                        offerta = Float.parseFloat(offerText.getText().toString());
+                        offerta = Float.parseFloat(offerText.getText().toString()) + currentOfferValue;
                     }
             }
 
@@ -245,13 +245,16 @@ public class EnglishAuctionFragment extends Fragment {
                 offerDTO.setOffer(offerta);
 
                 OfferController controller = new OfferController(retrofitService);
+                float finalOfferta = offerta;
                 controller.sendRegisterOfferRequest(offerDTO, new RegisterOfferCallback() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public boolean onOfferRegistrationSuccess() {
                         mToastManager.showToast("Offerta fatta con successo!");
 
-                        offerText.setText("Ultima offerta: € " + offerDTO.getOffer());
+                        TextView lastOfferViewText = view.findViewById(R.id.LastOfferView);
+
+                        lastOfferViewText.setText("Ultima offerta: € " + finalOfferta);
                         Button bidderBtn = view.findViewById(R.id.Name2Btn);
                         bidderBtn.setText(loggedInUser.getName() + " " + loggedInUser.getSurname());
                         return true;
