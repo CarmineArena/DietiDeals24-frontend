@@ -113,13 +113,15 @@ public class EnglishAuctionCreationFragment extends Fragment {
             String expirationTime     = String.valueOf(numberPicker.getValue());
             String itemCategory       = getCategoryChoice();
 
-            if (itemName.isEmpty() || itemCategory.isEmpty() || itemCategory.equals("Scegli una categoria") || itemBasePrize.isEmpty()
-                    || expirationTime.isEmpty() || getImageContent() == null || itemDescription.isEmpty()) {
+            if ((itemName.isEmpty() || itemCategory.isEmpty() || itemCategory.equals("Scegli una categoria") || itemBasePrize.isEmpty()
+                    || expirationTime.isEmpty() || getImageContent() == null || itemDescription.isEmpty() || Float.parseFloat(itemBasePrize) <= 0.0f)) {
                 String title, message;
                 title = "FORM ERROR";
                 message = "Assicurarsi di aver eseguito correttamente la procedura di creazione dell'asta!";
 
                 if (getImageContent() == null) message += " Non è presente immagine del prodotto.";
+
+                if (Float.parseFloat(itemBasePrize) <= 0.0f) message += " Inserire un'offerta che sia valida!";
 
                 if (itemCategory.equals("Scegli una categoria") || itemCategory.isEmpty()) message += " Devi definire la categoria dell'oggetto!";
 

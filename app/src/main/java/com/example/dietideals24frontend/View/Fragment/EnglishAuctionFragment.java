@@ -66,7 +66,7 @@ public class EnglishAuctionFragment extends Fragment {
     private TextView textViewCountDown;
     private final String[] offer = { "Rialza di 10€", "Rialza di 20€", "Rialzo personalizzato" };
     private List<String> offerList;
-    private Float lastOfferValue = null; // The highest value among the current offers
+    private float lastOfferValue = -1.0f; // The highest value among the current offers
     private Retrofit retrofitService;
     private String choice;
     private ToastManager mToastManager;
@@ -143,7 +143,7 @@ public class EnglishAuctionFragment extends Fragment {
                 });
 
                 LastOfferView.setText("Ultima offerta: € " + offerDTO.getOffer());
-                lastOfferValue = offerDTO.getOffer();
+                setLastOfferValue(offerDTO.getOffer());
                 return true;
             }
 
@@ -202,12 +202,20 @@ public class EnglishAuctionFragment extends Fragment {
         return view;
     }
 
+    private void setLastOfferValue(float lastOfferValue) {
+        this.lastOfferValue = lastOfferValue;
+    }
+
+    private float getLastOfferValue() {
+        return lastOfferValue;
+    }
+
     private void manageOffer() {
         Button offerBtn    = view.findViewById(R.id.OfferButton);
         EditText offerText = view.findViewById(R.id.offertField);
         float currentOfferValue;
 
-        if (lastOfferValue == null)
+        if (getLastOfferValue() == -1.0f)
             currentOfferValue = auction.getCurrentOfferValue();
         else
             currentOfferValue = lastOfferValue;
@@ -232,7 +240,7 @@ public class EnglishAuctionFragment extends Fragment {
                 default:
                     String offer = offerText.getText().toString();
 
-                    if (offer.isEmpty()) {
+                    if (offer.isEmpty() || Float.parseFloat(offer) <= 0.0f) {
                         Dialog dialog = new Dialog(getContext());
                         dialog.showAlertDialog("OFFER NOT VALID", "Specificare di quanto si vuole rialzare l'offerta.");
                         Log.e("OFFER VALUE", "NOT VALID");
@@ -253,6 +261,9 @@ public class EnglishAuctionFragment extends Fragment {
                         mToastManager.showToast("Offerta fatta con successo!");
                         TextView lastOfferViewText = view.findViewById(R.id.LastOfferView);
                         lastOfferViewText.setText("Ultima offerta: € " + finalOfferta);
+
+                        Intent intent = new ActivityPresenter().createIntentForHome(getContext(), loggedInUser);
+                        startActivity(intent);
                         return true;
                     }
 
