@@ -251,19 +251,8 @@ public class EnglishAuctionFragment extends Fragment {
                     @Override
                     public boolean onOfferRegistrationSuccess() {
                         mToastManager.showToast("Offerta fatta con successo!");
-
-                        TextView bidderView    = view.findViewById(R.id.textView7);
-                        bidderView.setText("Fatta da: ");
-
                         TextView lastOfferViewText = view.findViewById(R.id.LastOfferView);
                         lastOfferViewText.setText("Ultima offerta: € " + finalOfferta);
-
-                        Button bidderBtn = view.findViewById(R.id.Name2Btn);
-                        bidderBtn.setText(loggedInUser.getName() + " " + loggedInUser.getSurname());
-                        bidderBtn.setOnClickListener(v -> {
-                            Intent intent = new ActivityPresenter().createProfileIntent(getContext(), offerDTO.getUser());
-                            startActivity(intent);
-                        });
                         return true;
                     }
 

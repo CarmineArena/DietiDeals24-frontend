@@ -434,7 +434,7 @@ public class LinearLayoutForItemsPresenter {
         layout.addView(imageView);
 
         Button button = new Button(context);
-        button.setText(Html.fromHtml(item.getName() + "<br>" + item.getDescription(), Html.FROM_HTML_MODE_LEGACY));
+        button.setText(Html.fromHtml(item.getName() + "<br> <br>" + item.getDescription(), Html.FROM_HTML_MODE_LEGACY));
         button.setBackgroundResource(android.R.color.transparent); // background_light
         RelativeLayout.LayoutParams btnParams = new RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.WRAP_CONTENT,

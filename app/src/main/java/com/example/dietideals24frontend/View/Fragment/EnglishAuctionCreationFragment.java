@@ -3,7 +3,6 @@ package com.example.dietideals24frontend.View.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.content.Intent;
-import android.app.TimePickerDialog;
 import static android.app.Activity.RESULT_OK;
 
 import androidx.annotation.Nullable;
@@ -40,7 +39,6 @@ import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
 
-import java.util.Locale;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -77,24 +75,6 @@ public class EnglishAuctionCreationFragment extends Fragment {
         // Impostazione dei limiti del NumberPicker
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(24);
-
-        /*Button timeButton = view.findViewById(R.id.time_button);
-        timeButton.setText("01:00");
-        timeButton.setOnClickListener(v -> {
-            TimePickerDialog.OnTimeSetListener timeSetListener = (view, hourOfDay, minute) -> {
-                int hour = Math.max(hourOfDay, 1);
-                String selectedTime = String.format(Locale.getDefault(), "%02d:00:00", hour);
-                timeButton.setText(selectedTime);
-            };
-            TimePickerDialog timePickerDialog = new TimePickerDialog(
-                    requireContext(),
-                    timeSetListener,
-                    1,
-                    0,
-                    true  // Imposta true se desideri visualizzare il picker in modalità 24 ore
-            );
-            timePickerDialog.show();
-        }); */
 
         // Retrieve from strings.xml (list of options)
         Spinner categorySpinner = view.findViewById(R.id.spinner);
@@ -229,15 +209,17 @@ public class EnglishAuctionCreationFragment extends Fragment {
         auctionDTO.setActive(true);
         auctionDTO.setExpirationDate(null); // NULL because its an English Auction
 
-        /*String[] parts = expirationTime.split(":");
-        int hours   = Integer.parseInt(parts[0]);
-        int minutes = Integer.parseInt(parts[1]);
-        int seconds = Integer.parseInt(parts[2]);*/
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime endTime = now.plusHours(Integer.parseInt(expirationTime));
         auctionDTO.setExpirationTime(endTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
-        auctionDTO.setAmountOfTimeToReset(Integer.parseInt(expirationTime));
+        int hours = Integer.parseInt(expirationTime);
+
+        if (hours >= 2)
+            auctionDTO.setAmountOfTimeToReset(hours - 1);
+        else
+            auctionDTO.setAmountOfTimeToReset(hours);
+
         auctionDTO.setRequestedItemId(itemId);
         auctionDTO.setCurrentOfferValue(itemStartPrize);
 
