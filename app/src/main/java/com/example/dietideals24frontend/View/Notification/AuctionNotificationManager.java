@@ -43,7 +43,7 @@ public class AuctionNotificationManager {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setContentTitle(title)
                     .setContentText(content)
-                    .setSmallIcon(R.drawable.dietideals24img) // TODO: METTERE UN'ICONA MIGLIORE
+                    .setSmallIcon(R.drawable.dietideals24img)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);

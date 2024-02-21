@@ -195,7 +195,7 @@ public class SilentAuctionFragment extends Fragment {
                             Button button = new Button(getContext());
                             button.setText("Accetta");
                             button.setTypeface(typeface);
-                            button.setBackgroundResource(R.drawable.buttonbgaccept);
+                            button.setBackgroundResource(R.drawable.button2bg);
                             button.setTextSize(17);
                             button.setOnClickListener(v -> showDialogToAcceptOffer(auction.getAuctionId(), offer.getUser().getUserId(), offer.getOffer()));
                             linearLayoutHorizontal.addView(button);

@@ -163,16 +163,14 @@
 
     <EditText
         android:id="@+id/offertField"
-        android:layout_width="162dp"
+        android:layout_width="100dp"
         android:layout_height="30dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
         android:background="@drawable/inputtextbg"
         android:ems="10"
         android:hint="€00.00"
         android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/offerSpinner"
         app:layout_constraintTop_toBottomOf="@+id/Name2Btn" />
 
