@@ -66,7 +66,7 @@ public class EnglishAuctionFragment extends Fragment {
     private TextView textViewCountDown;
     private final String[] offer = { "Rialza di 10€", "Rialza di 20€", "Rialzo personalizzato" };
     private List<String> offerList;
-    private float lastOfferValue; // The highest value among the current offers
+    private Float lastOfferValue = null; // The highest value among the current offers
     private Retrofit retrofitService;
     private String choice;
     private ToastManager mToastManager;
@@ -143,6 +143,7 @@ public class EnglishAuctionFragment extends Fragment {
                 });
 
                 LastOfferView.setText("Ultima offerta: € " + offerDTO.getOffer());
+                lastOfferValue = offerDTO.getOffer();
                 return true;
             }
 
@@ -204,7 +205,12 @@ public class EnglishAuctionFragment extends Fragment {
     private void manageOffer() {
         Button offerBtn    = view.findViewById(R.id.OfferButton);
         EditText offerText = view.findViewById(R.id.offertField);
-        float currentOfferValue = auction.getCurrentOfferValue();
+        float currentOfferValue;
+
+        if (lastOfferValue == null)
+            currentOfferValue = auction.getCurrentOfferValue();
+        else
+            currentOfferValue = lastOfferValue;
 
         offerBtn.setOnClickListener(v -> {
             float offerta = 0.0f;
@@ -230,6 +236,8 @@ public class EnglishAuctionFragment extends Fragment {
                         Dialog dialog = new Dialog(getContext());
                         dialog.showAlertDialog("OFFER NOT VALID", "Specificare di quanto si vuole rialzare l'offerta.");
                         Log.e("OFFER VALUE", "NOT VALID");
+                    } else {
+                        offerta = Float.parseFloat(offerText.getText().toString());
                     }
             }
 
