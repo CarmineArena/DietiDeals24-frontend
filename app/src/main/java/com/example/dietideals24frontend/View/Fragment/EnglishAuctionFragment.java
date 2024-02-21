@@ -203,6 +203,7 @@ public class EnglishAuctionFragment extends Fragment {
     }
 
     private void setLastOfferValue(float lastOfferValue) {
+        Log.i("SET TOP OFFER", "LAST OFFER VALUE (TOP OFFER) SET TO: " + lastOfferValue);
         this.lastOfferValue = lastOfferValue;
     }
 
@@ -212,16 +213,16 @@ public class EnglishAuctionFragment extends Fragment {
 
     private void manageOffer() {
         Button offerBtn    = view.findViewById(R.id.OfferButton);
-        EditText offerText = view.findViewById(R.id.offertField);
-        float currentOfferValue;
-
-        if (getLastOfferValue() == -1.0f)
-            currentOfferValue = auction.getCurrentOfferValue();
-        else
-            currentOfferValue = lastOfferValue;
-
         offerBtn.setOnClickListener(v -> {
+            EditText offerText = view.findViewById(R.id.offertField);
+
             float offerta = 0.0f;
+            float currentOfferValue;
+            if (getLastOfferValue() == -1.0f) {
+                currentOfferValue = auction.getCurrentOfferValue();
+            } else {
+                currentOfferValue = getLastOfferValue();
+            }
 
             OfferDTO offerDTO = new OfferDTO();
             offerDTO.setUser(loggedInUser);
@@ -242,42 +243,37 @@ public class EnglishAuctionFragment extends Fragment {
 
                     if (offer.isEmpty() || Float.parseFloat(offer) <= 0.0f) {
                         Dialog dialog = new Dialog(getContext());
-                        dialog.showAlertDialog("OFFER NOT VALID", "Specificare di quanto si vuole rialzare l'offerta.");
+                        dialog.showAlertDialog("OFFER NOT VALID", "Specificare di quanto si vuole rialzare l'offerta in maniera corretta!");
                         Log.e("OFFER VALUE", "NOT VALID");
                     } else {
                         offerta = Float.parseFloat(offerText.getText().toString()) + currentOfferValue;
                     }
             }
 
-            if (offerta > 0.0f) {
-                offerDTO.setOffer(offerta);
+            Log.i("OFFERTA", String.valueOf(offerta));
+            offerDTO.setOffer(offerta);
 
-                OfferController controller = new OfferController(retrofitService);
-                float finalOfferta = offerta;
-                controller.sendRegisterOfferRequest(offerDTO, new RegisterOfferCallback() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public boolean onOfferRegistrationSuccess() {
-                        mToastManager.showToast("Offerta fatta con successo!");
-                        TextView lastOfferViewText = view.findViewById(R.id.LastOfferView);
-                        lastOfferViewText.setText("Ultima offerta: € " + finalOfferta);
+            OfferController controller = new OfferController(retrofitService);
+            float finalOfferta = offerta;
+            controller.sendRegisterOfferRequest(offerDTO, new RegisterOfferCallback() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public boolean onOfferRegistrationSuccess() {
+                    mToastManager.showToast("Offerta fatta con successo!");
+                    TextView lastOfferViewText = view.findViewById(R.id.LastOfferView);
+                    lastOfferViewText.setText("Ultima offerta: € " + finalOfferta);
 
-                        Intent intent = new ActivityPresenter().createIntentForHome(getContext(), loggedInUser);
-                        startActivity(intent);
-                        return true;
-                    }
+                    Intent intent = new ActivityPresenter().createIntentForHome(getContext(), loggedInUser);
+                    startActivity(intent);
+                    return true;
+                }
 
-                    @Override
-                    public boolean onOfferRegistrationFailure(String errorMessage) {
-                        mToastManager.showToast("Operazione fallita. Riprovare!");
-                        return false;
-                    }
-                });
-            } else {
-                Dialog dialog = new Dialog(getContext());
-                dialog.showAlertDialog("FORM ERROR", "Il valore della tua offerta deve essere strettamente maggiore di zero.");
-                Log.e("OFFER VALUE", "NOT VALID <= 0");
-            }
+                @Override
+                public boolean onOfferRegistrationFailure(String errorMessage) {
+                    mToastManager.showToast("Operazione fallita. Riprovare!");
+                    return false;
+                }
+            });
         });
     }
 
