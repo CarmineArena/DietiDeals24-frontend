@@ -164,7 +164,7 @@ public class EnglishAuctionFragment extends Fragment {
         Spinner spinnerType = view.findViewById(R.id.offerSpinner);
 
         offerList = new ArrayList<>(Arrays.asList(offer));
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.custom_spinner_item, offerList);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.custom_spinner_item_for_auction, offerList);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerType.setAdapter(adapter);

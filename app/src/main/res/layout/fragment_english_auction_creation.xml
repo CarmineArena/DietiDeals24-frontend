@@ -13,7 +13,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal|center_vertical"
         android:text="Foto dell'articolo"
         android:fontFamily="@font/fenix"
         android:textColor="#000000"
@@ -53,19 +53,20 @@
         android:layout_height="29dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
+        android:gravity="center_horizontal|center_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="166dp"
+        android:layout_width="185dp"
         android:layout_height="35dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/fenix"
         android:gravity="center_horizontal|center_vertical"
         android:text="Importo minimo"
-        android:fontFamily="@font/fenix"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +74,7 @@
 
     <EditText
         android:id="@+id/editTextTextPersonName2"
-        android:layout_width="166dp"
+        android:layout_width="185dp"
         android:layout_height="40dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
@@ -87,15 +88,16 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/next_button"
-        android:layout_width="94dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="32dp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="44dp"
         android:background="@drawable/button2bg"
         android:fontFamily="@font/poppins"
         android:text="avanti"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/itemImage"
@@ -139,7 +141,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:gravity="center_vertical"
+        android:gravity="center_horizontal|center_vertical"
         android:text="Descrizione dell'articolo"
         android:fontFamily="@font/fenix"
         android:textColor="#000000"
@@ -149,13 +151,13 @@
 
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="166dp"
-        android:layout_height="35dp"
+        android:layout_width="185dp"
+        android:layout_height="36dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/fenix"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Ore per la scadenza"
+        android:text="Timer per la scadenza"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +165,7 @@
 
     <NumberPicker
         android:id="@+id/numberPicker"
-        android:layout_width="166dp"
+        android:layout_width="185dp"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"

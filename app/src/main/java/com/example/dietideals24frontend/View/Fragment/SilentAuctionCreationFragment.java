@@ -83,7 +83,7 @@ public class SilentAuctionCreationFragment extends Fragment {
 
         // Retrieve from strings.xml (list of options)
         String[] arrayItems = getResources().getStringArray(R.array.categories_array);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, arrayItems);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.custom_spinner_item, arrayItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         categorySpinner.setAdapter(adapter);
 

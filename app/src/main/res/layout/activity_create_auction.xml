@@ -32,11 +32,10 @@
 
     <FrameLayout
         android:id="@+id/frameAuction"
-        android:layout_width="404dp"
-        android:layout_height="627dp"
-        android:layout_marginStart="2dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerTypeAuction">
