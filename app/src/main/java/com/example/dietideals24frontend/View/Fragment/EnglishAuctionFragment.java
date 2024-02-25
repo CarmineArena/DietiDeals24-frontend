@@ -333,7 +333,7 @@ public class EnglishAuctionFragment extends Fragment {
                     }
                 });
 
-                handler.postDelayed(this, 1000); // Every second
+                handler.postDelayed(this, 60000); // Every second
             }
         };
 
