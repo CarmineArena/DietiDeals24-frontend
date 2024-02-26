@@ -387,15 +387,18 @@ public class LinearLayoutForItemsPresenter {
         switch (auctionType) {
             case HomeConstantValues.FEATURED:
                 button.setText("ACQUISTA");
+                button.setBackgroundResource(R.drawable.buttonbg);
                 break;
             case HomeConstantValues.FEATURED_SEARCH_AUCTION:
                 button.setText(item.getDescription());
                 break;
             case HomeConstantValues.ITEM_WITH_NO_WINNER:
                 button.setText("ACCETTA");
+                button.setBackgroundResource(R.drawable.buttonbg);
                 break;
             default:
                 button.setText("VISUALIZZA");
+                button.setBackgroundResource(R.drawable.buttonbg);
                 break;
         }
 
