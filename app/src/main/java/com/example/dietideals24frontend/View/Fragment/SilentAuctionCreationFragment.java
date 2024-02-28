@@ -58,6 +58,7 @@ public class SilentAuctionCreationFragment extends Fragment {
     private byte[] imageContent;
     private String categoryChoice = null;
     private ToastManager mToastManager;
+    private Retrofit retrofitService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class SilentAuctionCreationFragment extends Fragment {
         Dialog dialog = new Dialog(getContext());
 
         // Retrieve Retrofit instance
-        Retrofit retrofitService = MainActivity.retrofitService;
+        retrofitService = MainActivity.retrofitService;
         AuctionController controller = new AuctionController(retrofitService);
 
         // Retrieve LoggedIn User
@@ -179,7 +180,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                                 savedItemId[0] = itemId;
 
                                 // Item and Auction registration must happen one after the other (that is why we do it like that)
-                                registerAuction(savedItemId[0], user.getUserId(), finalSqlDate, finalItemStartPrize, retrofitService);
+                                registerAuction(savedItemId[0], user.getUserId(), finalSqlDate, finalItemStartPrize);
                                 return true;
                             }
                             @Override
@@ -239,7 +240,7 @@ public class SilentAuctionCreationFragment extends Fragment {
         return imageContent;
     }
 
-    private void registerAuction(Integer itemId, Integer userId, Date sqlDate, float itemStartPrize, Retrofit retrofitService) {
+    private void registerAuction(Integer itemId, Integer userId, Date sqlDate, float itemStartPrize) {
         AuctionDTO auctionDTO = new AuctionDTO();
         auctionDTO.setOwnerId(userId);
         auctionDTO.setAuctionType(Type.SILENT);

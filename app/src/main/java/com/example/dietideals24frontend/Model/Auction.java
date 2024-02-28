@@ -10,6 +10,7 @@ import com.example.dietideals24frontend.Model.DTO.AuctionDTO;
 
 public class Auction implements Serializable {
     private Integer auctionId;
+    private Integer winnerId;
     private int ownerId, amountOfTimeToReset;
     private Item item;
     private boolean active;

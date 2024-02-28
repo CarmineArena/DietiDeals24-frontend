@@ -13,7 +13,10 @@ import android.content.Intent;
 import android.content.Context;
 import android.annotation.SuppressLint;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Handler;
 
 import androidx.fragment.app.Fragment;
@@ -27,6 +30,7 @@ import com.example.dietideals24frontend.Controller.ItemController.ItemController
 import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveFeaturedItemsCallback;
 import com.example.dietideals24frontend.Controller.ItemController.Callback.RetrieveItemsWithNoWinnerCallback;
 
+import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.R;
 import com.example.dietideals24frontend.Model.Item;
 import com.example.dietideals24frontend.Model.User;
@@ -109,51 +113,34 @@ public class LinearLayoutForItemsPresenter {
         });
     }
 
-    public void createInternalLayoutWithFeaturedAuctions(RelativeLayout layout, User loggedInUser,
-                                                         String searchTerm, List<String> categories) {
-        ItemController controller = new ItemController(this.retrofitService);
-        controller.sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(searchTerm, categories, loggedInUser, new RetrieveFeaturedItemsCallback() {
-            @Override
-            public boolean onSearchItemsUpForAuctionSuccess(List<ItemDTO> itemsRetrieved) {
-                List<Item> items = ItemUtils.createListOfItems(itemsRetrieved);
-
-                if (items == null) { // It is impossible that something like this occurs, but we handle it anyway
-                    Log.d("Home Fragment", "List<Item> Search Auction Activity size: 0");
-                    addImageButtonToRelativeLayout(layout, context, loggedInUser, HomeConstantValues.WANTED);
-                } else {
-                    Log.d("Home Fragment", "List<Item> Search Auction Activity size: " + items.size());
-                    int size = items.size();
-                    for (int j = 0; j < size; j++) {
-                        final int pos = j;
-                        ItemUtils.assignImageToItem(items.get(pos), controller, new ImageCallback() {
-                            @Override
-                            public void onImageAvailable(byte[] imageContent) {
-                                items.get(pos).setImage(imageContent);
-                                createRelativeLayout(layout, loggedInUser, items.get(pos), HomeConstantValues.WANTED);
-                            }
-
-                            @Override
-                            public void onImageNotAvailable(String errorMessage) {
-                               /* [MOTIVATION]
-                                    - If the request is done correctly there is no way that the image is not available.
-                                    - That is because of how we crate auction: the item image must exits otherwise you can't create the auction
-                                **/
-                                Log.e("ERROR", "createInternalLayoutWithFeaturedAuctions, Item's image is not available: " + errorMessage);
-                            }
-                        });
+    public void createInternalLayoutWithFeaturedAuctions(RelativeLayout layout, User loggedInUser, List<ItemDTO> itemsRetrieved) {
+        List<Item> items = ItemUtils.createListOfItems(itemsRetrieved);
+        if (items == null) {
+            Log.d("Home Fragment", "List<Item> Search Auction Activity size: 0");
+            addImageButtonToRelativeLayout(layout, context, loggedInUser, HomeConstantValues.WANTED);
+        } else {
+            Log.d("Home Fragment", "List<Item> Search Auction Activity size: " + items.size());
+            int size = items.size();
+            for (int j = 0; j < size; j++) {
+                final int pos = j;
+                ItemUtils.assignImageToItem(items.get(pos), new ItemController(MainActivity.retrofitService), new ImageCallback() {
+                    @Override
+                    public void onImageAvailable(byte[] imageContent) {
+                        items.get(pos).setImage(imageContent);
+                        createRelativeLayout(layout, loggedInUser, items.get(pos), HomeConstantValues.WANTED);
                     }
-                }
-                return true;
-            }
 
-            @Override
-            public boolean onSearchItemsUpForAuctionFailure(String errorMessage) {
-                /* [MOTIVATION: BAD REQUEST] */
-                Log.d("onSearchItemsUpForAuctionFailure", errorMessage);
-                showPopUpError("Could not retrieve the items requested. " + errorMessage);
-                return false;
+                    @Override
+                    public void onImageNotAvailable(String errorMessage) {
+                        /* [MOTIVATION]
+                            - If the request is done correctly there is no way that the image is not available.
+                            - That is because of how we crate auction: the item image must exits otherwise you can't create the auction
+                        **/
+                        Log.e("ERROR", "createInternalLayoutWithFeaturedAuctions, Item's image is not available: " + errorMessage);
+                    }
+                });
             }
-        });
+        }
     }
 
     public void createAuctionedByUserItemsLayout(ViewGroup layout, User loggedInUser) {
@@ -516,9 +503,13 @@ public class LinearLayoutForItemsPresenter {
             public boolean onWinningBidRetrievalSuccess(Float winningBid) {
                 if (dialogActivity instanceof Activity) {
                     ((Activity) dialogActivity).runOnUiThread(() -> {
+                        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+                        symbols.setDecimalSeparator('.');
+                        DecimalFormat df = new DecimalFormat("0.00", symbols);
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(dialogActivity);
                         builder.setTitle("AUCTION INFORMATION");
-                        builder.setMessage("Congratulazioni! Ti sei aggiudicato l'Item per " + winningBid + "€ !");
+                        builder.setMessage("Congratulazioni! Ti sei aggiudicato l'Item per " + df.format(winningBid) + "€ !");
                         builder.setIcon(android.R.drawable.ic_dialog_info);
                         builder.setPositiveButton("Ok", (dialog, which) -> {});
                         builder.show();

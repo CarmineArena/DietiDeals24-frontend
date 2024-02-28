@@ -103,7 +103,7 @@ public class SilentAuctionFragment extends Fragment {
         TextView dateView = view.findViewById(R.id.textView12);
         dateView.setText("Asta aperta fino al giorno: " + auction.getExpirationDate());
 
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ITALIAN);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         symbols.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("0.00", symbols);
 
@@ -306,8 +306,12 @@ public class SilentAuctionFragment extends Fragment {
         userSurname.setTypeface(typeface);
         linearLayoutHorizontal.addView(userSurname);
 
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        symbols.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("0.00", symbols);
+
         TextView userOffer = new TextView(getContext());
-        userOffer.setText("€" + String.valueOf(offer.getOffer()));
+        userOffer.setText("€" + df.format(offer.getOffer()));
         userOffer.setTextSize(17);
         userOffer.setTypeface(typeface);
         linearLayoutHorizontal.addView(userOffer);
