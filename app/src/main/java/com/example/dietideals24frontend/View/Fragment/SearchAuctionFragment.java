@@ -149,8 +149,6 @@ public class SearchAuctionFragment extends Fragment {
                         RelativeLayout layout = new RelativeLayout(context);
                         presenter.createInternalLayoutWithFeaturedAuctions(layout, loggedInUser, itemsRetrieved);
 
-                        // layout, loggedInUser, searchTerm, selectedCategories
-
                         scrollView.removeAllViews();
                         scrollView.addView(layout);
                     }
