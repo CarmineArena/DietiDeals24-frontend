@@ -59,7 +59,7 @@ public class LogInFragment extends Fragment {
                         // Login Analytics
                         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                         Bundle bundle = new Bundle();
-                        bundle.putString("login", email);
+                        // bundle.putString("login", email);
                         analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
                         analytics.setAnalyticsCollectionEnabled(true);
 

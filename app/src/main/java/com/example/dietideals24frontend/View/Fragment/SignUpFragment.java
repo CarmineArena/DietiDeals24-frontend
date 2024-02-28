@@ -64,7 +64,7 @@ public class SignUpFragment extends Fragment {
                         // SignUp Analytics
                         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                         Bundle bundle = new Bundle();
-                        bundle.putString("register", email);
+                        // bundle.putString("register", email);
                         analytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
                         analytics.setAnalyticsCollectionEnabled(true);
 

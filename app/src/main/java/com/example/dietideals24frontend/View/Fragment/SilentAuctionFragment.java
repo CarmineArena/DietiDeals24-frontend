@@ -165,7 +165,7 @@ public class SilentAuctionFragment extends Fragment {
                             // Silent Auction Offer Analytics
                             FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                             Bundle bundle = new Bundle();
-                            bundle.putString("SilentAuctionOffer", "Offerta fatta con successo!");
+                            // bundle.putString("SilentAuctionOffer", "Offerta fatta con successo!");
                             analytics.logEvent("silent_auction_offer", bundle);
                             analytics.setAnalyticsCollectionEnabled(true);
 

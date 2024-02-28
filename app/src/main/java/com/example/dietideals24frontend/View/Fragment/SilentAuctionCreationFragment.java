@@ -264,7 +264,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                 // Silent Auction Creation Analytics
                 FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                 Bundle bundle = new Bundle();
-                bundle.putString("SilentAuctionCreation", "Asta Silenziosa creata!");
+                // bundle.putString("SilentAuctionCreation", "Asta Silenziosa creata!");
                 analytics.logEvent("silent_auction_creation", bundle);
                 analytics.setAnalyticsCollectionEnabled(true);
 

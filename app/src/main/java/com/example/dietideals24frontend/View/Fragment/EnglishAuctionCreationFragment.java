@@ -236,7 +236,7 @@ public class EnglishAuctionCreationFragment extends Fragment {
                 // English Auction Creation Analytics
                 FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                 Bundle bundle = new Bundle();
-                bundle.putString("EnglishAuctionCreation", "Asta Inglese creata!");
+                // bundle.putString("EnglishAuctionCreation", "Asta Inglese creata!");
                 analytics.logEvent("english_auction_creation", bundle);
                 analytics.setAnalyticsCollectionEnabled(true);
 

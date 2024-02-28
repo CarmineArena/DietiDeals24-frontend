@@ -266,7 +266,7 @@ public class EnglishAuctionFragment extends Fragment {
                     // English Auction Offer Analytics
                     FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                     Bundle bundle = new Bundle();
-                    bundle.putString("EnglishAuctionOffer", "Offerta fatta con successo!");
+                    // bundle.putString("EnglishAuctionOffer", "Offerta fatta con successo!");
                     analytics.logEvent("english_auction_offer", bundle);
                     analytics.setAnalyticsCollectionEnabled(true);
 
