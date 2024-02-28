@@ -50,6 +50,7 @@ import java.io.IOException;
 
 import retrofit2.Retrofit;
 import com.example.dietideals24frontend.MainActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class SilentAuctionCreationFragment extends Fragment {
     private User user;
@@ -259,6 +260,13 @@ public class SilentAuctionCreationFragment extends Fragment {
             public boolean onAuctionRegistrationSuccess(AuctionDTO auctionDTO) {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
                 mToastManager.showToast("Asta creata con successo!");
+
+                // Silent Auction Creation Analytics
+                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+                Bundle bundle = new Bundle();
+                bundle.putString("SilentAuctionCreation", "Asta Silenziosa creata!");
+                analytics.logEvent("silent_auction_creation", bundle);
+                analytics.setAnalyticsCollectionEnabled(true);
 
                 ActivityPresenter presenter = new ActivityPresenter();
                 Intent intent = presenter.createIntentForHome(getContext(), user); // Return Home with loggedIn user's informations

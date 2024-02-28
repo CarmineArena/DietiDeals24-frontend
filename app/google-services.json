@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "947016078935",
+    "project_id": "fir-analytics-e532e",
+    "storage_bucket": "fir-analytics-e532e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947016078935:android:16a27397491bb1aa83f512",
+        "android_client_info": {
+          "package_name": "com.example.dietideals24frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXlqobG-PoWntcvPHU-RlBh6_V5CR4z68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -20,6 +20,7 @@ import com.example.dietideals24frontend.Controller.UserController.Callback.Login
 import retrofit2.Retrofit;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class LogInFragment extends Fragment {
     private View view;
@@ -54,6 +55,13 @@ public class LogInFragment extends Fragment {
                     @Override
                     public boolean onLoginSuccess(UserDTO userDTO) {
                         User loggedInUser = User.createUser(userDTO);
+
+                        // Login Analytics
+                        FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("login", email);
+                        analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
+                        analytics.setAnalyticsCollectionEnabled(true);
 
                         ActivityPresenter activityFactory = new ActivityPresenter();
                         Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);

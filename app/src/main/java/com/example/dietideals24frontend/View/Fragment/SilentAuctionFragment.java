@@ -47,6 +47,7 @@ import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.Model.DTO.OfferDTO;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.Utility.DateAndTimeRetriever;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class SilentAuctionFragment extends Fragment {
     private Auction auction;
@@ -160,6 +161,14 @@ public class SilentAuctionFragment extends Fragment {
                         @Override
                         public boolean onOfferRegistrationSuccess() {
                             mToastManager.showToast("Offerta fatta con successo!");
+
+                            // Silent Auction Offer Analytics
+                            FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+                            Bundle bundle = new Bundle();
+                            bundle.putString("SilentAuctionOffer", "Offerta fatta con successo!");
+                            analytics.logEvent("silent_auction_offer", bundle);
+                            analytics.setAnalyticsCollectionEnabled(true);
+
                             return true;
                         }
 

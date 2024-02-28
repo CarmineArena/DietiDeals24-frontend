@@ -38,6 +38,7 @@ import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -231,6 +232,13 @@ public class EnglishAuctionCreationFragment extends Fragment {
             public boolean onAuctionRegistrationSuccess(AuctionDTO auctionDTO) {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
                 mToastManager.showToast("Asta creata con successo!");
+
+                // English Auction Creation Analytics
+                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+                Bundle bundle = new Bundle();
+                bundle.putString("EnglishAuctionCreation", "Asta Inglese creata!");
+                analytics.logEvent("english_auction_creation", bundle);
+                analytics.setAnalyticsCollectionEnabled(true);
 
                 ActivityPresenter factory = new ActivityPresenter();
                 Intent intent = factory.createIntentForHome(getContext(), user); // Return Home with loggedIn user's informations

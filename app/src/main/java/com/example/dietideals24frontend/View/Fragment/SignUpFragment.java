@@ -22,6 +22,7 @@ import com.example.dietideals24frontend.Controller.UserController.Callback.Regis
 import retrofit2.Retrofit;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Utility.EmailValidator;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class SignUpFragment extends Fragment {
     private View view;
@@ -60,6 +61,13 @@ public class SignUpFragment extends Fragment {
                 controller.sendUserRegistrationRequest(userDTO, new RegisterUserCallback() {
                     @Override
                     public boolean onRegistrationSuccess(User loggedInUser) {
+                        // SignUp Analytics
+                        FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("register", email);
+                        analytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
+                        analytics.setAnalyticsCollectionEnabled(true);
+
                         ActivityPresenter activityFactory = new ActivityPresenter();
                         Intent intent = activityFactory.createIntentForHome(getActivity(), loggedInUser);
                         startActivity(intent);

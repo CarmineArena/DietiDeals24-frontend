@@ -56,6 +56,7 @@ import com.example.dietideals24frontend.Model.Auction;
 import com.example.dietideals24frontend.Model.DTO.OfferDTO;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.Utility.DateAndTimeRetriever;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class EnglishAuctionFragment extends Fragment {
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -261,6 +262,14 @@ public class EnglishAuctionFragment extends Fragment {
                 public boolean onOfferRegistrationSuccess() {
                     mToastManager.showToast("Offerta fatta con successo!");
                     TextView lastOfferViewText = view.findViewById(R.id.LastOfferView);
+
+                    // English Auction Offer Analytics
+                    FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+                    Bundle bundle = new Bundle();
+                    bundle.putString("EnglishAuctionOffer", "Offerta fatta con successo!");
+                    analytics.logEvent("english_auction_offer", bundle);
+                    analytics.setAnalyticsCollectionEnabled(true);
+
                     lastOfferViewText.setText("Ultima offerta: € " + finalOfferta);
 
                     Intent intent = new ActivityPresenter().createIntentForHome(getContext(), loggedInUser);
