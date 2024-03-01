@@ -58,11 +58,14 @@ public class SilentAuctionFragment extends Fragment {
     private Typeface typeface;
     private LinearLayout scrollViewLayout;
     private ScrollView scrollView;
+    private FirebaseAnalytics analytics;
 
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_silent_auction, container, false);
+
+        analytics = FirebaseAnalytics.getInstance(getContext());
 
         mToastManager = new ToastManager(getContext());
 
@@ -163,9 +166,7 @@ public class SilentAuctionFragment extends Fragment {
                             mToastManager.showToast("Offerta fatta con successo!");
 
                             // Silent Auction Offer Analytics
-                            FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                             Bundle bundle = new Bundle();
-                            // bundle.putString("SilentAuctionOffer", "Offerta fatta con successo!");
                             analytics.logEvent("silent_auction_offer", bundle);
                             analytics.setAnalyticsCollectionEnabled(true);
 

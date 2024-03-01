@@ -27,6 +27,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 public class SignUpFragment extends Fragment {
     private View view;
     private Retrofit retrofitService;
+    private FirebaseAnalytics analytics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class SignUpFragment extends Fragment {
 
         Dialog dialog = new Dialog(getContext());
         retrofitService = MainActivity.retrofitService;
+
+        analytics = FirebaseAnalytics.getInstance(getContext());
 
         Button button = view.findViewById(R.id.btnSignUp);
         button.setOnClickListener(v -> {
@@ -62,9 +65,7 @@ public class SignUpFragment extends Fragment {
                     @Override
                     public boolean onRegistrationSuccess(User loggedInUser) {
                         // SignUp Analytics
-                        FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                         Bundle bundle = new Bundle();
-                        // bundle.putString("register", email);
                         analytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
                         analytics.setAnalyticsCollectionEnabled(true);
 

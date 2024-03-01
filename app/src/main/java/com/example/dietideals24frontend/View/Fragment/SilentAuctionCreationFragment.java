@@ -60,6 +60,7 @@ public class SilentAuctionCreationFragment extends Fragment {
     private String categoryChoice = null;
     private ToastManager mToastManager;
     private Retrofit retrofitService;
+    private FirebaseAnalytics analytics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +81,8 @@ public class SilentAuctionCreationFragment extends Fragment {
         } else {
             user = null;
         }
+
+        analytics = FirebaseAnalytics.getInstance(getContext());
 
         Spinner categorySpinner = view.findViewById(R.id.spinner);
 
@@ -262,9 +265,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                 mToastManager.showToast("Asta creata con successo!");
 
                 // Silent Auction Creation Analytics
-                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                 Bundle bundle = new Bundle();
-                // bundle.putString("SilentAuctionCreation", "Asta Silenziosa creata!");
                 analytics.logEvent("silent_auction_creation", bundle);
                 analytics.setAnalyticsCollectionEnabled(true);
 

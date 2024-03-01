@@ -72,6 +72,7 @@ public class EnglishAuctionFragment extends Fragment {
     private String choice;
     private ToastManager mToastManager;
     private Integer userId, auctionId;
+    private FirebaseAnalytics analytics;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -82,6 +83,8 @@ public class EnglishAuctionFragment extends Fragment {
 
         retrofitService = MainActivity.retrofitService;
         mToastManager = new ToastManager(getContext());
+
+        analytics = FirebaseAnalytics.getInstance(getContext());
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -264,9 +267,7 @@ public class EnglishAuctionFragment extends Fragment {
                     TextView lastOfferViewText = view.findViewById(R.id.LastOfferView);
 
                     // English Auction Offer Analytics
-                    FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                     Bundle bundle = new Bundle();
-                    // bundle.putString("EnglishAuctionOffer", "Offerta fatta con successo!");
                     analytics.logEvent("english_auction_offer", bundle);
                     analytics.setAnalyticsCollectionEnabled(true);
 

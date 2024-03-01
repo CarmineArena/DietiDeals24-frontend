@@ -52,6 +52,7 @@ public class EnglishAuctionCreationFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 2;
     private ToastManager mToastManager;
     private NumberPicker numberPicker;
+    private FirebaseAnalytics analytics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +64,8 @@ public class EnglishAuctionCreationFragment extends Fragment {
         if (bundle != null) {
             user = (User) bundle.getSerializable("loggedInUser");
         }
+
+        analytics = FirebaseAnalytics.getInstance(getContext());
 
         // Retrieve Retrofit instance
         Retrofit retrofitService = MainActivity.retrofitService;
@@ -234,9 +237,7 @@ public class EnglishAuctionCreationFragment extends Fragment {
                 mToastManager.showToast("Asta creata con successo!");
 
                 // English Auction Creation Analytics
-                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                 Bundle bundle = new Bundle();
-                // bundle.putString("EnglishAuctionCreation", "Asta Inglese creata!");
                 analytics.logEvent("english_auction_creation", bundle);
                 analytics.setAnalyticsCollectionEnabled(true);
 

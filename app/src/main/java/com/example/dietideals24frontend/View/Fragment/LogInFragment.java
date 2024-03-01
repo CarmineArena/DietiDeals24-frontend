@@ -25,6 +25,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 public class LogInFragment extends Fragment {
     private View view;
     private Retrofit retrofitService;
+    private FirebaseAnalytics analytics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +34,8 @@ public class LogInFragment extends Fragment {
 
         Dialog dialog = new Dialog(getContext());
         retrofitService = MainActivity.retrofitService;
+
+        analytics = FirebaseAnalytics.getInstance(getContext());
 
         Button button = view.findViewById(R.id.btnLogIn);
         button.setOnClickListener(v -> {
@@ -57,9 +60,7 @@ public class LogInFragment extends Fragment {
                         User loggedInUser = User.createUser(userDTO);
 
                         // Login Analytics
-                        FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                         Bundle bundle = new Bundle();
-                        // bundle.putString("login", email);
                         analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
                         analytics.setAnalyticsCollectionEnabled(true);
 
