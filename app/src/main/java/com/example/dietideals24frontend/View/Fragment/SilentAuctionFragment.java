@@ -254,7 +254,7 @@ public class SilentAuctionFragment extends Fragment {
     private void showDialogToAcceptOffer(Integer auctionId, Integer userId, Float winningBid) {
         Context context = getContext();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("CONFIRM OFFER");
+        builder.setTitle("CONFERMA OFFERTA");
         builder.setMessage("Sei sicuro di voler accettare l'offerta?");
         builder.setIcon(android.R.drawable.ic_dialog_info);
 
@@ -305,7 +305,7 @@ public class SilentAuctionFragment extends Fragment {
         linearLayoutHorizontal.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView userName = new TextView(getContext());
-        userName.setText("Offerta: " + offer.getUser().getName() + " ");
+        userName.setText("OFFERTA: " + offer.getUser().getName() + " ");
         userName.setTextSize(17);
         userName.setTypeface(typeface);
         linearLayoutHorizontal.addView(userName);

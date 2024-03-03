@@ -35,6 +35,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
+        android:textColor="#2E3870"
         android:text="filtra"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

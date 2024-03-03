@@ -53,6 +53,8 @@
         android:layout_height="29dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
+        android:paddingStart="4sp"
+        android:background="@drawable/button2bg"
         android:gravity="center_horizontal|center_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
@@ -74,10 +76,10 @@
 
     <EditText
         android:id="@+id/editTextTextPersonName2"
-        android:layout_width="185dp"
+        android:layout_width="170dp"
         android:layout_height="40dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/inputtextbg"
         android:ems="10"
         android:gravity="center_horizontal|center_vertical"
@@ -157,7 +159,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/fenix"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Timer per la scadenza"
+        android:text="Ore per la scadenza"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -165,12 +167,13 @@
 
     <NumberPicker
         android:id="@+id/numberPicker"
-        android:layout_width="185dp"
+        android:layout_width="170dp"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/inputtextbg"
         android:dividerHeight="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
