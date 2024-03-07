@@ -38,11 +38,11 @@ import com.example.dietideals24frontend.MainActivity;
 import com.example.dietideals24frontend.View.ToastManager;
 import com.example.dietideals24frontend.Utility.ImageUtils;
 import com.example.dietideals24frontend.Controller.AuctionController.AuctionController;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class EnglishAuctionCreationFragment extends Fragment {
     private User user;
@@ -236,7 +236,7 @@ public class EnglishAuctionCreationFragment extends Fragment {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
                 mToastManager.showToast("Asta creata con successo!");
 
-                // English Auction Creation Analytics
+                // Signal to Firebase English Auction Creation Analytics
                 Bundle bundle = new Bundle();
                 analytics.logEvent("english_auction_creation", bundle);
                 analytics.setAnalyticsCollectionEnabled(true);

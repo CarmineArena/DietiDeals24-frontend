@@ -264,7 +264,7 @@ public class SilentAuctionCreationFragment extends Fragment {
                 Log.i("AUCTION REGISTRATION REQUEST", "SENT");
                 mToastManager.showToast("Asta creata con successo!");
 
-                // Silent Auction Creation Analytics
+                // Signal to Firebase Silent Auction Creation Analytics
                 Bundle bundle = new Bundle();
                 analytics.logEvent("silent_auction_creation", bundle);
                 analytics.setAnalyticsCollectionEnabled(true);

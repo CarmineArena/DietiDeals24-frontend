@@ -165,7 +165,7 @@ public class SilentAuctionFragment extends Fragment {
                         public boolean onOfferRegistrationSuccess() {
                             mToastManager.showToast("Offerta fatta con successo!");
 
-                            // Silent Auction Offer Analytics
+                            // Signal to Firebase Silent Auction Offer Analytics
                             Bundle bundle = new Bundle();
                             analytics.logEvent("silent_auction_offer", bundle);
                             analytics.setAnalyticsCollectionEnabled(true);

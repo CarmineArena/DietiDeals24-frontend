@@ -266,7 +266,7 @@ public class EnglishAuctionFragment extends Fragment {
                     mToastManager.showToast("Offerta fatta con successo!");
                     TextView lastOfferViewText = view.findViewById(R.id.LastOfferView);
 
-                    // English Auction Offer Analytics
+                    // Signal to Firebase English Auction Offer Analytics
                     Bundle bundle = new Bundle();
                     analytics.logEvent("english_auction_offer", bundle);
                     analytics.setAnalyticsCollectionEnabled(true);

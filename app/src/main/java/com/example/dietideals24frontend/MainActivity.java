@@ -12,7 +12,6 @@ import com.example.dietideals24frontend.View.Fragment.LogInFragment;
 import com.example.dietideals24frontend.Presenter.FragmentPresenter;
 import com.example.dietideals24frontend.View.Fragment.SignUpFragment;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     public static Retrofit retrofitService;
     private Button btnFragment;
     private TextView TextFragment;
-    private FirebaseAnalytics analytics;
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -44,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         retrofitService = new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-
-        analytics = FirebaseAnalytics.getInstance(this);
 
         FragmentPresenter fragmentFactory = new FragmentPresenter();
 

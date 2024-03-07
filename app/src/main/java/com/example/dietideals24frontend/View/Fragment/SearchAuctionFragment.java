@@ -130,7 +130,7 @@ public class SearchAuctionFragment extends Fragment {
 
         if (searchTerm.isEmpty() || searchTerm.isBlank()) {
             Dialog dialog = new Dialog(getContext());
-            dialog.showAlertDialog("FORM ERROR", "Devi digitare ciò che vuoi cercare!");
+            dialog.showAlertDialog("Errore di ricerca", "Devi digitare ciò che vuoi cercare!");
         } else {
             ItemController controller = new ItemController(retrofitService);
             controller.sendFeaturedItemsUpForAuctionBySearchTermAndCategoryRequest(searchTerm, selectedCategories, loggedInUser, new RetrieveFeaturedItemsCallback() {

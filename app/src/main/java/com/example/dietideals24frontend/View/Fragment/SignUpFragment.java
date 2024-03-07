@@ -20,9 +20,9 @@ import com.example.dietideals24frontend.Controller.UserController.UserController
 import com.example.dietideals24frontend.Controller.UserController.Callback.RegisterUserCallback;
 
 import retrofit2.Retrofit;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Utility.EmailValidator;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class SignUpFragment extends Fragment {
     private View view;
@@ -64,7 +64,7 @@ public class SignUpFragment extends Fragment {
                 controller.sendUserRegistrationRequest(userDTO, new RegisterUserCallback() {
                     @Override
                     public boolean onRegistrationSuccess(User loggedInUser) {
-                        // SignUp Analytics
+                        // Signal to Firebase SignUp Analytics
                         Bundle bundle = new Bundle();
                         analytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle);
                         analytics.setAnalyticsCollectionEnabled(true);

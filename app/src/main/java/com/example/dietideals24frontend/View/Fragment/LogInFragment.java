@@ -18,13 +18,14 @@ import com.example.dietideals24frontend.Controller.UserController.UserController
 import com.example.dietideals24frontend.Controller.UserController.Callback.LoginUserCallback;
 
 import retrofit2.Retrofit;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.example.dietideals24frontend.View.Dialog.Dialog;
 import com.example.dietideals24frontend.Presenter.ActivityPresenter;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class LogInFragment extends Fragment {
     private View view;
     private Retrofit retrofitService;
+
     private FirebaseAnalytics analytics;
 
     @Override
@@ -59,7 +60,7 @@ public class LogInFragment extends Fragment {
                     public boolean onLoginSuccess(UserDTO userDTO) {
                         User loggedInUser = User.createUser(userDTO);
 
-                        // Login Analytics
+                        // Signal to Firebase Login Analytics
                         Bundle bundle = new Bundle();
                         analytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
                         analytics.setAnalyticsCollectionEnabled(true);

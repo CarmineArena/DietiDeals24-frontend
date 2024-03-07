@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "3651730111",
-    "project_id": "dietideals24-d8c35",
-    "storage_bucket": "dietideals24-d8c35.appspot.com"
+    "project_number": "566358402705",
+    "project_id": "dietideals24frontend",
+    "storage_bucket": "dietideals24frontend.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:3651730111:android:fb46f367c00228bf2c640a",
+        "mobilesdk_app_id": "1:566358402705:android:9366ecb20280dd121fc130",
         "android_client_info": {
           "package_name": "com.example.dietideals24frontend"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBNslQJABtLWRKf4Rem09H0XAwvHcjfSZs"
+          "current_key": "AIzaSyCdS7xXkM68CT-wDYpjHh_mHKw5yZ2OQyQ"
         }
       ],
       "services": {
